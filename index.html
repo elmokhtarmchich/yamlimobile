@@ -1,0 +1,352 @@
+﻿<!DOCTYPE html>
+<link rel="manifest" href="./manifest.json">     
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' />
+
+<head>
+<title>Yamli Mobile </title>
+<link href="./images/favicon.ico" rel="icon" type="image/x-icon"/>
+<meta name="viewport" content="width=device-width, height=device-height, user-scalable=no" />
+<meta charset = "utf-8" />
+<link rel="stylesheet" href="./style.css">
+</head>
+<style>
+@font-face{font-family:dinnextarabic;src:url(https://i1.hespress.com/wp-content/themes/hespress/fonts/DinNextArabic-Regular.woff2) format("woff2"),url(https://i1.hespress.com/wp-content/themes/hespress/fonts/DinNextArabic-Regular.woff) format("woff");font-weight:400;font-style:normal;font-display:swap}@font-face{font-family:dinnextarabic-bold;src:url(https://i1.hespress.com/wp-content/themes/hespress/fonts/DinNextArabic-Bold.woff2) format("woff2"),url(https://i1.hespress.com/wp-content/themes/hespress/fonts/DinNextArabic-Bold.woff) format("woff");font-weight:400;font-style:normal;font-display:swap}@font-face{font-family:dinnextarabic-medium;src:url(https://i1.hespress.com/wp-content/themes/hespress/fonts/DinNextArabic-Medium.woff2) format("woff2"),url(https://i1.hespress.com/wp-content/themes/hespress/fonts/DinNextArabic-Medium.woff) format("woff");font-weight:400;font-style:normal;font-display:swap}@font-face{font-family:weathericons-regular;src:url(/wp-content/themes/hespress/fonts/weathericons-regular.otf) format("opentype");font-weight:400;font-style:normal};
+
+</style>
+<script type="text/javascript" src="./script.js"></script>
+
+<script type="text/javascript">
+ if ('serviceWorker' in navigator) {
+    console.log("Will the service worker register?");
+    navigator.serviceWorker.register('C:\Users\acer\Desktop\Yamli_website\addtohomescreen\service-worker.js')
+      .then(function(reg){
+        console.log("Yes, it did.");
+     }).catch(function(err) {
+        console.log("No it didn't. This happened:", err)
+    });
+ }
+</script>
+
+<body>
+<div class="container">
+<div class="center_btn">
+<div class="button-container-btn" ><button id="btn_01" onclick="window.open(window.location.href, '_blank')" class='button'  ><img src="./images/image.png"></button> </div>
+<div class="button-container-btn" ><button id="btn_06" ><img src="./images/abc_ic_menu_share_mtrl_alpha.png"   ></button>                                                </div>
+<div class="button-container-btn" ><button id="btn_02" onclick = "searchtext()" ><img src="./images/search-76.png"   ></button>                                              </div>
+<div class="button-container-btn" ><button id="btn_03" onclick = "fct_cut()"><img src="./images/abc_ic_menu_cut_mtrl_alpha.png"      ></button>                                                  </div>
+<div class="button-container-btn" ><button id="btn_04" onclick = "insertAtCaret()"><img src="./images/abc_ic_menu_paste_mtrl_am_alpha.png"    ></button>                                                    </div>
+<div class="button-container-btn" ><button id="btn_05" onclick = "getSelectedText()"><img src="./images/abc_ic_menu_copy_mtrl_am_alpha.png"     ></button>                                                 </div>
+<div class="button-container-btn" ><button id="btn_07" onclick = "selectall()"><img src="./images/selectall-76.png"     ></button>                                                 </div>
+</div>                                                                                                                                                                          
+
+<p class="divider"></p>
+<div name="myForm" class="center">
+<textarea class="field-input" name="myTextArea" type="text" id="textbox_id_1" onChange="updateConf()" onkeyup="updateConf()" placeholder="Oktob hona..اكتب هنا" autofocus></textarea>
+<form style="display: none" name="testform">
+<p  name="TextArea_vide" id="textbox_id_2" ></p>
+</form>
+
+</div>
+</div>
+<div style="display:none"  class="overlay" id="dialog-container">
+<div id="id_confrmdiv">  تأكيد !  
+    <button id="id_truebtn"> نعم </button>
+    <button id="id_falsebtn"> لا </button>
+</div>
+</div>
+
+</body>
+
+<script> 
+function upda//teConf() {
+var myTextArea1 = document.getElementById('textbox_id_1').value;
+var inputBox = document.getElementById('printchatbox');
+//alert(myTextArea1);
+inputBox.focus();
+inputBox.value = myTextArea1 ;
+document.getElementById('textbox_id_1').focus();
+}
+</script> 
+
+		<script> 
+			// Function to get the Selected Text 
+			function getSelectedText() { 
+				var myTextArea = ''; 
+				var myTextArea1 = document.getElementById('textbox_id_1');
+                var myTextArea2 = document.getElementById('textbox_id_2');
+
+				// window.getSelection 
+				if (window.getSelection) { 
+					myTextArea = window.getSelection(); 
+				} 
+				// document.getSelection 
+				else if (document.getSelection) { 
+					myTextArea = document.getSelection(); 
+				} 
+				// document.selection 
+				else if (document.selection) { 
+					myTextArea = 
+					document.selection.createRange().text; 
+				} else return; 
+				// To write the selected text into the textarea 
+				document.execCommand("copy");
+                myTextArea2.innerHTML = myTextArea; 
+			}
+
+		</script> 
+ <script>
+ function selectall(){
+  /* Get the text field */
+  var fct_copy = document.getElementById("textbox_id_1");
+
+  /* Select the text field */
+  fct_copy.select();
+  fct_copy.setSelectionRange(0, 99999); /*For mobile devices*/
+}
+</script>
+
+
+ <script>
+    'use strict';
+
+    function sleep(delay) {
+      return new Promise(resolve => {
+        setTimeout(resolve, delay);
+      });
+    }
+
+    function logText(message, isError) {
+      if (isError)
+        console.error(message);
+      else
+        console.log(message);
+
+      const p = document.createElement('p');
+      if (isError)
+        p.setAttribute('class', 'error');
+      document.querySelector('#output').appendChild(p);
+      p.appendChild(document.createTextNode(message));
+    }
+
+    function logError(message) {
+      logText(message, true);
+    }
+
+  //  function setShareButtonsEnabled(enabled) {
+ //     document.querySelector('#btn_06').disabled = !enabled;
+ //   }
+
+
+    async function testWebShare() {
+      const text_input = document.querySelector('#textbox_id_1');
+	  
+      const title = 'yamli mobile';
+      const text = text_input.disabled ? undefined : text_input.value;
+
+
+      // setShareButtonsEnabled(false);
+      try {
+        await navigator.share({title, text});
+        logText('Successfully sent share');
+      } catch (error) {
+        logError('Error sharing: ' + error);
+      }
+      //setShareButtonsEnabled(true);
+    }
+
+
+    function onLoad() {
+      // Checkboxes disable and delete textfields.
+
+      document.querySelector('#btn_06').addEventListener('click', testWebShare);
+	  
+      if (navigator.share === undefined) {
+       // setShareButtonsEnabled(true);
+        if (window.location.protocol === 'http:') {
+          // navigator.share() is only available in secure contexts.
+          window.location.replace(window.location.href.replace(/^http:/, 'https:'));
+        } else {
+          logError('Error: You need to use a browser that supports this draft ' +
+                   'proposal.');
+        }
+      }
+    }
+
+    window.addEventListener('load', onLoad);
+
+</script>
+
+<script>
+
+
+function insertAtCaret() {
+        var text = document.getElementById('textbox_id_2').innerHTML;
+		var txtarea = document.getElementById('textbox_id_1');
+		var scrollPos = txtarea.scrollTop;
+		var strPos = 0;
+		var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ? 
+			"ff" : (document.selection ? "ie" : false ) );
+		if (br == "ie") { 
+			txtarea.focus();
+			var range = document.selection.createRange();
+			range.moveStart ('character', -txtarea.value.length);
+			strPos = range.text.length;
+		}
+		else if (br == "ff") strPos = txtarea.selectionStart;
+	
+		var front = (txtarea.value).substring(0,strPos);  
+		var back = (txtarea.value).substring(strPos,txtarea.value.length); 
+		txtarea.value=front+text+back;
+		strPos = strPos + text.length;
+		if (br == "ie") { 
+			txtarea.focus();
+			var range = document.selection.createRange();
+			range.moveStart ('character', -txtarea.value.length);
+			range.moveStart ('character', strPos);
+			range.moveEnd ('character', 0);
+			range.select();
+		}
+		else if (br == "ff") {
+			txtarea.selectionStart = strPos;
+			txtarea.selectionEnd = strPos;
+			txtarea.focus();
+		}
+		txtarea.scrollTop = scrollPos;
+	}
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script>
+</script>
+<!-- YAMLI CODE START -->
+
+<script type="text/javascript" src="https://api.yamli.com/js/yamli_api.js"></script>
+<script type="text/javascript">
+  if (typeof(Yamli) == "object" && Yamli.init( { uiLanguage: "ar" ,  startMode: "onOrUserDefault" , uiFontFamily: 'dinnextarabic-medium' , settingsColor: '#dbb44f' , settingsLinkColor: '#dbb44f'} ))
+  {
+    Yamli.yamlify( "textbox_id_1", { settingsPlacement: 'bottomLeft' , showTutorialLink: false, showDirectionLink: false} );
+  }
+</script>
+
+<script>
+
+document.querySelector('textbox_id_1').autofocus = true;
+</script>
+
+
+
+
+<script>
+var duplicating = browser.tabs.duplicate(
+  tabId,              // integer
+  duplicateProperties // optional object
+)
+function onDuplicated(tabInfo) {
+  console.log(tabInfo.id);
+}
+
+function onError(error) {
+  console.log(`Error: ${error}`);
+}
+
+// Duplicate the first tab in the array
+function duplicateFirstTab(tabs) {
+  console.log(tabs);
+  if (tabs.length > 0) {
+    var duplicating = browser.tabs.duplicate(tabs[0].id);
+    duplicating.then(onDuplicated, onError);
+  }
+}
+
+// Query for all open tabs
+var querying = browser.tabs.query({});
+querying.then(duplicateFirstTab, onError);
+
+</script>
+
+<script>
+function searchtext() {
+  /* Get the text field */
+  var SerText = document.getElementById("textbox_id_1");
+
+  /* Select the text field */
+  SerText.select();
+  SerText.setSelectionRange(0, 99999); /*For mobile devices*/
+
+  /* Copy the text inside the text field */
+  window.open('http://google.com/search?q='+SerText.value,"_blank");
+
+  /* Alert the copied text 
+  alert("Copied the text: " + fct_copy.value);*/
+}
+</script>
+
+<script>
+
+function doConfirm(msg, yesFn, noFn)
+{
+    var confirmBox = $("#confirmBox");
+    confirmBox.find(".message").text(msg);
+    confirmBox.find(".yes,.no").unbind().click(function()
+    {
+        confirmBox.hide();
+    });
+    confirmBox.find(".yes").click(yesFn);
+    confirmBox.find(".no").click(noFn);
+    confirmBox.show();
+}
+</script>
+<script>
+doConfirm("Are you sure?", function yes()
+{
+    form.submit();
+}, function no()
+{
+    // do nothing
+});
+</script>
+
+<script>
+function fct_cut(){
+	var overlayme = document.getElementById("dialog-container");
+	overlayme.style.display = "block";
+document.getElementById('id_confrmdiv').style.display="block"; //this is the replace of this line
+
+
+document.getElementById('id_truebtn').onclick = function(){
+     /* Get the text field */
+  var DelText = document.getElementById("textbox_id_1");
+
+  /* Select the text field */
+  DelText.select();
+  DelText.setSelectionRange(0, 99999); /*For mobile devices*/
+
+  /* Copy the text inside the text field */
+  document.execCommand("delete");
+
+  /* Alert the copied text 
+  alert("Copied the text: " + copyText.value);*/
+    /* alert('true'); */ 
+	document.getElementById('id_confrmdiv').style.display = "none";
+	    overlayme.style.display = "none";
+
+	return false;
+};
+
+
+document.getElementById('id_falsebtn').onclick = function(){
+    /* alert('false'); */
+document.getElementById('id_confrmdiv').style.display = "none"; 
+    overlayme.style.display = "none";
+
+   return false;
+};
+}
+
+</script>
+
+</html>

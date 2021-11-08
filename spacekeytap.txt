@@ -1,0 +1,13 @@
+var textFieldEntry = document.querySelectorAll('textarea.field-input');
+$(document).on('keydown', function(e){
+if (e.key == 'Space' || e.keyCode == 32) {
+  console.log("space pressed");
+  console.log("e.target", e.target);
+  console.log("textFieldEntry", textFieldEntry);
+  if (e.target !== textFieldEntry) {
+    e.preventDefault();
+    e.target.click();
+
+  };
+}
+});
