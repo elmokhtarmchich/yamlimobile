@@ -355,5 +355,14 @@ document.getElementById('id_confrmdiv').style.display = "none";
 }
 
 </script>
+<script> //if the website Is not opened an app mode show (i.e. in a browser) the add to homescreen prompt 
+	if (("standalone" in window.navigator) && !window.navigator.standalone) // ios 
+		||
+		( !window.matchMedia('(display-mode: standalone)').matches ) // android 
+		) {
+			addToHomescreen();
+		}
+	</script> 
+
 
 </html>
