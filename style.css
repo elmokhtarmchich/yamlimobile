@@ -1,9 +1,8 @@
 body {
 
-  background-image:  url("images/background.png");
-background-color:#18191a;
-    filter: invert(50%);
-    -webkit-filter: invert(50%);
+	  background-image:
+    linear-gradient(#18191a, #18191a),
+  url("images/background.png");
 }
 
 textarea {
