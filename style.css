@@ -1,12 +1,8 @@
 body {
 
-	  background: 
-
-	    /* top, transparent red, faked with gradient */ 
-    linear-gradient(
-      rgba(24, 25, 26, 0.9), 
-      rgba(24, 25, 26, 0.9)
-    ),
+  background: 
+    /* top, transparent red */ 
+    rgba(255, 0, 0, 0.25),
     /* bottom, image */
     url("images/background.png");
 }
