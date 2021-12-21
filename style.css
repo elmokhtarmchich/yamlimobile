@@ -1,11 +1,8 @@
-body { 
-background-color: #18191a;
-}
-
- 
 body {
   background-image: url("images/background.png");
 background-color: #18191a;
+	  opacity: 0.6;
+
 }
 
 textarea {
