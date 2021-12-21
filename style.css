@@ -1,6 +1,6 @@
 body {
 
-	  background-image:linear-gradient(black, black), url("images/background.png");
+	  background-image:linear-gradient(grey, grey), url("images/background.png");
 background-blend-mode: hard-light;
 }
 
