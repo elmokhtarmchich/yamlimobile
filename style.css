@@ -1,7 +1,6 @@
 body {
-  background-image: url("images/background.png");
+  background-image: url("images/background.png") 0 50%;
 background-color: #18191a;
-	  opacity: 0.6;
 
 }
 
