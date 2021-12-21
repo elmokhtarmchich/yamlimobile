@@ -2,6 +2,12 @@ body {
 background-color: #18191a;
 }
 
+ 
+body {
+  background-image: url("images/background.png");
+background-color: #18191a;
+}
+
 textarea {
   padding: 12px;
   border-radius: 6px;
