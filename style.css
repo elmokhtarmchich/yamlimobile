@@ -1,8 +1,7 @@
 body {
 
 	  background-image:linear-gradient(#18191a, #18191a), url("images/background.png");
-	  background-blend-mode: difference;
-
+background-blend-mode: hard-light;
 }
 
 textarea {
