@@ -1,10 +1,9 @@
 body {
 
-  background: 
-    /* top, transparent red */ 
-    rgba(24, 25, 26, 0.4),
-    /* bottom, image */
-    url("images/background.png");
+  background-image:  url("images/background.png");
+background-color:#18191a;
+    filter: invert(50%);
+    -webkit-filter: invert(50%);
 }
 
 textarea {
