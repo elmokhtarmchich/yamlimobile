@@ -2,7 +2,7 @@ body {
 
   background: 
     /* top, transparent red */ 
-    rgba(255, 0, 0, 0.9),
+    rgba(24, 25, 26, 0.4),
     /* bottom, image */
     url("images/background.png");
 }
