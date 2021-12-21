@@ -3,8 +3,8 @@ body {
 	
 	    /* top, transparent red, faked with gradient */ 
     linear-gradient(
-      rgba(9, 10, 10, 0.45), 
-      rgba(9, 10, 10, 0.45)
+      rgba(9, 10, 10, 0.9), 
+      rgba(9, 10, 10, 0.9)
     ),
     /* bottom, image */
     url("images/background.png");
