@@ -1,6 +1,13 @@
 body {
-	background: url("images/background.png"), rgba(0,0,0,0.1);
-background-color: #18191a;
+
+	
+	    /* top, transparent red, faked with gradient */ 
+    linear-gradient(
+      rgba(9, 10, 10, 0.45), 
+      rgba(9, 10, 10, 0.45)
+    ),
+    /* bottom, image */
+    url("images/background.png");
 }
 
 textarea {
