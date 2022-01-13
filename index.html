@@ -85,6 +85,25 @@ inputBox.focus();
 inputBox.value = myTextArea1 ;
 document.getElementById('textbox_id_1').focus();
 }
+
+
+<!-- YAMLI CODE START -->
+
+<script type="text/javascript" src="https://api.yamli.com/js/yamli_api.js"></script>
+<script type="text/javascript">
+  if (typeof(Yamli) == "object" && Yamli.init( { uiLanguage: "ar" , generateOnChangeEvent: "true" , startMode: "onOrUserDefault" , uiFontFamily: 'dinnextarabic-medium' , settingsColor: '#dbb44f' , settingsLinkColor: '#dbb44f'} ))
+  {
+    Yamli.yamlify( "textbox_id_1", { settingsPlacement: "inside" , generateOnChangeEvent: "true" , showTutorialLink: false, showDirectionLink: false} );
+  }
+</script>
+
+<script>
+
+document.querySelector('textbox_id_1').autofocus = true;
+</script>
+
+<!-- YAMLI CODE START -->
+
 </script> 
 
 		<script> 
@@ -238,20 +257,7 @@ function insertAtCaret() {
 
 <script>
 </script>
-<!-- YAMLI CODE START -->
 
-<script type="text/javascript" src="https://api.yamli.com/js/yamli_api.js"></script>
-<script type="text/javascript">
-  if (typeof(Yamli) == "object" && Yamli.init( { uiLanguage: "ar" , generateOnChangeEvent: "true" , startMode: "onOrUserDefault" , uiFontFamily: 'dinnextarabic-medium' , settingsColor: '#dbb44f' , settingsLinkColor: '#dbb44f'} ))
-  {
-    Yamli.yamlify( "textbox_id_1", { settingsPlacement: "inside" (TEXTAREA) , generateOnChangeEvent: "true" , showTutorialLink: false, showDirectionLink: false} );
-  }
-</script>
-
-<script>
-
-document.querySelector('textbox_id_1').autofocus = true;
-</script>
 
 
 
