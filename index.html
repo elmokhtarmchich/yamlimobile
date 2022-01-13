@@ -1,27 +1,32 @@
 <!DOCTYPE html>
+<link rel="manifest" href="./manifest.json">     
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' />
+<meta name="mobile-web-app-capable" content"yes"> 
+<meta name="apple-mobile-web-app-capable" content"yes"> 
+<meta name="apple-mobile-web-app-capable" content"yes"> 
+<meta name="mobile-web-app-capable" content"yes"> 
+<meta name="apple-mobile-web-app-status-bar-style" content"black"> 
+<meta name="apple-mobile-web-app-title" content"Roles Chicken"> 
 <head>
 <title>Yamli Mobile </title>
+	
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="manifest" href="/site.webmanifest">
-<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
-<meta name="msapplication-TileColor" content="#da532c">
-<meta name="theme-color" content="#ffffff">
-
-
+<link rel="stylesheet" href="./add_to_homesceen/style/addtohomescreen.css">
+<link rel="text/javascript" href="./add_to_homesceen/src/addtohomescreen.js">
 <meta name="viewport" content="width=device-width, height=device-height, user-scalable=no" />
 <meta charset = "utf-8" />
 <link rel="stylesheet" href="./style.css">
-	<link rel="stylesheet" href="./navbar.css">
-
 </head>
 <style>
 @font-face{font-family:dinnextarabic;src:url(https://i1.hespress.com/wp-content/themes/hespress/fonts/DinNextArabic-Regular.woff2) format("woff2"),url(https://i1.hespress.com/wp-content/themes/hespress/fonts/DinNextArabic-Regular.woff) format("woff");font-weight:400;font-style:normal;font-display:swap}@font-face{font-family:dinnextarabic-bold;src:url(https://i1.hespress.com/wp-content/themes/hespress/fonts/DinNextArabic-Bold.woff2) format("woff2"),url(https://i1.hespress.com/wp-content/themes/hespress/fonts/DinNextArabic-Bold.woff) format("woff");font-weight:400;font-style:normal;font-display:swap}@font-face{font-family:dinnextarabic-medium;src:url(https://i1.hespress.com/wp-content/themes/hespress/fonts/DinNextArabic-Medium.woff2) format("woff2"),url(https://i1.hespress.com/wp-content/themes/hespress/fonts/DinNextArabic-Medium.woff) format("woff");font-weight:400;font-style:normal;font-display:swap}@font-face{font-family:weathericons-regular;src:url(/wp-content/themes/hespress/fonts/weathericons-regular.otf) format("opentype");font-weight:400;font-style:normal};
-
 </style>
 <script type="text/javascript" src="./script.js"></script>
-
 <script type="text/javascript">
  if ('serviceWorker' in navigator) {
     console.log("Will the service worker register?");
@@ -33,14 +38,7 @@
     });
  }
 </script>
-
 <body>
-
-<!--NAVBAR -->
-	
-<!--NAVBAR -->
-
-	
 <div class="container">
 <div class="center_btn">
 <div class="button-container-btn" ><button id="btn_01" onclick="window.open(window.location.href, '_blank')" class='button'  ><img src="./images/image.png"></button> </div>
@@ -51,21 +49,12 @@
 <div class="button-container-btn" ><button id="btn_05" onclick = "getSelectedText()"><img src="./images/abc_ic_menu_copy_mtrl_am_alpha.png"     ></button>                                                 </div>
 <div class="button-container-btn" ><button id="btn_07" onclick = "selectall()"><img src="./images/selectall-76.png"     ></button>                                                 </div>
 </div>                                                                                                                                                                          
-
 <p class="divider"></p>
 <div name="myForm" class="center">
 <textarea class="field-input" name="myTextArea" type="text" id="textbox_id_1" onChange="updateConf()" onkeyup="updateConf()" placeholder="Oktob hona..اكتب هنا" autofocus></textarea>
 <form style="display: none" name="testform">
 <p  name="TextArea_vide" id="textbox_id_2" ></p>
 </form>
-<script>
-function setWordOrder(e) {
-	if (e.key == " ") {
-		var textbox = document.getElementById("mytextarea");
-		textbox.value += "\u200F";
-	}
-}
-	</script>
 </div>
 </div>
 <div style="display:none"  class="overlay" id="dialog-container">
@@ -74,6 +63,8 @@ function setWordOrder(e) {
     <button id="id_falsebtn"> لا </button>
 </div>
 </div>
+
+<button onclick = "addToHomescreen()"><img src="./images/abc_ic_menu_cut_mtrl_alpha.png"      ></button> 
 </body>
 
 <script> 
@@ -85,33 +76,13 @@ inputBox.focus();
 inputBox.value = myTextArea1 ;
 document.getElementById('textbox_id_1').focus();
 }
-
-
-<!-- YAMLI CODE START -->
-
-<!-- YAMLI CODE START -->
-<script type="text/javascript" src="https://api.yamli.com/js/yamli_api.js"></script>
-<script type="text/javascript">
-  if (typeof(Yamli) == "object" && Yamli.init( { uiLanguage: "ar" ,  startMode: "onOrUserDefault" , uiFontFamily: 'dinnextarabic-medium' , settingsColor: '#dbb44f' , settingsLinkColor: '#dbb44f'} ))
-  {
-    Yamli.yamlify( "textbox_id_1", { settingsPlacement: 'bottomLeft' , showTutorialLink: false, showDirectionLink: false} );
-  }
-</script>
-<script>
-document.querySelector('textbox_id_1').autofocus = true;
-</script>
-
-<!-- YAMLI CODE START -->
-
 </script> 
-
 		<script> 
 			// Function to get the Selected Text 
 			function getSelectedText() { 
 				var myTextArea = ''; 
 				var myTextArea1 = document.getElementById('textbox_id_1');
                 var myTextArea2 = document.getElementById('textbox_id_2');
-
 				// window.getSelection 
 				if (window.getSelection) { 
 					myTextArea = window.getSelection(); 
@@ -129,58 +100,45 @@ document.querySelector('textbox_id_1').autofocus = true;
 				document.execCommand("copy");
                 myTextArea2.innerHTML = myTextArea; 
 			}
-
 		</script> 
  <script>
  function selectall(){
   /* Get the text field */
   var fct_copy = document.getElementById("textbox_id_1");
-
   /* Select the text field */
   fct_copy.select();
   fct_copy.setSelectionRange(0, 99999); /*For mobile devices*/
 }
 </script>
-
-
  <script>
     'use strict';
-
     function sleep(delay) {
       return new Promise(resolve => {
         setTimeout(resolve, delay);
       });
     }
-
     function logText(message, isError) {
       if (isError)
         console.error(message);
       else
         console.log(message);
-
       const p = document.createElement('p');
       if (isError)
         p.setAttribute('class', 'error');
       document.querySelector('#output').appendChild(p);
       p.appendChild(document.createTextNode(message));
     }
-
     function logError(message) {
       logText(message, true);
     }
-
   //  function setShareButtonsEnabled(enabled) {
  //     document.querySelector('#btn_06').disabled = !enabled;
  //   }
-
-
     async function testWebShare() {
       const text_input = document.querySelector('#textbox_id_1');
 	  
       const title = 'yamli mobile';
       const text = text_input.disabled ? undefined : text_input.value;
-
-
       // setShareButtonsEnabled(false);
       try {
         await navigator.share({title, text});
@@ -190,11 +148,8 @@ document.querySelector('textbox_id_1').autofocus = true;
       }
       //setShareButtonsEnabled(true);
     }
-
-
     function onLoad() {
       // Checkboxes disable and delete textfields.
-
       document.querySelector('#btn_06').addEventListener('click', testWebShare);
 	  
       if (navigator.share === undefined) {
@@ -208,14 +163,9 @@ document.querySelector('textbox_id_1').autofocus = true;
         }
       }
     }
-
     window.addEventListener('load', onLoad);
-
 </script>
-
 <script>
-
-
 function insertAtCaret() {
         var text = document.getElementById('textbox_id_2').innerHTML;
 		var txtarea = document.getElementById('textbox_id_1');
@@ -253,14 +203,19 @@ function insertAtCaret() {
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
 <script>
 </script>
-
-
-
-
-
+<!-- YAMLI CODE START -->
+<script type="text/javascript" src="https://api.yamli.com/js/yamli_api.js"></script>
+<script type="text/javascript">
+  if (typeof(Yamli) == "object" && Yamli.init( { uiLanguage: "ar" ,  startMode: "onOrUserDefault" , uiFontFamily: 'dinnextarabic-medium' , settingsColor: '#dbb44f' , settingsLinkColor: '#dbb44f'} ))
+  {
+    Yamli.yamlify( "textbox_id_1", { settingsPlacement: 'bottomLeft' , showTutorialLink: false, showDirectionLink: false} );
+  }
+</script>
+<script>
+document.querySelector('textbox_id_1').autofocus = true;
+</script>
 <script>
 var duplicating = browser.tabs.duplicate(
   tabId,              // integer
@@ -269,11 +224,9 @@ var duplicating = browser.tabs.duplicate(
 function onDuplicated(tabInfo) {
   console.log(tabInfo.id);
 }
-
 function onError(error) {
   console.log(`Error: ${error}`);
 }
-
 // Duplicate the first tab in the array
 function duplicateFirstTab(tabs) {
   console.log(tabs);
@@ -282,32 +235,24 @@ function duplicateFirstTab(tabs) {
     duplicating.then(onDuplicated, onError);
   }
 }
-
 // Query for all open tabs
 var querying = browser.tabs.query({});
 querying.then(duplicateFirstTab, onError);
-
 </script>
-
 <script>
 function searchtext() {
   /* Get the text field */
   var SerText = document.getElementById("textbox_id_1");
-
   /* Select the text field */
   SerText.select();
   SerText.setSelectionRange(0, 99999); /*For mobile devices*/
-
   /* Copy the text inside the text field */
   window.open('http://google.com/search?q='+SerText.value,"_blank");
-
   /* Alert the copied text 
   alert("Copied the text: " + fct_copy.value);*/
 }
 </script>
-
 <script>
-
 function doConfirm(msg, yesFn, noFn)
 {
     var confirmBox = $("#confirmBox");
@@ -330,44 +275,33 @@ doConfirm("Are you sure?", function yes()
     // do nothing
 });
 </script>
-
 <script>
 function fct_cut(){
 	var overlayme = document.getElementById("dialog-container");
 	overlayme.style.display = "block";
 document.getElementById('id_confrmdiv').style.display="block"; //this is the replace of this line
-
-
 document.getElementById('id_truebtn').onclick = function(){
      /* Get the text field */
   var DelText = document.getElementById("textbox_id_1");
-
   /* Select the text field */
   DelText.select();
   DelText.setSelectionRange(0, 99999); /*For mobile devices*/
-
   /* Copy the text inside the text field */
   document.execCommand("delete");
-
   /* Alert the copied text 
   alert("Copied the text: " + copyText.value);*/
     /* alert('true'); */ 
 	document.getElementById('id_confrmdiv').style.display = "none";
 	    overlayme.style.display = "none";
-
 	return false;
 };
-
-
 document.getElementById('id_falsebtn').onclick = function(){
     /* alert('false'); */
 document.getElementById('id_confrmdiv').style.display = "none"; 
     overlayme.style.display = "none";
-
    return false;
 };
 }
-
 </script>
 <script> //if the website Is not opened an app mode show (i.e. in a browser) the add to homescreen prompt 
 	if (("standalone" in window.navigator) && !window.navigator.standalone) // ios 
@@ -377,6 +311,4 @@ document.getElementById('id_confrmdiv').style.display = "none";
 			addToHomescreen();
 		}
 	</script> 
-
-
 </html>
