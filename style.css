@@ -49,12 +49,12 @@ button {
 }
 
 .center_btn {
-  margin: 15px;
+  margin: 10px;
   padding: 2px;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgb(4,94,94);
+  background: #23313c;
   border: 1px solid #045e5e;
   border-radius: 6px;
 }
