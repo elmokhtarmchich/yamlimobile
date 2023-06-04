@@ -6,7 +6,7 @@ body {
 textarea {
   padding: 12px;
   border-radius: 6px;
-  background: rgb(51,59,60);
+  background: red;
   margin-bottom: 30px;
   font-size: 20px;
   font-family: dinnextarabic, sans-serif;
