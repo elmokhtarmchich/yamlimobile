@@ -5,7 +5,7 @@ body {
 
 textarea {
 	opacity: 0.5;
-		  background-color: #747474;
+		  background-color: #23313c;
   padding: 12px;
   border-radius: 6px;
   margin-bottom: 30px;
@@ -18,10 +18,10 @@ textarea {
   overflow:auto;
   resize:vertical;
   outline: none;
-  border: 1px solid #23313c;
+  border: 2px solid #ddd;
 }
 textarea[type=text]:focus {
-  background: rgb(51,59,60, 0.7);
+	  border-color: #ffa500;
 }
 
 .button-container-btn {
