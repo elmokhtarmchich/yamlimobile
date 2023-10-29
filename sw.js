@@ -1,12 +1,12 @@
 self.addEventListener('install', (e) => {
   e.waitUntil(
-    caches.open('radio-store').then((cache) => cache.addAll([
+    caches.open('yamli-store').then((cache) => cache.addAll([
       '/index.html',
       '/index.js',
       '/style.css',
       '/sw.js',
       '/script.js',
-	    '/audioPlayer.js',
+      '/audioPlayer.js',
       './image/med.png',
       './image/coran.png',
     ])),
