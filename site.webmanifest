@@ -1,6 +1,7 @@
 {
-    "name": "",
-    "short_name": "",
+    "background_color": "#0a1018",
+    "description": "Yamli Mobile : Your Arabic Keyboard Assistant",
+    "display": "standalone",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",
@@ -8,7 +9,7 @@
             "type": "image/png"
         }
     ],
-    "theme_color": "#ffffff",
-    "background_color": "#ffffff",
-    "display": "standalone"
+    "name": "Yamli Mobile",
+    "short_name": "Yamli Mobile,
+    "start_url": "/index.html"
 }
