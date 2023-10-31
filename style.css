@@ -3,6 +3,15 @@ body {
 	max-width: 800px;
 }
 
+.container {
+width: 100%;
+max-width: 500px;
+margin: auto;
+border-radius: 10px;
+border: 2px solid #383838;
+
+}
+
 h1 {
 font-family: GT Super,sans-serif;
 font-size: 1rem;
@@ -117,12 +126,7 @@ margin-right: 15px;
   justify-content: center;
   align-items: center;
 }
-.container {
-margin: 10px;
-border-radius: 10px;
-border: 2px solid #383838;
-box-sizing: border-box;
-}
+
 
 #id_confrmdiv
 {
