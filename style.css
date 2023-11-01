@@ -51,7 +51,7 @@ margin-right: auto;
 }
 	
 .info {
-font-family: "Amiri script=latin rev=2";
+font-family: 'Tajawal', sans-serif;
 font-weight: 400;
 font-style: normal;
 line-height: initial;
@@ -61,6 +61,7 @@ text-align: center;
 padding: 0;
 }
 .footer {
+	font-family: 'Tajawal', sans-serif;
    position: fixed;
    left: 0;
    bottom: 0;
@@ -77,8 +78,7 @@ textarea {
   border-radius: 6px;
   margin-bottom: 30px;
   font-size: 20px;
-  font-family: dinnextarabic, sans-serif;
-  color: #fff;
+font-family: 'Tajawal', sans-serif;  color: #fff;
   width: 100%;
   min-height:150px;
   max-height:200px;
