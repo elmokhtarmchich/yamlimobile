@@ -51,7 +51,6 @@ h1 {
   font-size: 20px;
 line-height: 1.6;
 letter-spacing: 2px;
-
 margin: 0 0 1.2rem;
 color: #ff8800	;
 text-align: center;
@@ -84,6 +83,8 @@ margin: auto;
 padding: 0;
 }
 .footer {
+position: fixed;
+bottom: 0;
 left: 0;
 width: 100%;
 background-color: #161b22;
