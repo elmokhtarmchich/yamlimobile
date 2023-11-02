@@ -1,0 +1,15 @@
+{
+    "background_color": "#0a1018",
+    "description": "Yamli Mobile : Your Arabic Keyboard Assistant",
+    "display": "standalone",
+    "icons": [
+        {
+            "src": "/images/favicon/favicon-32x32.png",
+            "sizes": "32x32",
+            "type": "image/png"
+        }
+    ],
+    "name": "Yamli Mobile",
+    "short_name": "Yamli Mobile",
+    "start_url": "/index.html"
+}
