@@ -28,47 +28,56 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Gulzar&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Gulzar&family=Noto+Naskh+Arabic&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
 </head>
-<style>
-@font-face{font-family:dinnextarabic;src:url(./font/regular.woff2) format("woff2"),url(https://i1.hespress.com/wp-content/themes/hespress/fonts/DinNextArabic-Regular.woff) format("woff");font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:dinnextarabic-bold;src:url(https://i1.hespress.com/wp-content/themes/hespress/fonts/DinNextArabic-Bold.woff2) format("woff2"),url(https://i1.hespress.com/wp-content/themes/hespress/fonts/DinNextArabic-Bold.woff) format("woff");font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:dinnextarabic-medium;src:url(https://i1.hespress.com/wp-content/themes/hespress/fonts/DinNextArabic-Medium.woff2) format("woff2"),url(https://i1.hespress.com/wp-content/themes/hespress/fonts/DinNextArabic-Medium.woff) format("woff");font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:weathericons-regular;src:url(/wp-content/themes/hespress/fonts/weathericons-regular.otf) format("opentype");font-weight:400;font-style:normal};
-@font-face{font-family:dinnextarabic;src:url(https://i1.hespress.com/wp-content/themes/hespress/fonts/DinNextArabic-Regular.woff2) format("woff2"),url(https://i1.hespress.com/wp-content/themes/hespress/fonts/DinNextArabic-Regular.woff) format("woff");font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:dinnextarabic-bold;src:url(https://i1.hespress.com/wp-content/themes/hespress/fonts/DinNextArabic-Bold.woff2) format("woff2"),url(https://i1.hespress.com/wp-content/themes/hespress/fonts/DinNextArabic-Bold.woff) format("woff");font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:dinnextarabic-medium;src:url(https://i1.hespress.com/wp-content/themes/hespress/fonts/DinNextArabic-Medium.woff2) format("woff2"),url(https://i1.hespress.com/wp-content/themes/hespress/fonts/DinNextArabic-Medium.woff) format("woff");font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:weathericons-regular;src:url(/wp-content/themes/hespress/fonts/weathericons-regular.otf) format("opentype");font-weight:400;font-style:normal};
-@font-face{font-family:ActiefGrotesqueLight;src:url(https://assets.ctfassets.net/ozc5on9ss4ee/5OTofEPXQ1jLiA1eTRXcvi/b3ed5f705e15b4ebc26985fe204f5094/ActiefGrotesque_W_Lt.woff2) format("woff2"),url(https://assets.ctfassets.net/ozc5on9ss4ee/7ojp6S2Ea0zT9PjrQJBiqh/513755672a62c224460fd0db90ddeeb2/ActiefGrotesque_W_Lt.woff) format("woff")}
-@font-face{font-family:ActiefGrotesqueRegular;src:url(https://assets.ctfassets.net/ozc5on9ss4ee/2osi0uiTA5iRhoKfp6pYZB/b19b6eaf800c81aabc0b2b10b89b3649/ActiefGrotesque_W_Rg.woff2) format("woff2"),url(https://assets.ctfassets.net/ozc5on9ss4ee/6l5XUjWdoVsBoE2svJ4Jgz/bdbc0be0b074fed3e513b68000202693/ActiefGrotesque_W_Rg.woff) format("woff")}
-@font-face{font-family:ActiefGrotesqueMedium;src:url(https://assets.ctfassets.net/ozc5on9ss4ee/2LmZV0CLTUWRdYKdIEIzOS/c2da09516ceed7a017df44fcb13bdc05/ActiefGrotesque_W_Md.woff2) format("woff2"),url(https://assets.ctfassets.net/ozc5on9ss4ee/34dPVYkTzzQYAkTVbkOXWr/3ee27fa64e3b06eb08c511abf0ab1e02/ActiefGrotesque_W_Md.woff) format("woff")}
-@font-face{font-family:ActiefGrotesqueBold;src:url(https://assets.ctfassets.net/ozc5on9ss4ee/328JLdHzYfyPNfpQVfORHF/82c426e107207cd61fc1bf113d895229/ActiefGrotesque_W_Bd.woff2) format("woff2"),url(https://assets.ctfassets.net/ozc5on9ss4ee/7AQG1hZZHbbqqeCRNVgpbQ/2e79a0f6e02111bd5bdfc704242f4b76/ActiefGrotesque_W_Bd.woff) format("woff")}
-@font-face{font-family:ActiefGrotesqueXBold;src:url(https://assets.ctfassets.net/ozc5on9ss4ee/7cgePzFw5xo5Zsl9nezkhG/9407716364667b911a17004eeb0b88c0/ActiefGrotesque_W_XBd.woff2) format("woff2"),url(https://assets.ctfassets.net/ozc5on9ss4ee/6lPSY2KboaEIftdt0pmLeB/d8cb00332ec6d652d1c91330a1d67836/ActiefGrotesque_W_XBd.woff) format("woff")}
-@font-face{font-family:GT Super;src:url(https://assets.ctfassets.net/ozc5on9ss4ee/2Jn83E6JV5VXGBZwoxWjcG/fe0a44853c6082f6ccde1adff891fde8/GTSuperWTBetav5-Super.woff2) format("woff2"),url(https://assets.ctfassets.net/ozc5on9ss4ee/1MY1orf5NV3XQJ1Xlfe2dI/671a4b1e1c2e7c3b66242c00d1238589/GTSuperWTBetav5-Super.woff) format("woff")}
-@font-face{font-family:GT Super Regular;src:url(https://assets.ctfassets.net/ozc5on9ss4ee/6wJnF3sbWU1IhR5NUStMM/4b79cdaeebfb458c0630d8a4d54d90f3/gt-super-wt-regular.woff2) format("woff2"),url(https://assets.ctfassets.net/ozc5on9ss4ee/odeLWszJ6tDFsmYZrk2TZ/595a7d6a28d0690649ed0246b89523e5/gt-super-wt-regular.woff) format("woff")}
-@import url('https://fonts.googleapis.com/css2?family=Amiri&family=Cairo&family=Tajawal&display=swap');
-</style>
 
 <script type="text/javascript" src="https://yamlimobile.com/script.js"></script>
+<style>
+@font-face { font-family: 'MyWebFont'; src: url ('./font/maghribi.ttf'); }
+</style>
 
 <body>
 <div class="container">
-<div class="center_btn">
-<div class="button-container-btn" ><button id="btn_01" onclick="window.open(window.location.href, '_blank')" class='button'  ><img src="./images/newtab_100.png"></button> </div>
-<div class="button-container-btn" ><button id="btn_06" ><img src="./images/share_72.png"   ></button>                                                </div>
-<div class="button-container-btn" ><button id="btn_02" onclick = "searchtext()" ><img src="./images/search_76.png"   ></button>                                              </div>
-<div class="button-container-btn" ><button id="btn_03" onclick = "fct_cut()"><img src="./images/cut_96.png"      ></button>                                                  </div>
-<div class="button-container-btn" ><button id="btn_04" onclick = "insertAtCaret()"><img src="./images/paste_96.png"    ></button>                                                    </div>
-<div class="button-container-btn" ><button id="btn_05" onclick = "getSelectedText()"><img src="./images/copy_96.png"     ></button>                                                 </div>
-<div class="button-container-btn" ><button id="btn_07" onclick = "selectall()"><img src="./images/selectall_76.png"     ></button>                                                 </div>
-</div>                                                                                                                                                                          
-<p class="divider"></p>
+<div class="button-container">
+<div class="button" id="btn_01" onclick="window.open(window.location.href, '_blank')"><img src="./images/newtab_100.png"></div>
+<div class="button" id="btn_06" ><img src="./images/share_72.png"></div>
+<div class="button" id="btn_02" onclick = "searchtext()" ><img src="./images/search_76.png"></div>
+<div class="button" id="btn_03" onclick = "fct_cut()"><img src="./images/cut_96.png"></div>
+<div class="button" id="btn_04" onclick = "insertAtCaret()"><img src="./images/paste_96.png"></div>
+<div class="button" id="btn_05" onclick = "getSelectedText()"><img src="./images/copy_96.png"></div>
+<div class="button" id="btn_07" onclick = "selectall()"><img src="./images/selectall_76.png"></div>
+</div>   
+
 <div name="myForm" class="center">
 <textarea class="field-input" name="myTextArea" type="text" id="textbox_id_1" onChange="updateConf()" onkeyup="updateConf()" placeholder="Oktob hona..اكتب هنا" autocomplete="on" autofocus></textarea>
 <form style="display: none" name="testform">
 <p  name="TextArea_vide" id="textbox_id_2" ></p>
 </form>
 </div>
+
+
+<div class="button-container">
+  <div class="button" id="btn_12" onclick="changeBackgroundColor()">
+    <img src="./images/background_color.png" alt="Button 1">
+  </div>
+  <div class="button" id="btn_08" onclick="toggleAlignment()">
+    <img src="./images/text_center.png"  alt="Button 2" >                                                
+  </div>
+  <div class="button" id="btn_09" onclick="toggleFonts()">
+    <img src="./images/font_change.png"   >                                                
+  </div>  
+  <div class="button" id="btn_10" onclick="updateTextColor()">
+    <img src="./images/font_color.png"   >                                                
+  </div>
+  <div class="button" id="btn_11" onclick="toggleTextSize()">
+    <img src="./images/font_size.png"   >                                                
+  </div>
+  <div class="button" id="btn_13" onclick="toggleFontWeight()">
+    <img src="./images/font_bold.png"   >                                                
+  </div>
 </div>
+</div>
+</div>   
 
 <div style="display:none"  class="overlay" id="dialog-container">
 <div id="id_confrmdiv">  تأكيد !  
@@ -76,7 +85,6 @@
     <button id="id_falsebtn"> لا </button>
 </div>
 </div>
-
 
 <div class="box">
   <input class="add-button" type="button" value="Add Web App">
@@ -93,17 +101,38 @@
 <footer>
 <div class="footer">
 <h1>- يملي موبايل -</h1>
-</div>
 </footer>
 
-<script> 
-window.addEventListener('beforeunload', (event) => {
-  // Cancel the event as stated by the standard.
-  event.preventDefault();
-  // Chrome requires returnValue to be set.
-  event.returnValue = '';
-});
+<script>
+  const fonts = [
+      'Courier New, monospace',
+      'Tajawal, sans-serif',
+        'Lateef, cursive',
+        'Reem Kufi, sans-serif',
+        'Amiri, serif',
+        'Kufam, sans-serif',
+        'Amiri, serif'
+  ];
+
+  let currentFontIndex = 0;
+
+  function toggleFonts() {
+      const textarea = document.getElementById('textbox_id_1');
+      currentFontIndex = (currentFontIndex + 1) % fonts.length;
+      textarea.style.fontFamily = fonts[currentFontIndex];
+  }
 </script> 
+
+    <script>
+      var currentSizeIndex = 0;
+      var sizes = [16, 34, 20];
+
+      function toggleTextSize() {
+          var textarea = document.getElementById("textbox_id_1");
+          currentSizeIndex = (currentSizeIndex + 1) % sizes.length;
+          textarea.style.fontSize = sizes[currentSizeIndex] + "px";
+      }
+  </script>
 
 <script> 
 function updateConf() {
@@ -115,6 +144,59 @@ inputBox.value = myTextArea1 ;
 document.getElementById('textbox_id_1').focus();
 }
 </script> 
+
+<script>
+  function toggleAlignment() {
+      var textarea = document.getElementById("textbox_id_1");
+
+      if (textarea.style.textAlign === "center") {
+          textarea.style.textAlign = "right";
+      } else {
+          textarea.style.textAlign = "center";
+      }
+  }
+</script>
+<script>
+  function toggleFontWeight() {
+      const textarea = document.getElementById('textbox_id_1');
+      const currentWeight = getComputedStyle(textarea).fontWeight;
+
+      // Toggle between normal and bold
+      textarea.style.fontWeight = currentWeight === 'normal' ? 'bold' : 'normal';
+  }
+</script>
+
+<script>
+  function updateTextColor()  {
+      var textarea = document.getElementById("textbox_id_1");
+
+      if (textarea.style.color === "black") {
+          textarea.style.color = "white";
+      } else {
+          textarea.style.color = "black";
+      }
+  }
+</script>
+
+
+<script>
+
+  function changeBackgroundColor() {
+      var colors = ["burlywood", "cadetblue", "chocolate", "coral", "cornflowerblue", "darkcyan", "darkgrey", "darkslategrey","darksalmon"];
+      var textarea = document.getElementById("textbox_id_1");
+      var currentColor = textarea.style.backgroundColor;
+
+      // Get the index of the current color in the array
+      var currentIndex = colors.indexOf(currentColor);
+
+      // Determine the index of the next color
+      var newIndex = (currentIndex + 1) % colors.length;
+
+      textarea.style.backgroundColor = colors[newIndex];
+  }
+
+</script>
+
 		<script> 
 			// Function to get the Selected Text 
 			function getSelectedText() { 
@@ -246,9 +328,9 @@ function insertAtCaret() {
 <!-- YAMLI CODE START -->
 <script type="text/javascript" src="https://api.yamli.com/js/yamli_api.js"></script>
 <script type="text/javascript">
-  if (typeof(Yamli) == "object" && Yamli.init( { uiLanguage: "ar" ,  startMode: "onOrUserDefault" , uiFontFamily: 'dinnextarabic-medium' , settingsColor: '#dbb44f' , settingsLinkColor: '#dbb44f'} ))
+  if (typeof(Yamli) == "object" && Yamli.init( { uiLanguage: "ar" ,  startMode: "onOrUserDefault" , uiFontFamily: 'Amiri' , settingsColor: '#dbb44f' , settingsLinkColor: '#dbb44f'} ))
   {
-    Yamli.yamlify( "textbox_id_1", { settingsPlacement: 'bottomLeft' , showTutorialLink: false, showDirectionLink: false} );
+    Yamli.yamlify( "textbox_id_1", { settingsPlacement: 'inside' , showTutorialLink: true, showDirectionLink: true} );
   }
 </script>
 <script>
@@ -347,4 +429,14 @@ document.getElementById('id_confrmdiv').style.display = "none";
 			addToHomescreen();
 		}
 	</script> 
+
+	<script> 
+window.addEventListener('beforeunload', (event) => {
+  // Cancel the event as stated by the standard.
+  event.preventDefault();
+  // Chrome requires returnValue to be set.
+  event.returnValue = '';
+});
+</script> 
+
 </html>
