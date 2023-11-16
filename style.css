@@ -1,6 +1,7 @@
 body {
 	  background-color: #181a1c;
     width: 100%;
+    padding: 6px;
 }
 
 .container {
@@ -12,12 +13,16 @@ border-radius: 10px;
 border: 2px solid #383838;
 margin-top: 8px;
 }
-
+.center {
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 textarea {
   background-color: #172027;
-  padding: 12px;
+  padding: 8px;
   border-radius: 6px;
-  margin-bottom: 5px;
   font-size: 20px;
   font-family: 'Amiri', serif;  
   color: #fff;
@@ -26,10 +31,9 @@ textarea {
   resize: vertical;
   overflow:auto;
   outline: none;
-  border: 2px solid #ddd;
 }
 textarea[type=text]:focus {
-	  border-color: #ffa500;
+    border: 2px solid #ffa500;
 }
 
 .add-button {
@@ -44,8 +48,6 @@ textarea[type=text]:focus {
     padding: 6px;
 }
 
-
-	
 .logofeet {
 width: 100%;
 position: absolute;
@@ -117,7 +119,7 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 40px; /* Set your desired height */
+  height: 36px; /* Set your desired height */
   margin: 4px; /* Adjust spacing between buttons */
   padding: 4px;
 }
@@ -127,15 +129,11 @@ h1 {
   max-height: 100%;
   object-fit: contain;
   margin-right: 8px; /* Adjust spacing between buttons */
+  padding: 4px
 
 }
 
-.center {
-  margin: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+
 
 .button:hover {
   background: rgba(156, 161, 160,0.3);
@@ -147,6 +145,10 @@ h1 {
   
   #btn_12 img, #btn_08 img, #btn_09 img, #btn_10 img, #btn_11 img, #btn_13 img {
     filter: invert();
+    padding: 6px
+
+  }
+  #btn_01 img, #btn_02 img, #btn_03 img, #btn_04 img, #btn_05 img, #btn_06 img, #btn_07 img {
     padding: 4px
   }
 
