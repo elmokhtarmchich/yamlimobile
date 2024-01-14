@@ -104,6 +104,20 @@
 </footer>
 
 <script>
+// Create a new KeyboardEvent
+const spaceKeyPress = new KeyboardEvent('keydown', {
+  key: ' ',
+  code: 'Space',
+  keyCode: 32,
+  which: 32,
+  charCode: 32,
+});
+
+// Dispatch the event to the target element
+document.dispatchEvent(spaceKeyPress);
+</script>
+
+<script>
   const fonts = [
       'Courier New, monospace',
       'Tajawal, sans-serif',
