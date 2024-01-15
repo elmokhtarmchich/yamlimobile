@@ -115,7 +115,24 @@ const spaceKeyPress = new KeyboardEvent('keydown', {
 
 // Dispatch the event to the target element
 document.dispatchEvent(spaceKeyPress);
+	
 </script>
+
+<script>
+
+// Create a new KeyboardEvent for keyup event
+const spaceKeyRelease = new KeyboardEvent('keyup', {
+  key: ' ',
+  code: 'Space',
+  keyCode: 32,
+  which: 32,
+  charCode: 32,
+});
+
+// Dispatch the event to the target element
+document.dispatchEvent(spaceKeyRelease);
+</script>
+
 
 <script>
   const fonts = [
