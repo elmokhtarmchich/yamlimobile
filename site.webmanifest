@@ -7,6 +7,16 @@
             "src": "/images/favicon/favicon-32x32.png",
             "sizes": "32x32",
             "type": "image/png"
+        },
+        {
+            "src": "/images/favicon/ms-icon-144x144.png",
+            "sizes": "144x144",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/favicon/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
         }
     ],
     "name": "Yamli Mobile",
