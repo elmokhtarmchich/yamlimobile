@@ -23,3 +23,20 @@
     "short_name": "Yamli Mobile",
     "start_url": "/index.html"
 }
+
+"screenshots" : [
+  {
+    "src": "/images/screenshot1.png",
+    "sizes": "720x1268",
+    "type": "image/png",
+    "form_factor": "wide",
+    "label": "Phone"
+  },
+  {
+    "src": "/images/screenshot2.png",
+    "sizes": "1560x720",
+    "type": "image/png",
+    "form_factor": "wide",
+    "label": "PhoneLS"
+  }
+]
