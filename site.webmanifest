@@ -22,8 +22,6 @@
     "name": "Yamli Mobile",
     "short_name": "Yamli Mobile",
     "start_url": "/index.html"
-}
-
 "screenshots" : [
   {
     "src": "/images/screenshot1.png",
