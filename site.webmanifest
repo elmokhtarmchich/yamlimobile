@@ -1,6 +1,7 @@
 {
     "background_color": "#0a1018",
     "description": "Yamli Mobile : Your Arabic Keyboard Assistant",
+    "display_override": ["fullscreen", "minimal-ui"],
     "display": "standalone",
     "icons": [
         {
