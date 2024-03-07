@@ -27,7 +27,7 @@
     "src": "/images/screenshot1.png",
     "sizes": "720x1268",
     "type": "image/png",
-    "form_factor": "wide",
+    "form_factor": "narrow",
     "label": "Phone"
   },
   {
