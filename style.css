@@ -143,10 +143,8 @@ h1 {
     border-right: 2px solid #645f5f56		;
   }
   
-  #btn_12 img, #btn_08 img, #btn_09 img, #btn_10 img, #btn_11 img, #btn_13 img {
-    filter: invert();
-    padding: 6px
-
+  #btn_12 img, #btn_08 img, #btn_09 img, #btn_10 img, #btn_11 img, #btn_13 img, #btn_14 img {
+    padding: 1px
   }
   #btn_01 img, #btn_02 img, #btn_03 img, #btn_04 img, #btn_05 img, #btn_06 img, #btn_07 img {
     padding: 4px
