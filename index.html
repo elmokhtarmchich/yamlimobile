@@ -38,13 +38,13 @@
 <body>
 <div class="container">
 <div class="button-container">
-<div class="button" id="btn_01" onclick="window.open(window.location.href, '_blank')"><img src="./images/newtab_100.png"></div>
-<div class="button" id="btn_06" ><img src="./images/share_72.png"></div>
-<div class="button" id="btn_02" onclick = "searchtext()" ><img src="./images/search_76.png"></div>
-<div class="button" id="btn_03" onclick = "fct_cut()"><img src="./images/cut_96.png"></div>
-<div class="button" id="btn_04" onclick = "insertAtCaret()"><img src="./images/paste_96.png"></div>
-<div class="button" id="btn_05" onclick = "getSelectedText()"><img src="./images/copy_96.png"></div>
-<div class="button" id="btn_07" onclick = "selectall()"><img src="./images/selectall_76.png"></div>
+<div class="button" id="btn_01" onclick="window.open(window.location.href, '_blank')"><img src="./images/newtab.svg"></div>
+<div class="button" id="btn_06" ><img src="./images/share.svg"></div>
+<div class="button" id="btn_02" onclick = "searchtext()" ><img src="./images/search.svg"></div>
+<div class="button" id="btn_03" onclick = "fct_cut()"><img src="./images/cut.svg"></div>
+<div class="button" id="btn_04" onclick = "insertAtCaret()"><img src="./images/paste.svg"></div>
+<div class="button" id="btn_05" onclick = "getSelectedText()"><img src="./images/copy.svg"></div>
+<div class="button" id="btn_07" onclick = "selectall()"><img src="./images/selectall.svg"></div>
 </div>   
 
 <div name="myForm" class="center">
@@ -57,24 +57,24 @@
 
 <div class="button-container">
   <div class="button" id="btn_12" onclick="changeBackgroundColor()">
-    <img src="./images/background_color.svg" alt="Button 1">
+    <img src="./images/background_color.svg" alt="background color">
   </div>
   <div class="button" id="btn_08" onclick="toggleAlignment()">
-    <img src="./images/text_center.svg"  alt="Button 2" >                                                
+    <img src="./images/text_center.svg"  alt="Text center" >                                                
   </div>
-  <div class="button" id="btn_09" onclick="toggleFonts()">
+  <div class="button" id="btn_09" onclick="toggleFonts()" alt="Change font">
     <img src="./images/font_change.svg"   >                                                
   </div>  
-  <div class="button" id="btn_10" onclick="updateTextColor()">
+  <div class="button" id="btn_10" onclick="updateTextColor()" alt="Font color">
     <img src="./images/font_color.svg"   >                                                
   </div>
-  <div class="button" id="btn_11" onclick="toggleTextSize()">
+  <div class="button" id="btn_11" onclick="toggleTextSize()" alt="Font size">
     <img src="./images/font_size.svg"   >                                                
   </div>
-  <div class="button" id="btn_13" onclick="toggleFontWeight()">
+  <div class="button" id="btn_13" onclick="toggleFontWeight()" alt="Bold">
     <img src="./images/font_bold.svg"   >                                                
   </div>
-  <div class="button" id="btn_14">
+  <div class="button" id="btn_14" alt="Listen">
     <img src="./images/listen.svg"   >                                                
   </div>
 </div>
@@ -88,21 +88,41 @@
 </div>
 </div>
 
-<div class="box">
-  <input class="add-button" type="button" value="Add Web App">
-  <p class="divider"></p>
+<div class="box" id="info">
+  <h1>من هو يملي موبايل </h1>
+
   <p class="info">يتيح يملي موبايل للمستخدمين الكتابة باللغة العربية بدون لوحة مفاتيح عربية ، من داخل متصفح الويب الخاص بهم و خاصةً على الهواتف الذكية . تعتمد هذه التقنية على محرك التحويل الحرفي في الوقت الفعلي والذي يحول الكلمات المكتوبة بأحرف لاتينية إلى أقرب ما يعادلها باللغة العربية. تعتمد هذه الخدمة على محرك  يملي عربي ، و هو محرك بحث يركز على تقديم نتائج بحث أكثر صلة لاستعلام عربي من خلال توسيعه ليشمل التمثيلات اللاتينية الأكثر استخدامًا.
   يمكن للمستخدم أيضاً من خلال هذه الخدمة أن يقوم بنسخ ، لصق، حدف، البحث على جوجل و مشاركة النص عبر التطبيقات.</p>	
-  <p class="divider"></p>
-  <p class="info">هام: إذا لم تشتغل هذه الأداة (أي الكتابة من اليمين إلى اليسار ) ، المرجوا إيقاف تفعيل </p>
+</div>
+
+
+<div class="box" id="info1">
+<h1>
+  هام
+</h1>
+  <p class="info"> إذا لم تشتغل هذه الأداة (أي الكتابة من اليمين إلى اليسار ) ، المرجوا إيقاف تفعيل </p>
   <p class="info">"Ad Blocker"</p>
   <p class="info"> . فهذا الموقع لا يحتوي على أية برامج خبيثة أو ضارة.</p>
 </div>
+<div class="box" id="contact">
+  <h1>
+    Contact and Feedback
+  </h1>
+  <form action="contact_form.php" method="post">
+    <label for="email">Email:</label><br>
+    <input type="email" id="email" name="email"><br>
+    <label for="message">Message:</label><br>
+    <textarea id="message" name="message" rows="6"></textarea><br><br>
+    <input id="submitbtn" type="submit" value="Submit">
+  </form>
+  
+ </div>
+
 </body>
 
 <footer>
 <div class="footer">
-<h1>- يملي موبايل -</h1>
+  <input class="add-button" type="button" value="Add Web App">
 </footer>
 
 <script>
