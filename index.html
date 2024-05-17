@@ -1,23 +1,21 @@
-<html lang="ar">
+<!doctype html><html lang="ar">
+<head>
+  <meta charset = "utf-8" />
 <meta name="msapplication-TileColor" content="#3b5165">
 <meta name="msapplication-TileImage" content="/images/favicon/ms-icon-144x144.png">
 <meta name="theme-color" content="#3b5165">
-<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' />
+<meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=0' />
 <meta name="mobile-web-app-capable" content"yes"> 
 <meta name="apple-mobile-web-app-capable" content"yes"> 
 <meta name="apple-mobile-web-app-capable" content"yes"> 
 <meta name="mobile-web-app-capable" content"yes"> 
 <meta name="apple-mobile-web-app-status-bar-style" content"black"> 
 <meta name="apple-mobile-web-app-title" content"Roles Chicken"> 
-<head>
 <title>Yamli Mobile </title>
-	
 <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
 <link rel="manifest" href="/site.webmanifest">
-<meta name="viewport" content="width=device-width, height=device-height, user-scalable=no" />
-<meta charset = "utf-8" />
 <link rel="stylesheet" href="./style.css">
 <script src="./index.js" defer></script>
 <script src="./listen.js"></script>
@@ -28,12 +26,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Gulzar&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Gulzar&family=Noto+Naskh+Arabic&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
+<script type="text/javascript" src="https://yamlimobile.com/script.js"></script>
 </head>
 
-<script type="text/javascript" src="https://yamlimobile.com/script.js"></script>
-<style>
-@font-face { font-family: 'MyWebFont'; src: url ('./font/maghribi.ttf'); }
-</style>
+
 
 <body>
 <div class="container">
@@ -95,12 +91,19 @@
   يمكن للمستخدم أيضاً من خلال هذه الخدمة أن يقوم بنسخ ، لصق، حدف، البحث على جوجل و مشاركة النص عبر التطبيقات.</p>	
 </div>
 
+<div class="box" id="webapp">
+  <h1>
+    إضافة على شكل تطبيق
+  </h1>
+    <p class="info">هذا الموقع يدعم خاصية التنزيل على شكل تطبيق للويب. يمكنك إضافة تطبيق الويب من خلال النقر على زر في الأسفل</p>
+    <input class="add-button" type="button" value="Add Web App">
+  </div>
 
 <div class="box" id="info1">
 <h1>
   هام
 </h1>
-  <p class="info"> إذا لم تشتغل هذه الأداة (أي الكتابة من اليمين إلى اليسار ) ، المرجوا إيقاف تفعيل </p>
+  <p class="info">إذا لم تشتغل هذه الأداة بظهور أيقونة يملي البنفسجية على اليسار وتحول  الكتابة من اليمين إلى اليسار، المرجوا إيقاف تفعيل</p>
   <p class="info">"Ad Blocker"</p>
   <p class="info"> . فهذا الموقع لا يحتوي على أية برامج خبيثة أو ضارة.</p>
 </div>
@@ -122,7 +125,10 @@
 
 <footer>
 <div class="footer">
-  <input class="add-button" type="button" value="Add Web App">
+<a class="active" ><img href="watsapgo.net" class="logo" src="./images/favicon/ms-icon-144x144.png" > Yamli Mobile</a>
+<a href="#contact"><img class="img" src="./icon/contact.svg"></a>
+<a onclick="notifyMe()"><img class="img" src="./icon/bell.svg"></a>
+<a href="#home" onclick="window.location.reload(true);"><img class="img" src="./icon/home.svg"></a>
 </footer>
 
 <script>
