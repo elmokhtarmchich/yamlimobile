@@ -1,3 +1,7 @@
+
+@font-face { font-family: 'MyWebFont'; src: url ('./font/maghribi.ttf'); }
+@font-face { font-family: 'Aljazeera'; src: url ('./font/aljazeera.ttf'); }
+
 body {
 	  background-color: #181a1c;
     width: 100%;
@@ -60,7 +64,6 @@ background-color: rgb(59, 56, 73);
 }
 
 .add-button {
-  font-family: 'Roboto', sans-serif;
 	background: transparent;
     font-size: 14px;
     cursor: pointer;
@@ -86,19 +89,22 @@ margin-right: auto;
     border: 1px solid transparent;
     border-radius: 30px;
     box-sizing: border-box;
+    color: #aaa;
   }
 
   #main {
     background-color: #44495081;
   }
   #contact {
+    font-family: 'Roboto', sans-serif;
     background-color: #161b22;
     margin-top: 10px;
     margin-bottom: 80px;
     background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('icon/noto-bg-dark.jpg');
   }
   
-  #info,  #info1 {
+  #info,  #info1  {
+    font-family: 'Amiri', serif;  
     color: #ffffff;
     background-color: #0f2e2b;
     margin-top: 50px;
@@ -107,37 +113,71 @@ margin-right: auto;
     background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('icon/background.jpg');
   }
 
+  #webapp  {
+    font-family: 'Amiri', serif;  
+    color: #ffffff;
+    background-color: #0f2e2b;
+    margin-top: 50px;
+    margin-bottom: 40px;
+    background-size: cover;
+    background-image: linear-gradient(to left top, #903067, #314065, #3e7a76);  }
+
 .info {
-font-family: 'Tajawal', sans-serif;
-font-size: 14px;
+font-size: 16px;
 color: #fff	;
 text-align: justify;
 text-justify: inter-word;
 text-align-last: center;
 max-width: 500px;
 margin: auto;
-padding: 0;
 }
 
 .footer {
-  position: fixed;
-  left: 0;
+position: fixed;
+left: 0;
   bottom: 0;
   width: 100%;
-  height: 60px;
- background-color: #161b22;
-color: white;
-padding: 10px;
-
+  height: 50px;
+  background-color: rgb(59, 56, 73);
+  color: white;
+padding: 2px;
 }
+.logo {
+  height: 100%;
+  }
+.footer a {
+  float: right;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  width: 50px;
+  height: 100%;
+  border-width: 0px 0px 0px 1px;
+  border-style: solid;
+  border-color: #414b58;
+  }
+ 
+  .footer a:hover {
+    background-color: #073a67;
+    color: black;
+  }
+  
+  .footer a.active {
+    font-family: 'Roboto', sans-serif;
+    color: white;
+    width: 145px;
+    height: 100%;
+    padding: 4px;
+    float: left;
+  }
 
 h1 {
-  font-family: 'Tajawal', sans-serif;
   color: #eee;
   text-align: right;
   margin: auto;
   max-height: 100%;
-  } 
+  }
 
 .divider {
   flex-grow: 1;
