@@ -26,7 +26,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Gulzar&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Gulzar&family=Noto+Naskh+Arabic&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
-<script type="text/javascript" src="https://yamlimobile.com/script.js"></script>
+<script type="text/javascript" src="script.js"></script>
+<script type="text/javascript" src="addtohomescreen.js"></script>
+
 </head>
 
 
@@ -84,6 +86,10 @@
 </div>
 </div>
 
+<div>
+<button id="a2hsButton">Add to Home Screen</button>
+</div>
+
 <div class="box" id="info">
   <h1>من هو يملي موبايل </h1>
 
@@ -125,7 +131,7 @@
 
 <footer>
 <div class="footer">
-<a class="active" ><img href="watsapgo.net" class="logo" src="./images/favicon/ms-icon-144x144.png" > Yamli Mobile</a>
+<a class="active" ><img href="watsapgo.net" class="logo" src="./images/favicon/ms-icon-144x144.png" >Yamli Mobile </a>
 <a href="#contact"><img class="img" src="./icon/contact.svg"></a>
 <a onclick="notifyMe()"><img class="img" src="./icon/bell.svg"></a>
 <a href="#home" onclick="window.location.reload(true);"><img class="img" src="./icon/home.svg"></a>
@@ -454,34 +460,7 @@ doConfirm("Are you sure?", function yes()
     // do nothing
 });
 </script>
-<script>
-function fct_cut(){
-	var overlayme = document.getElementById("dialog-container");
-	overlayme.style.display = "block";
-document.getElementById('id_confrmdiv').style.display="block"; //this is the replace of this line
-document.getElementById('id_truebtn').onclick = function(){
-     /* Get the text field */
-  var DelText = document.getElementById("textbox_id_1");
-  /* Select the text field */
-  DelText.select();
-  DelText.setSelectionRange(0, 99999); /*For mobile devices*/
-  /* Copy the text inside the text field */
-  document.execCommand("delete");
-  /* Alert the copied text 
-  alert("Copied the text: " + copyText.value);*/
-    /* alert('true'); */ 
-	document.getElementById('id_confrmdiv').style.display = "none";
-	    overlayme.style.display = "none";
-	return false;
-};
-document.getElementById('id_falsebtn').onclick = function(){
-    /* alert('false'); */
-document.getElementById('id_confrmdiv').style.display = "none"; 
-    overlayme.style.display = "none";
-   return false;
-};
-}
-</script>
+
 <script> //if the website Is not opened an app mode show (i.e. in a browser) the add to homescreen prompt 
 	if ((("standalone" in window.navigator) && !window.navigator.standalone) || (!window.matchMedia('(display-mode: standalone)').matches )) // android 
 	 {
@@ -489,6 +468,7 @@ document.getElementById('id_confrmdiv').style.display = "none";
 		}
 	</script> 
 
+<!-- avoid accidental shutdown -->
 	<script> 
 window.addEventListener('beforeunload', (event) => {
   // Cancel the event as stated by the standard.
@@ -497,5 +477,6 @@ window.addEventListener('beforeunload', (event) => {
   event.returnValue = '';
 });
 </script> 
+<!-- avoid accidental shutdown -->
 
 </html>
