@@ -101,12 +101,20 @@ function selectAndCopy() {
 
 function pasteFromClipboard() {
   var textarea = document.getElementById('textbox_id_1');
+  textarea.focus();
+
   navigator.clipboard.readText().then(function(text) {
-      textarea.value = text;
+      var start = textarea.selectionStart;
+      var end = textarea.selectionEnd;
+      var currentText = textarea.value;
+      var newText = currentText.substring(0, start) + text + currentText.substring(end);
+      textarea.value = newText;
+      textarea.setSelectionRange(start + text.length, start + text.length);
   }).catch(function(err) {
       console.error('Failed to read clipboard contents: ', err);
   });
 }
+
 
 // pasteFromClipboard functions
 
