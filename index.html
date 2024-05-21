@@ -1,9 +1,9 @@
 <!doctype html><html lang="ar">
 <head>
   <meta charset = "utf-8" />
-	<title>Yamli Mobile </title>
+  <title>Yamli Mobile </title>
 <meta name="msapplication-TileColor" content="#3b5165">
-<meta name="msapplication-TileImage" content="/images/favicon/ms-icon-144x144.png">
+<meta name="msapplication-TileImage" content="/images/favicon/favicon-32x32.png">
 <meta name="theme-color" content="#3b5165">
 <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=0' />
 <meta name="mobile-web-app-capable" content"yes"> 
@@ -32,15 +32,30 @@
 
 
 <body>
+<div id="copyNotification">Text copied</div>
+
+<div id="languagePrompt">
+  <div id="languageGrid">
+      <button onclick="translateText('en')">English</button>
+      <button onclick="translateText('de')">Deutsch</button>
+      <button onclick="translateText('fr')">Français</button>
+      <button onclick="translateText('es')">Español</button>
+      <button onclick="translateText('zh-CN')">中文</button>
+      <button onclick="translateText('it')">Italiano</button>
+  </div>
+  <br>
+  <button id="cancelbutton" onclick="hideLanguagePrompt()">Cancel</button>
+</div>
+
 <div class="container">
 <div class="button-container">
 <div class="button" id="btn_01" onclick="window.open(window.location.href, '_blank')"><img src="./images/newtab.svg"></div>
 <div class="button" id="btn_06" ><img src="./images/share.svg"></div>
 <div class="button" id="btn_02" onclick = "searchtext()" ><img src="./images/search.svg"></div>
 <div class="button" id="btn_03" onclick = "fct_cut()"><img src="./images/cut.svg"></div>
-<div class="button" id="btn_04" onclick = "insertAtCaret()"><img src="./images/paste.svg"></div>
-<div class="button" id="btn_05" onclick = "getSelectedText()"><img src="./images/copy.svg"></div>
-<div class="button" id="btn_07" onclick = "selectall()"><img src="./images/selectall.svg"></div>
+<div class="button" id="btn_04" onclick = "pasteFromClipboard()"><img src="./images/paste.svg"></div>
+<div class="button" id="btn_05" onclick = "selectAndCopy()"><img src="./images/copy.svg"></div>
+<div class="button" id="btn_07" onclick = "showLanguagePrompt()"><img src="./images/translate.svg"></div>
 </div>   
 
 <div name="myForm" class="center">
@@ -85,7 +100,7 @@
 </div>
 
 <div class="box" id="info">
-  <h1>من هو يملي موبايل </h1>
+  <h1>من هو يملي موبايل 🟐</h1>
 
   <p class="info">يتيح يملي موبايل للمستخدمين الكتابة باللغة العربية بدون لوحة مفاتيح عربية ، من داخل متصفح الويب الخاص بهم و خاصةً على الهواتف الذكية . تعتمد هذه التقنية على محرك التحويل الحرفي في الوقت الفعلي والذي يحول الكلمات المكتوبة بأحرف لاتينية إلى أقرب ما يعادلها باللغة العربية. تعتمد هذه الخدمة على محرك  يملي عربي ، و هو محرك بحث يركز على تقديم نتائج بحث أكثر صلة لاستعلام عربي من خلال توسيعه ليشمل التمثيلات اللاتينية الأكثر استخدامًا.
   يمكن للمستخدم أيضاً من خلال هذه الخدمة أن يقوم بنسخ ، لصق، حدف، البحث على جوجل و مشاركة النص عبر التطبيقات.</p>	
@@ -93,7 +108,7 @@
 
 <div class="box" id="webapp">
   <h1>
-    إضافة على شكل تطبيق
+    إضافة على شكل تطبيق ⓘ
   </h1>
     <p class="info">هذا الموقع يدعم خاصية التنزيل على شكل تطبيق للويب. يمكنك إضافة تطبيق الويب من خلال النقر على زر في الأسفل</p>
     <input class="add-button" type="button" value="Add Web App">
@@ -101,7 +116,7 @@
 
 <div class="box" id="info1">
 <h1>
-  هام
+  هام ⚠
 </h1>
   <p class="info">إذا لم تشتغل هذه الأداة بظهور أيقونة يملي البنفسجية على اليسار وتحول  الكتابة من اليمين إلى اليسار، المرجوا إيقاف تفعيل</p>
   <p class="info">"Ad Blocker"</p>
@@ -109,7 +124,7 @@
 </div>
 <div class="box" id="contact">
   <h1>
-    Contact and Feedback
+  Contact and Feedback
   </h1>
   <form action="contact_form.php" method="post">
     <label for="email">Email:</label><br>
