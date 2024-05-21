@@ -1,6 +1,55 @@
 
 @font-face { font-family: 'MyWebFont'; src: url ('./font/maghribi.ttf'); }
 @font-face { font-family: 'Aljazeera'; src: url ('./font/aljazeera.ttf'); }
+#copyNotification {
+    visibility: hidden;
+    background-color: #596a83c5;
+    font-family: 'Roboto', sans-serif;
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+    padding: 10px;
+    position: fixed;
+    z-index: 1;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#languagePrompt {
+  display: none;
+  background-color: #3e495a;
+  border-radius: 5px;
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  color: #eee;
+}
+#languageGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+#languageGrid button {
+  padding: 6px;
+  border-radius: 5px;
+  background-color: #0000005b;
+  border: 1px solid #ccc;
+  color: #ccc;
+}
+#cancelbutton {
+  padding: 6px;
+  border-radius: 5px;
+  background-color: #c92424;
+  border: 1px solid #ccc;
+  color: #ccc;
+  float:right;
+}
+
 
 body {
 	  background-color: #181a1c;
@@ -66,11 +115,11 @@ background-color: rgb(59, 56, 73);
 .add-button {
 	background: transparent;
     font-size: 14px;
+    font-weight: bold;
     cursor: pointer;
     height: 40px;
-    color: #E5E6E4;
     border-radius: 6px;
-  border: 1px solid gray;
+  border: 1px solid rgb(19, 19, 19);
     padding: 6px;
 }
 
@@ -89,7 +138,6 @@ margin-right: auto;
     border: 1px solid transparent;
     border-radius: 30px;
     box-sizing: border-box;
-    color: #aaa;
   }
 
   #main {
@@ -98,6 +146,7 @@ margin-right: auto;
   #contact {
     font-family: 'Roboto', sans-serif;
     background-color: #161b22;
+    color: #ffffff;
     margin-top: 10px;
     margin-bottom: 80px;
     background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('icon/noto-bg-dark.jpg');
@@ -114,17 +163,17 @@ margin-right: auto;
   }
 
   #webapp  {
-    font-family: 'Amiri', serif;  
-    color: #ffffff;
-    background-color: #0f2e2b;
+    font-family: 'Amiri', serif; 
+    font-weight: bold;
+    color: #181414;
+    background-color: #fcca34c7;
     margin-top: 50px;
     margin-bottom: 40px;
     background-size: cover;
-    background-image: linear-gradient(to left top, #903067, #314065, #3e7a76);  }
+  }
 
 .info {
 font-size: 16px;
-color: #fff	;
 text-align: justify;
 text-justify: inter-word;
 text-align-last: center;
@@ -174,7 +223,6 @@ padding: 2px;
   }
 
 h1 {
-  color: #eee;
   text-align: right;
   margin: auto;
   max-height: 100%;
