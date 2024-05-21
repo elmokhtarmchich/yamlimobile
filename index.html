@@ -477,15 +477,6 @@ doConfirm("Are you sure?", function yes()
 		}
 	</script> 
 
-<!-- avoid accidental shutdown -->
-	<script> 
-window.addEventListener('beforeunload', (event) => {
-  // Cancel the event as stated by the standard.
-  event.preventDefault();
-  // Chrome requires returnValue to be set.
-  event.returnValue = '';
-});
-</script> 
-<!-- avoid accidental shutdown -->
+
 
 </html>
