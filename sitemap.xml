@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+   <!-- Home Page -->
+   <url>
+      <loc>http://yamlimobile.com/</loc>
+      <lastmod>2024-05-21</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>1.0</priority>
+   </url>
+   
+   <!-- About Us -->
+   <url>
+      <loc>http://yamlimobile.com/about</loc>
+      <lastmod>2024-05-21</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>http://yamlimobile.com/about/history</loc>
+      <lastmod>2024-05-21</lastmod>
+      <changefreq>yearly</changefreq>
+      <priority>0.6</priority>
+   </url>
+   <url>
+      <loc>http://yamlimobile.com/about/mission</loc>
+      <lastmod>2024-05-21</lastmod>
+      <changefreq>yearly</changefreq>
+      <priority>0.6</priority>
+   </url>
+   <url>
+      <loc>http://yamlimobile.com/about/team</loc>
+      <lastmod>2024-05-21</lastmod>
+      <changefreq>yearly</changefreq>
+      <priority>0.6</priority>
+   </url>
+   <url>
+      <loc>http://yamlimobile.com/about/careers</loc>
+      <lastmod>2024-05-21</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.6</priority>
+   </url>
+   
+   <!-- Services -->
+   <url>
+      <loc>http://yamlimobile.com/services</loc>
+      <lastmod>2024-05-21</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>http://yamlimobile.com/services/service1</loc>
+      <lastmod>2024-05-21</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.7</priority>
+   </url>
+   <url>
+      <loc>http://yamlimobile.com/services/service2</loc>
+      <lastmod>2024-05-21</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.7</priority>
+   </url>
+   <url>
+      <loc>http://yamlimobile.com/services/service3</loc>
+      <lastmod>2024-05-21</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.7</priority>
+   </url>
+   
+   <!-- Products -->
+   <url>
+      <loc>http://yamlimobile.com/products</loc>
+      <lastmod>2024-05-21</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>http://yamlimobile.com/products/category1/product1</loc>
+      <lastmod>2024-05-21</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.7</priority>
+   </url>
+   <url>
+      <loc>http://yamlimobile.com/products/category1/product2</loc>
+      <lastmod>2024-05-21</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.7</priority>
+   </url>
+   <url>
+      <loc>http://yamlimobile.com/products/category2/product3</loc>
+      <lastmod>2024-05-21</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.7</priority>
+   </url>
+   <url>
+      <loc>http://yamlimobile.com/products/category2/product4</loc>
+      <lastmod>2024-05-21</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.7</priority>
+   </url>
+   
+   <!-- Blog -->
+   <url>
+      <loc>http://yamlimobile.com/blog</loc>
+      <lastmod>2024-05-21</lastmod>
+      <changefreq>daily</changefreq>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>http://yamlimobile.com/blog/category1/post1</loc>
+      <lastmod>2024-05-21</lastmod>
+      <changefreq>daily</changefreq>
+      <priority>0.6</priority>
+   </url>
+   <url>
+      <loc>http://yamlimobile.com/blog/category1/post2</loc>
+      <lastmod>2024-05-21</lastmod>
+      <changefreq>daily</changefreq>
+      <priority>0.6</priority>
+   </url>
+   <url>
+      <loc>http://yamlimobile.com/blog/category2/post3</loc>
+      <lastmod>2024-05-21</lastmod>
+      <changefreq>daily</changefreq>
+      <priority>0.6</priority>
+   </url>
+   <url>
+      <loc>http://yamlimobile.com/blog/category2/post4</loc>
+      <lastmod>2024-05-21</lastmod>
+      <changefreq>daily</changefreq>
+      <priority>0.6</priority>
+   </url>
+   
+   <!-- Contact Us -->
+   <url>
+      <loc>http://yamlimobile.com/contact</loc>
+      <lastmod>2024-05-21</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.5</priority>
+   </url>
+   
+   <!-- FAQ -->
+   <url>
+      <loc>http://yamlimobile.com/faq</loc>
+      <lastmod>2024-05-21</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.5</priority>
+   </url>
+   
+   <!-- Privacy Policy -->
+   <url>
+      <loc>http://yamlimobile.com/privacy-policy</loc>
+      <lastmod>2024-05-21</lastmod>
+      <changefreq>yearly</changefreq>
+      <priority>0.3</priority>
+   </url>
+   
+   <!-- Terms of Service -->
+   <url>
+      <loc>http://yamlimobile.com/terms-of-service</loc>
+      <lastmod>2024-05-21</lastmod>
+      <changefreq>yearly</changefreq>
+      <priority>0.3</priority>
+   </url>
+   
+   <!-- Sitemap -->
+   <url>
+      <loc>http://yamlimobile.com/sitemap</loc>
+      <lastmod>2024-05-21</lastmod>
+      <changefreq>yearly</changefreq>
+      <priority>0.2</priority>
+   </url>
+</urlset>
