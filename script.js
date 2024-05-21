@@ -80,3 +80,57 @@ document.getElementById('id_confrmdiv').style.display = "none";
 };
 }
 //cut functions
+
+//select all and copy all functions
+
+function selectAndCopy() {
+  var textarea = document.getElementById('textbox_id_1');
+  textarea.select();
+  textarea.setSelectionRange(0, textarea.value.length);
+  document.execCommand('copy');
+
+  var notification = document.getElementById('copyNotification');
+  notification.style.visibility = 'visible';
+  setTimeout(function() {
+      notification.style.visibility = 'hidden';
+  }, 1000);
+}
+//select all and copy all functions
+
+// pasteFromClipboard functions
+
+function pasteFromClipboard() {
+  var textarea = document.getElementById('textbox_id_1');
+  navigator.clipboard.readText().then(function(text) {
+      textarea.value = text;
+  }).catch(function(err) {
+      console.error('Failed to read clipboard contents: ', err);
+  });
+}
+
+// pasteFromClipboard functions
+
+// shareWithGoogleTranslate functions
+
+function showLanguagePrompt() {
+  document.getElementById('languagePrompt').style.display = 'block';
+}
+
+function hideLanguagePrompt() {
+  document.getElementById('languagePrompt').style.display = 'none';
+}
+
+function translateText(targetLang) {
+  var textarea = document.getElementById('textbox_id_1');
+  var textToTranslate = encodeURIComponent(textarea.value);
+  var sourceLang = 'ar';
+  var webUrl = `https://translate.google.com/?sl=${sourceLang}&tl=${targetLang}&text=${textToTranslate}`;
+
+  // Open Google Translate web in a new tab
+  window.open(webUrl, '_blank');
+  
+  hideLanguagePrompt();
+}
+
+// shareWithGoogleTranslate functions
+
