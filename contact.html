@@ -26,17 +26,31 @@
   <div class="box" id="contact">
     <h1>Contact and Feedback</h1>
     <p class="info">We'd love to hear from you! Send us your feedback, suggestions, or report any issues.</p>
-    <form action="https://formspree.io/f/xqeggqnr" method="post">
+    <form id="contactForm" action="https://formspree.io/f/xqeggqnr" method="post">
       <label for="email">Email:</label><br>
       <input type="email" id="email" name="email" placeholder="your@email.com" required><br>
       <label for="subject">Subject:</label><br>
       <input type="text" id="subject" name="subject" placeholder="How can we help?" required><br>
       <label for="message">Message:</label><br>
       <textarea id="message" name="message" rows="8" placeholder="Your message..." required></textarea><br><br>
-      <input type="hidden" name="_next" value="./thanks.html">
       <input type="hidden" name="_subject" value="New message from Yamli Mobile">
       <input id="submitbtn" type="submit" value="Send Message">
     </form>
+    <script>
+      document.getElementById('contactForm').addEventListener('submit', function(e) {
+        var form = this;
+        e.preventDefault();
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', form.action, true);
+        xhr.setRequestHeader('Accept', 'application/json');
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState === 4) {
+            window.location.href = './thanks.html';
+          }
+        };
+        xhr.send(new FormData(form));
+      });
+    </script>
   </div>
 
   <div class="box" id="info">
