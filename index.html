@@ -395,6 +395,48 @@ function insertAtCaret() {
   }
 </script>
 <script>
+// Android space key handler - auto-select first Yamli suggestion
+(function() {
+  var textarea = document.getElementById('textbox_id_1');
+  var isAndroid = /Android/i.test(navigator.userAgent);
+  
+  if (isAndroid && textarea) {
+    textarea.addEventListener('input', function(e) {
+      // Check if space was just added
+      var val = textarea.value;
+      var lastChar = val.slice(-1);
+      
+      if (lastChar === ' ') {
+        // Look for Yamli suggestion dropdown
+        var yamliDropdown = document.querySelector('.yamli-suggestions, .ymsuggestions, [class*="yamli"]');
+        var yamliItems = document.querySelectorAll('.yamli-suggestion-item, .ymsuggestion, [class*="ymsuggestion"]');
+        
+        if (yamliItems && yamliItems.length > 0) {
+          // Click the first suggestion
+          yamliItems[0].click();
+        }
+      }
+    });
+    
+    // Also handle keydown for physical keyboards on Android
+    textarea.addEventListener('keydown', function(e) {
+      if (e.key === ' ' || e.keyCode === 32) {
+        var yamliItems = document.querySelectorAll('.yamli-suggestion-item, .ymsuggestion, [class*="ymsuggestion"]');
+        if (yamliItems && yamliItems.length > 0) {
+          e.preventDefault();
+          yamliItems[0].click();
+          // Add space after selection
+          setTimeout(function() {
+            textarea.value += ' ';
+            textarea.selectionStart = textarea.selectionEnd = textarea.value.length;
+          }, 50);
+        }
+      }
+    });
+  }
+})();
+</script>
+<script>
 document.querySelector('textbox_id_1').autofocus = true;
 </script>
 <script>
