@@ -17,24 +17,30 @@
 <link rel="stylesheet" href="./style.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Gulzar&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
 </head>
 
 <body>
 <div class="container">
-  <div class="box" id="contact">
-    <h1>اتصل بنا وشاركنا رأيك</h1>
-    <p class="info">نحب أن نسمع منك! أرسل لنا ملاحظاتك، اقتراحاتك، أو أبلغ عن أي مشكلة.</p>
-    <form id="contactForm" action="https://formspree.io/f/xqeggqnr" method="post">
-      <label for="email">البريد الإلكتروني:</label><br>
-      <input type="email" id="email" name="email" placeholder="your@email.com" required><br>
-      <label for="subject">الموضوع:</label><br>
-      <input type="text" id="subject" name="subject" placeholder="كيف يمكننا المساعدة؟" required><br>
-      <label for="message">الرسالة:</label><br>
-      <textarea id="message" name="message" rows="8" placeholder="رسالتك..." required></textarea><br><br>
+  <div class="box" id="contact" style="direction: rtl; text-align: right;">
+    <h1 style="font-family: 'Tajawal', sans-serif; text-align: right;">اتصل بنا وشاركنا رأيك</h1>
+    <p class="info" style="font-family: 'Tajawal', sans-serif; text-align: right; direction: rtl;">نحب أن نسمع منك! أرسل لنا ملاحظاتك، اقتراحاتك، أو أبلغ عن أي مشكلة.</p>
+    <form id="contactForm" action="https://formspree.io/f/xqeggqnr" method="post" style="text-align: right;">
+      <label for="email" style="font-family: 'Tajawal', sans-serif; text-align: right; display: block;">البريد الإلكتروني:</label>
+      <input type="email" id="email" name="email" placeholder="your@email.com" required style="font-family: 'Tajawal', sans-serif; text-align: right; direction: rtl;">
+      
+      <label for="subject" style="font-family: 'Tajawal', sans-serif; text-align: right; display: block;">الموضوع:</label>
+      <input type="text" id="subject" name="subject" placeholder="كيف يمكننا المساعدة؟" required style="font-family: 'Tajawal', sans-serif; text-align: right; direction: rtl;">
+      
+      <label for="message" style="font-family: 'Tajawal', sans-serif; text-align: right; display: block;">الرسالة:</label>
+      <textarea id="message" name="message" rows="8" placeholder="اكتب رسالتك هنا..." required style="font-family: 'Tajawal', sans-serif; text-align: right; direction: rtl;"></textarea>
+      
       <input type="hidden" name="_subject" value="رسالة جديدة من يملي موبايل">
-      <input id="submitbtn" type="submit" value="إرسال الرسالة">
+      <input id="submitbtn" type="submit" value="إرسال الرسالة" style="font-family: 'Tajawal', sans-serif; font-weight: bold;">
     </form>
     <script>
       document.getElementById('contactForm').addEventListener('submit', function(e) {
@@ -53,20 +59,44 @@
     </script>
   </div>
 
-  <div class="box" id="info">
-    <h1>طرق أخرى للتواصل</h1>
-    <p class="info">البريد الإلكتروني: support@yamlimobile.com</p>
-    <p class="info">تابعنا على وسائل التواصل الاجتماعي للحصول على التحديثات والنصائح.</p>
+  <div class="box" id="info" style="direction: rtl; text-align: right;">
+    <h1 style="font-family: 'Tajawal', sans-serif; text-align: right;">طرق أخرى للتواصل</h1>
+    <p class="info" style="font-family: 'Tajawal', sans-serif; text-align: right;">البريد الإلكتروني: support@yamlimobile.com</p>
+    <p class="info" style="font-family: 'Tajawal', sans-serif; text-align: right;">تابعنا على وسائل التواصل الاجتماعي للحصول على التحديثات والنصائح.</p>
+    <div style="text-align: center; margin-top: 20px;">
+      <a href="https://www.facebook.com/profile.php?id=100077547884658" target="_blank" style="display: inline-block; padding: 10px;">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="#1877F2">
+          <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+        </svg>
+      </a>
+    </div>
   </div>
 </div>
 
 <footer>
 <div class="footer">
-<a class="active" href="./index.html"><img class="logo" src="./images/favicon/ms-icon-144x144.png" >Yamli Mobile</a>
-<a href="./contact.html"><img class="img" src="./icon/contact.svg"></a>
-<a onclick="notifyMe()"><img class="img" src="./icon/bell.svg"></a>
-<a href="./index.html"><img class="img" src="./icon/home.svg"></a>
+  <a class="active" href="./index.html"><img class="logo" src="./images/favicon/ms-icon-144x144.png">Yamli Mobile</a>
+  <a href="https://www.facebook.com/profile.php?id=100077547884658" target="_blank">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="white" style="vertical-align: middle;">
+      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+    </svg>
+  </a>
+  <a href="./contact.html"><img class="img" src="./icon/contact.svg"></a>
+  <a onclick="notifyMe()"><img class="img" src="./icon/bell.svg"></a>
+  <a href="./index.html"><img class="img" src="./icon/home.svg"></a>
+</div>
 </footer>
+
+<script src="./script.js"></script>
+<!-- YAMLI CODE START -->
+<script type="text/javascript" src="https://api.yamli.com/js/yamli_api.js"></script>
+<script type="text/javascript">
+  if (typeof(Yamli) == "object" && Yamli.init({ uiLanguage: "ar", startMode: "onOrUserDefault", uiFontFamily: 'Tajawal', settingsColor: '#dbb44f', settingsLinkColor: '#dbb44f' }))
+  {
+    Yamli.yamlify("message", { settingsPlacement: 'inside', showTutorialLink: true, showDirectionLink: true });
+    Yamli.yamlify("subject", { settingsPlacement: 'inside', showTutorialLink: false, showDirectionLink: false });
+  }
+</script>
 
 </body>
 </html>
