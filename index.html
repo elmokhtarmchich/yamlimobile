@@ -400,19 +400,26 @@ function insertAtCaret() {
   var textarea = document.getElementById('textbox_id_1');
   var isAndroid = /Android/i.test(navigator.userAgent);
   
+  console.log('Yamli Android Handler - Device:', isAndroid ? 'Android detected' : 'Not Android');
+  console.log('Yamli Android Handler - Textarea found:', !!textarea);
+  
   if (isAndroid && textarea) {
+    console.log('Yamli Android Handler - Initializing...');
+    
     textarea.addEventListener('input', function(e) {
-      // Check if space was just added
       var val = textarea.value;
       var lastChar = val.slice(-1);
       
+      console.log('Yamli Android Handler - Input detected, last char:', lastChar, 'isSpace:', lastChar === ' ');
+      
       if (lastChar === ' ') {
-        // Look for Yamli suggestion dropdown
-        var yamliDropdown = document.querySelector('.yamli-suggestions, .ymsuggestions, [class*="yamli"]');
-        var yamliItems = document.querySelectorAll('.yamli-suggestion-item, .ymsuggestion, [class*="ymsuggestion"]');
+        // Look for Yamli suggestion dropdown with multiple possible selectors
+        var yamliItems = document.querySelectorAll('.yamli-suggestion-item, .ymsuggestion, .ym-suggestion, [class*="yamli"], [class*="ymsuggestion"]');
+        
+        console.log('Yamli Android Handler - Suggestions found:', yamliItems.length);
         
         if (yamliItems && yamliItems.length > 0) {
-          // Click the first suggestion
+          console.log('Yamli Android Handler - Clicking first suggestion');
           yamliItems[0].click();
         }
       }
@@ -421,11 +428,13 @@ function insertAtCaret() {
     // Also handle keydown for physical keyboards on Android
     textarea.addEventListener('keydown', function(e) {
       if (e.key === ' ' || e.keyCode === 32) {
-        var yamliItems = document.querySelectorAll('.yamli-suggestion-item, .ymsuggestion, [class*="ymsuggestion"]');
+        var yamliItems = document.querySelectorAll('.yamli-suggestion-item, .ymsuggestion, .ym-suggestion, [class*="yamli"], [class*="ymsuggestion"]');
+        
+        console.log('Yamli Android Handler - Keydown space, suggestions:', yamliItems.length);
+        
         if (yamliItems && yamliItems.length > 0) {
           e.preventDefault();
           yamliItems[0].click();
-          // Add space after selection
           setTimeout(function() {
             textarea.value += ' ';
             textarea.selectionStart = textarea.selectionEnd = textarea.value.length;
