@@ -72,20 +72,41 @@ body {
   border: 1px solid #575757;
   border-radius: 5px;
   width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  margin-top: 8px;
+  margin-bottom: 16px;
   }
-  #email {
+  #email, #subject {
     background-color: #cecece7c;
     border: 1px solid #575757;
     border-radius: 5px;
     width: 100%;
-    height: 30px;
+    height: 44px;
+    padding: 12px;
+    font-size: 16px;
+    margin-top: 8px;
+    margin-bottom: 16px;
     }
     #submitbtn {
       background-color: #5bb0ffa1;
       border: 1px solid #575757;
       border-radius: 5px;
-      width: 50%;
-      height: 30px;
+      width: 100%;
+      height: 48px;
+      font-size: 16px;
+      font-weight: bold;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      }
+      #submitbtn:hover {
+        background-color: #4a9ee8;
+      }
+      #contact label {
+        font-weight: bold;
+        color: #ccc;
+        font-size: 14px;
       }
 
 .container {
