@@ -395,76 +395,355 @@ function insertAtCaret() {
   }
 </script>
 <script>
-// Android space key handler - auto-select first Yamli suggestion
+// Yamli Android Space Key Handler - PRO VERSION v1.0
+// Handles all Android keyboards, browsers, and edge cases
 (function() {
-  var textarea = document.getElementById('textbox_id_1');
+  'use strict';
+  
+  // Configuration
+  var CONFIG = {
+    debug: false,                    // Set to true for visual debug
+    debounceMs: 50,                  // Debounce for rapid typing
+    maxRetries: 3,                   // Retry finding suggestions
+    retryDelay: 100,                 // Delay between retries
+    selectors: [                     // All possible Yamli selectors
+      '.yamli-suggestion-item',
+      '.ymsuggestion', 
+      '.ym-suggestion',
+      '.ymlistitem',
+      '[class*="yamli"]',
+      '[class*="ymsuggestion"]',
+      '[class*="ymlist"]',
+      '.yamli-container .item',
+      '#yamliDropdown .suggestion',
+      '[data-yamli="suggestion"]'
+    ],
+    spaceChars: [' ', '\u00A0', '\u2000', '\u2001', '\u2002', '\u2003'] // Various space types
+  };
+  
+  // State
+  var state = {
+    lastInputTime: 0,
+    isProcessing: false,
+    consecutiveSpaces: 0,
+    lastValue: ''
+  };
+  
+  // Device detection
   var isAndroid = /Android/i.test(navigator.userAgent);
+  var isSamsung = /Samsung/i.test(navigator.userAgent);
+  var isChrome = /Chrome/i.test(navigator.userAgent) && !/Edg/i.test(navigator.userAgent);
+  var isFirefox = /Firefox/i.test(navigator.userAgent);
+  var isSamsungBrowser = /SamsungBrowser/i.test(navigator.userAgent);
   
-  // Create visual debug element
-  var debugDiv = document.createElement('div');
-  debugDiv.id = 'androidDebug';
-  debugDiv.style.cssText = 'position:fixed;bottom:10px;left:10px;background:rgba(0,0,0,0.8);color:#0f0;padding:10px;font-size:12px;z-index:9999;max-width:300px;word-break:break-all;';
-  debugDiv.innerHTML = 'Android: ' + isAndroid + '<br>UA: ' + navigator.userAgent.substring(0,50);
-  document.body.appendChild(debugDiv);
-  
-  function log(msg) {
-    console.log(msg);
-    debugDiv.innerHTML += '<br>' + msg;
+  // Get textarea
+  var textarea = document.getElementById('textbox_id_1');
+  if (!textarea) {
+    console.error('[YamliHandler] Textarea not found');
+    return;
   }
   
-  log('Handler starting...');
-  log('Textarea found: ' + !!textarea);
+  // Debug logger
+  function log(msg, type) {
+    var prefix = '[YamliHandler] ';
+    if (type === 'error') {
+      console.error(prefix + msg);
+    } else if (type === 'warn') {
+      console.warn(prefix + msg);
+    } else {
+      console.log(prefix + msg);
+    }
+  }
   
-  if (isAndroid && textarea) {
-    log('Android detected - initializing');
+  // Visual debug (optional)
+  if (CONFIG.debug) {
+    var debugDiv = document.createElement('div');
+    debugDiv.id = 'yamliDebug';
+    debugDiv.style.cssText = 'position:fixed;bottom:10px;left:10px;background:rgba(0,0,0,0.85);color:#0f0;padding:10px;font-size:11px;z-index:99999;max-width:350px;max-height:200px;overflow:auto;font-family:monospace;border-radius:4px;';
+    debugDiv.innerHTML = '<b>Yamli Handler Debug</b><br>Android: ' + isAndroid + '<br>Browser: ' + (isChrome ? 'Chrome' : isFirefox ? 'Firefox' : isSamsungBrowser ? 'Samsung' : 'Other');
+    document.body.appendChild(debugDiv);
     
-    textarea.addEventListener('input', function(e) {
-      var val = textarea.value;
-      var lastChar = val.slice(-1);
-      
-      log('Input: "' + lastChar + '" space=' + (lastChar === ' '));
-      
-      if (lastChar === ' ') {
-        // Try multiple selectors to find Yamli suggestions
-        var selectors = ['.yamli-suggestion-item', '.ymsuggestion', '.ym-suggestion', '.ymlistitem', '[class*="yamli"]', '[class*="ymsuggestion"]', '[class*="ymlist"]'];
-        var yamliItems = [];
-        
-        for (var i = 0; i < selectors.length; i++) {
-          var items = document.querySelectorAll(selectors[i]);
-          if (items && items.length > 0) {
-            yamliItems = items;
-            log('Found ' + items.length + ' items with: ' + selectors[i]);
-            break;
-          }
+    var originalLog = log;
+    log = function(msg, type) {
+      originalLog(msg, type);
+      var color = type === 'error' ? '#f66' : type === 'warn' ? '#ff6' : '#0f0';
+      debugDiv.innerHTML += '<br><span style="color:' + color + '">' + msg + '</span>';
+      debugDiv.scrollTop = debugDiv.scrollHeight;
+    };
+  }
+  
+  log('Initializing (Android: ' + isAndroid + ')');
+  
+  if (!isAndroid) {
+    log('Not Android - skipping', 'warn');
+    return;
+  }
+  
+  // Check if space character
+  function isSpaceChar(char) {
+    return CONFIG.spaceChars.indexOf(char) !== -1 || char === ' ';
+  }
+  
+  // Find Yamli suggestions with retry
+  function findYamliSuggestions(callback, attempt) {
+    attempt = attempt || 0;
+    
+    var items = [];
+    for (var i = 0; i < CONFIG.selectors.length; i++) {
+      try {
+        var found = document.querySelectorAll(CONFIG.selectors[i]);
+        if (found && found.length > 0) {
+          items = found;
+          log('Found ' + items.length + ' suggestions with: ' + CONFIG.selectors[i]);
+          break;
         }
-        
-        // Also check all elements with onclick
-        if (yamliItems.length === 0) {
-          var allElements = document.querySelectorAll('*');
-          for (var j = 0; j < allElements.length; j++) {
-            if (allElements[j].onclick || allElements[j].getAttribute('onclick')) {
-              if (allElements[j].textContent && allElements[j].textContent.match(/[\u0600-\u06FF]/)) {
-                log('Found clickable Arabic element');
-              }
-            }
-          }
-        }
-        
-        if (yamliItems.length > 0) {
-          log('Clicking suggestion: ' + yamliItems[0].textContent);
-          yamliItems[0].click();
-          log('Clicked!');
-        } else {
-          log('No Yamli suggestions found');
-          // Try to find Yamli iframe
-          var yamliFrame = document.querySelector('iframe[src*="yamli"]');
-          log('Yamli iframe: ' + !!yamliFrame);
+      } catch (e) {
+        // Invalid selector, skip
+      }
+    }
+    
+    // Also check for any clickable Arabic elements as fallback
+    if (items.length === 0) {
+      var clickableElements = document.querySelectorAll('div[onclick], span[onclick], a[onclick], [role="option"]');
+      for (var j = 0; j < clickableElements.length; j++) {
+        var el = clickableElements[j];
+        if (el.textContent && /[\u0600-\u06FF]/.test(el.textContent)) {
+          items.push(el);
         }
       }
-    });
-  } else {
-    log('Not Android or no textarea');
+      if (items.length > 0) {
+        log('Found ' + items.length + ' clickable Arabic elements as fallback');
+      }
+    }
+    
+    if (items.length === 0 && attempt < CONFIG.maxRetries) {
+      setTimeout(function() {
+        findYamliSuggestions(callback, attempt + 1);
+      }, CONFIG.retryDelay);
+      return;
+    }
+    
+    callback(items);
   }
+  
+  // Click first suggestion safely
+  function clickFirstSuggestion(items) {
+    if (!items || items.length === 0) {
+      log('No suggestions to click', 'warn');
+      return false;
+    }
+    
+    try {
+      var first = items[0];
+      log('Clicking: "' + (first.textContent || first.innerText || 'unknown').substring(0, 20) + '"');
+      
+      // Try multiple click methods for compatibility
+      var clicked = false;
+      
+      // Method 1: Direct click
+      if (!clicked) {
+        first.click();
+        clicked = true;
+      }
+      
+      // Method 2: Mouse event (for some browsers)
+      if (!clicked && first.dispatchEvent) {
+        var evt = new MouseEvent('click', {
+          bubbles: true,
+          cancelable: true,
+          view: window
+        });
+        first.dispatchEvent(evt);
+        clicked = true;
+      }
+      
+      // Method 3: Touch event (for mobile)
+      if (!clicked && 'ontouchstart' in window) {
+        var touchEvt = new TouchEvent('touchstart', {
+          bubbles: true,
+          cancelable: true
+        });
+        first.dispatchEvent(touchEvt);
+        clicked = true;
+      }
+      
+      log('Clicked successfully');
+      return true;
+      
+    } catch (e) {
+      log('Click failed: ' + e.message, 'error');
+      return false;
+    }
+  }
+  
+  // Handle space key press
+  function handleSpace(e) {
+    if (state.isProcessing) {
+      log('Already processing, skipping');
+      return;
+    }
+    
+    state.isProcessing = true;
+    
+    findYamliSuggestions(function(items) {
+      if (items.length > 0) {
+        var success = clickFirstSuggestion(items);
+        
+        if (success && e && e.preventDefault) {
+          e.preventDefault();
+        }
+      } else {
+        log('No suggestions found after retries', 'warn');
+      }
+      
+      // Reset processing flag after a short delay
+      setTimeout(function() {
+        state.isProcessing = false;
+      }, 100);
+    });
+  }
+  
+  // Debounced input handler
+  function debounceInput(callback, delay) {
+    var timeoutId;
+    return function() {
+      var context = this;
+      var args = arguments;
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(function() {
+        callback.apply(context, args);
+      }, delay);
+    };
+  }
+  
+  // Input event handler
+  var handleInput = debounceInput(function(e) {
+    var now = Date.now();
+    var val = textarea.value;
+    var lastChar = val.slice(-1);
+    
+    // Skip if same value (prevent duplicates)
+    if (val === state.lastValue) {
+      return;
+    }
+    state.lastValue = val;
+    
+    // Check for space
+    if (isSpaceChar(lastChar)) {
+      state.consecutiveSpaces++;
+      
+      // Only process first space in sequence
+      if (state.consecutiveSpaces === 1) {
+        log('Space detected (input method)');
+        handleSpace(e);
+      }
+    } else {
+      state.consecutiveSpaces = 0;
+    }
+    
+    state.lastInputTime = now;
+  }, CONFIG.debounceMs);
+  
+  // Keydown handler (for physical keyboards and some soft keyboards)
+  function handleKeydown(e) {
+    var isSpace = e.key === ' ' || e.key === 'Spacebar' || e.keyCode === 32 || e.which === 32;
+    
+    if (isSpace) {
+      log('Space detected (keydown method)');
+      handleSpace(e);
+    }
+  }
+  
+  // BeforeInput handler (modern browsers)
+  function handleBeforeInput(e) {
+    if (e.data === ' ' || isSpaceChar(e.data)) {
+      log('Space detected (beforeinput method)');
+      // Don't prevent default, just trigger handler after input
+      setTimeout(function() {
+        handleSpace(null);
+      }, 0);
+    }
+  }
+  
+  // Attach event listeners with proper cleanup
+  function attachListeners() {
+    // Primary: input event (works with most soft keyboards)
+    textarea.addEventListener('input', handleInput, { passive: true });
+    
+    // Secondary: keydown (for physical keyboards)
+    textarea.addEventListener('keydown', handleKeydown, { passive: false });
+    
+    // Modern: beforeinput (newer browsers)
+    if ('onbeforeinput' in textarea) {
+      textarea.addEventListener('beforeinput', handleBeforeInput, { passive: true });
+    }
+    
+    // Samsung browser special handling
+    if (isSamsungBrowser) {
+      log('Samsung Browser detected - adding special handling');
+      textarea.addEventListener('keyup', function(e) {
+        if (e.key === ' ' || e.keyCode === 32) {
+          setTimeout(function() {
+            handleSpace(null);
+          }, 50);
+        }
+      }, { passive: true });
+    }
+    
+    // Firefox Android handling
+    if (isFirefox && isAndroid) {
+      log('Firefox Android detected - adding special handling');
+      textarea.addEventListener('textInput', function(e) {
+        if (e.data === ' ') {
+          setTimeout(function() {
+            handleSpace(null);
+          }, 10);
+        }
+      }, { passive: true });
+    }
+    
+    log('Event listeners attached');
+  }
+  
+  // Initialize
+  function init() {
+    try {
+      attachListeners();
+      log('Handler initialized successfully');
+      
+      // Expose API for debugging
+      window.YamliAndroidHandler = {
+        config: CONFIG,
+        state: state,
+        test: function() {
+          log('Manual test triggered');
+          handleSpace(null);
+        },
+        getStatus: function() {
+          return {
+            isAndroid: isAndroid,
+            isSamsung: isSamsung,
+            isChrome: isChrome,
+            isFirefox: isFirefox,
+            isSamsungBrowser: isSamsungBrowser,
+            textareaFound: !!textarea,
+            lastValue: state.lastValue
+          };
+        }
+      };
+      
+    } catch (e) {
+      log('Initialization failed: ' + e.message, 'error');
+    }
+  }
+  
+  // Wait for DOM to be ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+  
 })();
 </script>
 <script>
