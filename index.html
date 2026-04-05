@@ -624,12 +624,15 @@ function insertAtCaret() {
     
     findYamliSuggestions(function(items, selectedItem) {
       if (items.length > 0) {
-        // Use selected item if found, otherwise first item
-        var targetItem = selectedItem || items[0];
-        var success = clickTargetItem(targetItem, items);
-        
-        if (success && e && e.preventDefault) {
-          e.preventDefault();
+        // Try 2nd item first (first Arabic suggestion), fallback to 1st or selected
+        var targetItem = items[1] || items[0] || selectedItem;
+        if (targetItem) {
+          log('Clicking 2nd item (or fallback): "' + (targetItem.textContent || '').substring(0, 20) + '"');
+          var success = clickTargetItem(targetItem, items);
+          
+          if (success && e && e.preventDefault) {
+            e.preventDefault();
+          }
         }
       } else {
         log('No suggestions found after retries', 'warn');
