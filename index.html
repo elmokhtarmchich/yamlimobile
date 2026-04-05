@@ -400,48 +400,70 @@ function insertAtCaret() {
   var textarea = document.getElementById('textbox_id_1');
   var isAndroid = /Android/i.test(navigator.userAgent);
   
-  console.log('Yamli Android Handler - Device:', isAndroid ? 'Android detected' : 'Not Android');
-  console.log('Yamli Android Handler - Textarea found:', !!textarea);
+  // Create visual debug element
+  var debugDiv = document.createElement('div');
+  debugDiv.id = 'androidDebug';
+  debugDiv.style.cssText = 'position:fixed;bottom:10px;left:10px;background:rgba(0,0,0,0.8);color:#0f0;padding:10px;font-size:12px;z-index:9999;max-width:300px;word-break:break-all;';
+  debugDiv.innerHTML = 'Android: ' + isAndroid + '<br>UA: ' + navigator.userAgent.substring(0,50);
+  document.body.appendChild(debugDiv);
+  
+  function log(msg) {
+    console.log(msg);
+    debugDiv.innerHTML += '<br>' + msg;
+  }
+  
+  log('Handler starting...');
+  log('Textarea found: ' + !!textarea);
   
   if (isAndroid && textarea) {
-    console.log('Yamli Android Handler - Initializing...');
+    log('Android detected - initializing');
     
     textarea.addEventListener('input', function(e) {
       var val = textarea.value;
       var lastChar = val.slice(-1);
       
-      console.log('Yamli Android Handler - Input detected, last char:', lastChar, 'isSpace:', lastChar === ' ');
+      log('Input: "' + lastChar + '" space=' + (lastChar === ' '));
       
       if (lastChar === ' ') {
-        // Look for Yamli suggestion dropdown with multiple possible selectors
-        var yamliItems = document.querySelectorAll('.yamli-suggestion-item, .ymsuggestion, .ym-suggestion, [class*="yamli"], [class*="ymsuggestion"]');
+        // Try multiple selectors to find Yamli suggestions
+        var selectors = ['.yamli-suggestion-item', '.ymsuggestion', '.ym-suggestion', '.ymlistitem', '[class*="yamli"]', '[class*="ymsuggestion"]', '[class*="ymlist"]'];
+        var yamliItems = [];
         
-        console.log('Yamli Android Handler - Suggestions found:', yamliItems.length);
+        for (var i = 0; i < selectors.length; i++) {
+          var items = document.querySelectorAll(selectors[i]);
+          if (items && items.length > 0) {
+            yamliItems = items;
+            log('Found ' + items.length + ' items with: ' + selectors[i]);
+            break;
+          }
+        }
         
-        if (yamliItems && yamliItems.length > 0) {
-          console.log('Yamli Android Handler - Clicking first suggestion');
+        // Also check all elements with onclick
+        if (yamliItems.length === 0) {
+          var allElements = document.querySelectorAll('*');
+          for (var j = 0; j < allElements.length; j++) {
+            if (allElements[j].onclick || allElements[j].getAttribute('onclick')) {
+              if (allElements[j].textContent && allElements[j].textContent.match(/[\u0600-\u06FF]/)) {
+                log('Found clickable Arabic element');
+              }
+            }
+          }
+        }
+        
+        if (yamliItems.length > 0) {
+          log('Clicking suggestion: ' + yamliItems[0].textContent);
           yamliItems[0].click();
+          log('Clicked!');
+        } else {
+          log('No Yamli suggestions found');
+          // Try to find Yamli iframe
+          var yamliFrame = document.querySelector('iframe[src*="yamli"]');
+          log('Yamli iframe: ' + !!yamliFrame);
         }
       }
     });
-    
-    // Also handle keydown for physical keyboards on Android
-    textarea.addEventListener('keydown', function(e) {
-      if (e.key === ' ' || e.keyCode === 32) {
-        var yamliItems = document.querySelectorAll('.yamli-suggestion-item, .ymsuggestion, .ym-suggestion, [class*="yamli"], [class*="ymsuggestion"]');
-        
-        console.log('Yamli Android Handler - Keydown space, suggestions:', yamliItems.length);
-        
-        if (yamliItems && yamliItems.length > 0) {
-          e.preventDefault();
-          yamliItems[0].click();
-          setTimeout(function() {
-            textarea.value += ' ';
-            textarea.selectionStart = textarea.selectionEnd = textarea.value.length;
-          }, 50);
-        }
-      }
-    });
+  } else {
+    log('Not Android or no textarea');
   }
 })();
 </script>
