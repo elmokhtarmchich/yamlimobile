@@ -533,27 +533,50 @@ function insertAtCaret() {
       return false;
     }
     
-    try {
-      var first = items[0];
-      log('Clicking: "' + (first.textContent || first.innerText || 'unknown').substring(0, 20) + '"');
+    // Find the focused/selected suggestion instead of just the first one
+    var selectedItem = null;
+    
+    // Look for active/focused/selected states
+    for (var i = 0; i < items.length; i++) {
+      var item = items[i];
+      var isSelected = item.classList.contains('selected') ||
+                       item.classList.contains('active') ||
+                       item.classList.contains('focused') ||
+                       item.classList.contains('highlighted') ||
+                       item.classList.contains('ym-selected') ||
+                       item.getAttribute('aria-selected') === 'true' ||
+                       item.style.backgroundColor || // Sometimes highlighted by inline style
+                       item.style.fontWeight === 'bold'; // Sometimes bold when selected
       
+      if (isSelected) {
+        selectedItem = item;
+        log('Found selected item: "' + (item.textContent || '').substring(0, 20) + '"');
+        break;
+      }
+    }
+    
+    // If no selected item found, use first one as fallback
+    var targetItem = selectedItem || items[0];
+    log('Target item: "' + (targetItem.textContent || targetItem.innerText || 'unknown').substring(0, 20) + '"' + (selectedItem ? ' (selected)' : ' (first fallback)'));
+    
+    try {
       // Try multiple click methods for compatibility
       var clicked = false;
       
       // Method 1: Direct click
       if (!clicked) {
-        first.click();
+        targetItem.click();
         clicked = true;
       }
       
       // Method 2: Mouse event (for some browsers)
-      if (!clicked && first.dispatchEvent) {
+      if (!clicked && targetItem.dispatchEvent) {
         var evt = new MouseEvent('click', {
           bubbles: true,
           cancelable: true,
           view: window
         });
-        first.dispatchEvent(evt);
+        targetItem.dispatchEvent(evt);
         clicked = true;
       }
       
@@ -563,7 +586,7 @@ function insertAtCaret() {
           bubbles: true,
           cancelable: true
         });
-        first.dispatchEvent(touchEvt);
+        targetItem.dispatchEvent(touchEvt);
         clicked = true;
       }
       
