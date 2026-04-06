@@ -395,287 +395,213 @@ function insertAtCaret() {
   }
 </script>
 <script>
-// Yamli Android Space Key Handler - PRO VERSION v2.0
-// Works WITH Yamli API internals instead of against them
+// Yamli Android Space Key Handler - PRO VERSION v3.0
+// Direct API Communication - NO DOM CLICKING
 (function() {
   'use strict';
   
   var CONFIG = {
     debug: true,
-    spaceChars: [' ', '\u00A0', '\u2000', '\u2001', '\u2002', '\u2003'],
-    yamliCheckInterval: 50,
-    maxCheckAttempts: 10
+    maxRetries: 3,
+    retryDelay: 50
   };
   
   var isAndroid = /Android/i.test(navigator.userAgent);
   var textarea = document.getElementById('textbox_id_1');
   if (!isAndroid || !textarea) return;
   
-  // Debug logger
-  function log(msg, type) {
-    var prefix = '[YamliPro] ';
-    if (type === 'error') console.error(prefix + msg);
-    else if (type === 'warn') console.warn(prefix + msg);
-    else console.log(prefix + msg);
-  }
-  
-  // Visual debug panel
+  // Debug panel
   var debugDiv = document.createElement('div');
   debugDiv.id = 'yamliProDebug';
   debugDiv.style.cssText = 'position:fixed;bottom:10px;left:10px;background:rgba(0,0,0,0.9);color:#0f0;padding:10px;font-size:11px;z-index:99999;max-width:400px;max-height:250px;overflow:auto;font-family:monospace;border-radius:4px;border:2px solid #0f0;';
-  debugDiv.innerHTML = '<b style="color:#ff0;">🔧 Yamli Pro Debug</b><br>Android: ' + isAndroid + '<br>Status: Ready<hr style="border-color:#0f0;margin:5px 0;">';
+  debugDiv.innerHTML = '<b style="color:#ff0;">🔧 Yamli Pro v3.0</b><br>Direct API Mode<hr style="border-color:#0f0;margin:5px 0;">';
   document.body.appendChild(debugDiv);
   
   function debug(msg, type) {
-    log(msg, type);
     var color = type === 'error' ? '#f66' : type === 'warn' ? '#ff6' : '#0f0';
-    debugDiv.innerHTML += '<br><span style="color:' + color + '">' + msg + '</span>';
+    var line = '<br><span style="color:' + color + '">' + msg + '</span>';
+    debugDiv.innerHTML += line;
     debugDiv.scrollTop = debugDiv.scrollHeight;
+    console.log('[YamliPro] ' + msg);
   }
   
-  // Get Yamli manager for this textarea
+  // Get the Yamli manager instance attached to textarea
   function getYamliManager() {
-    return textarea.yamliManager || textarea._yamliManager || 
-           (window.Yamli && window.Yamli.getInstances && window.Yamli.getInstances().find(function(inst) {
-             return inst.getInput && inst.getInput() === textarea;
-           }));
+    return textarea.yamliManager;
   }
   
-  // Check if Yamli menu is visible
+  // Check if menu is visible via API
   function isMenuVisible() {
     var manager = getYamliManager();
-    if (manager && manager.isMenuVisible) {
-      return manager.isMenuVisible();
-    }
-    // Fallback: check DOM
-    var menu = document.querySelector('.yamliapi_menuContent, [class*="yamliapi_menu"]');
-    return menu && menu.offsetParent !== null;
+    return manager && manager.isMenuVisible && manager.isMenuVisible();
   }
   
-  // Get suggestion items from the menu - multiple strategies
-  function getSuggestionItems() {
-    // Strategy 1: Try known Yamli container classes
-    var menu = document.querySelector('.yamliapi_menuContent') || 
-               document.querySelector('[class*="yamliapi_menuContent"]') ||
-               document.querySelector('.yamliapi_menuPanel') ||
-               document.querySelector('[class*="yamliapi_menu"]') ||
-               document.querySelector('.yamli-menu') ||
-               document.querySelector('[class*="ymlist"]') ||
-               document.querySelector('[class*="ymsuggestion"]');
-    
-    if (!menu) {
-      debug('No menu container found');
-      return [];
-    }
-    
-    debug('Menu container found: ' + (menu.className || 'unknown class'));
-    
-    var items = [];
-    
-    // Strategy 2: Look for divs with cursor:pointer (direct children or nested)
-    var divs = menu.querySelectorAll('div');
-    debug('Checking ' + divs.length + ' divs in menu');
-    
-    for (var i = 0; i < divs.length; i++) {
-      var div = divs[i];
-      var style = div.getAttribute('style') || '';
-      var text = div.textContent.trim();
-      
-      // Suggestion items have cursor:pointer and Arabic-like text
-      if (style.indexOf('cursor: pointer') !== -1 && text && text.length > 0) {
-        // Skip "show more", "report word", etc by checking length
-        if (text.length < 50) {
-          items.push(div);
-          debug('Found item #' + items.length + ': "' + text.substring(0, 15) + '"');
-        }
-      }
-    }
-    
-    // Strategy 3: If no items found with cursor:pointer, try all divs with text
-    if (items.length === 0) {
-      debug('No items with cursor:pointer, trying all divs with Arabic text...');
-      for (var j = 0; j < divs.length; j++) {
-        var div2 = divs[j];
-        var text2 = div2.textContent.trim();
-        // Look for Arabic text or English text that looks like a suggestion
-        if (text2 && text2.length > 1 && text2.length < 30 && 
-            div2.children.length === 0 && // Leaf nodes only
-            text2.indexOf('Loading') === -1 &&
-            text2.indexOf('Powered by') === -1) {
-          items.push(div2);
-          debug('Fallback item #' + items.length + ': "' + text2.substring(0, 15) + '"');
-        }
-      }
-    }
-    
-    return items;
+  // Get current word selection from API
+  function getCurrentWord() {
+    var manager = getYamliManager();
+    if (!manager || !manager.getSelection) return null;
+    return manager.getSelection();
   }
   
-  // Find the selected/focused suggestion
-  function getSelectedItem(items) {
-    for (var i = 0; i < items.length; i++) {
-      var style = items[i].getAttribute('style') || '';
-      // Selected items have darker blue background (rgb(198, 216, 255))
-      if (style.indexOf('rgb(198') !== -1 || style.indexOf('rgb(198, 216, 255)') !== -1) {
-        return items[i];
-      }
+  // Trigger API's internal space handling
+  function triggerAPISpace() {
+    var manager = getYamliManager();
+    if (!manager) {
+      debug('No yamliManager found', 'error');
+      return false;
     }
-    return null;
-  }
-  
-  // Click a suggestion item using the same method Yamli API uses
-  function clickSuggestion(item) {
-    if (!item) return false;
+    
+    debug('Triggering API internal space handling...');
     
     try {
-      debug('Clicking suggestion: "' + item.textContent.substring(0, 20) + '"');
+      // Method 1: Simulate the exact key sequence the API expects
+      // Keydown (code 32) - this is what triggers selection in Yamli
+      var kdEvt = document.createEvent('KeyboardEvent');
+      kdEvt.initKeyboardEvent('keydown', true, true, window, 'Space', 0, false, false, false, false, 32);
+      Object.defineProperty(kdEvt, 'keyCode', { value: 32 });
+      Object.defineProperty(kdEvt, 'which', { value: 32 });
+      textarea.dispatchEvent(kdEvt);
       
-      // Method 1: Direct click
-      item.click();
+      // Keypress
+      var kpEvt = document.createEvent('KeyboardEvent');
+      kpEvt.initKeyboardEvent('keypress', true, true, window, ' ', 0, false, false, false, false, 32);
+      Object.defineProperty(kpEvt, 'keyCode', { value: 32 });
+      Object.defineProperty(kpEvt, 'which', { value: 32 });
+      Object.defineProperty(kpEvt, 'charCode', { value: 32 });
+      textarea.dispatchEvent(kpEvt);
       
-      // Method 2: Create proper mouse event (like Yamli does)
-      var evt = document.createEvent('MouseEvents');
-      evt.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-      item.dispatchEvent(evt);
+      // Keyup
+      var kuEvt = document.createEvent('KeyboardEvent');
+      kuEvt.initKeyboardEvent('keyup', true, true, window, 'Space', 0, false, false, false, false, 32);
+      Object.defineProperty(kuEvt, 'keyCode', { value: 32 });
+      Object.defineProperty(kuEvt, 'which', { value: 32 });
+      textarea.dispatchEvent(kuEvt);
       
-      // Method 3: mousedown then click (Yamli's sequence)
-      var mdEvt = document.createEvent('MouseEvents');
-      mdEvt.initMouseEvent('mousedown', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-      item.dispatchEvent(mdEvt);
-      
+      debug('API space sequence dispatched');
       return true;
+      
     } catch (e) {
-      debug('Click failed: ' + e.message, 'error');
+      debug('API trigger failed: ' + e.message, 'error');
       return false;
     }
   }
   
-  // Process space key with retry for dynamic menu
+  // Process space using direct API communication
   var processing = false;
   
-  function processSpaceWithRetry(e, attempt) {
-    attempt = attempt || 0;
+  function processSpaceAPI(e) {
+    if (processing) return;
+    processing = true;
     
-    if (attempt === 0) {
-      debug('=== SPACE DETECTED (attempt ' + (attempt + 1) + ') ===');
+    debug('=== SPACE DETECTED ===');
+    
+    // Check if API is ready
+    var manager = getYamliManager();
+    if (!manager) {
+      debug('Yamli not initialized yet');
+      processing = false;
+      return;
     }
+    
+    debug('Yamli manager found');
     
     // Check if menu is visible
     if (!isMenuVisible()) {
-      if (attempt === 0) {
-        debug('Menu not visible, letting space through');
-      }
+      debug('Menu not visible, passing space through');
       processing = false;
       return;
     }
     
-    if (attempt === 0) {
-      debug('Menu is visible');
+    debug('Menu is visible - triggering API selection');
+    
+    // Prevent default to stop space from being inserted
+    if (e && e.preventDefault) {
+      e.preventDefault();
+      e.stopPropagation();
     }
     
-    // Get suggestions
-    var items = getSuggestionItems();
+    // Let Yamli API handle the space internally
+    // The API will select the current suggestion and insert it
+    var success = triggerAPISpace();
     
-    if (items.length === 0 && attempt < 3) {
-      debug('No suggestions yet, retrying in 50ms...');
-      setTimeout(function() {
-        processSpaceWithRetry(e, attempt + 1);
-      }, 50);
-      return;
-    }
-    
-    debug('Found ' + items.length + ' suggestions (after ' + (attempt + 1) + ' attempts)');
-    
-    if (items.length === 0) {
-      debug('No suggestions found after retries');
-      processing = false;
-      return;
-    }
-    
-    // Find selected item, or use 2nd item (first Arabic), or fallback to 1st
-    var target = getSelectedItem(items) || items[1] || items[0];
-    
-    if (target) {
-      debug('Target: "' + target.textContent.substring(0, 20) + '"');
+    if (success) {
+      debug('API space triggered successfully');
       
-      // Prevent default space insertion
-      if (e && e.preventDefault) {
-        e.preventDefault();
-        e.stopPropagation();
-      }
-      
-      clickSuggestion(target);
-      
-      // Add space after selection
+      // The API should handle everything, but add space if needed
       setTimeout(function() {
         var val = textarea.value;
-        if (!val.endsWith(' ')) {
+        if (!val.endsWith(' ') && !val.endsWith('\u00A0')) {
           textarea.value = val + ' ';
           textarea.selectionStart = textarea.selectionEnd = textarea.value.length;
           debug('Added trailing space');
         }
         processing = false;
-      }, 50);
+      }, 100);
     } else {
       processing = false;
     }
   }
   
-  function processSpace(e) {
-    if (processing) return;
-    processing = true;
-    processSpaceWithRetry(e, 0);
+  // Alternative: Use API's menu accept method if available
+  function tryMenuAccept() {
+    var manager = getYamliManager();
+    if (manager && manager.hideTransliterations) {
+      // This accepts the current suggestion
+      manager.hideTransliterations();
+      debug('Used hideTransliterations as accept');
+      return true;
+    }
+    return false;
   }
   
-  // Attach handlers BEFORE Yamli initializes
+  // Attach handlers
   function attachHandlers() {
     debug('Attaching handlers...');
     
-    // Capture space on keydown (before Yamli sees it)
+    // Capture space before Yamli sees it
     textarea.addEventListener('keydown', function(e) {
       if (e.key === ' ' || e.keyCode === 32 || e.which === 32) {
-        debug('keydown: SPACE');
-        processSpace(e);
+        debug('keydown: SPACE captured');
+        processSpaceAPI(e);
       }
-    }, true); // Use capture phase to get event first
+    }, true); // Capture phase
     
-    // Also handle input event as backup
+    // Backup via input event
     textarea.addEventListener('input', function(e) {
       var val = textarea.value;
       var lastChar = val.slice(-1);
       
-      if (CONFIG.spaceChars.indexOf(lastChar) !== -1 || lastChar === ' ') {
-        debug('input: SPACE detected');
-        // Only process if we haven't already handled this space
-        if (!val.endsWith('  ')) { // Not double space
-          processSpace(null);
+      if (lastChar === ' ' || lastChar === '\u00A0') {
+        debug('input: SPACE detected (backup)');
+        if (!val.endsWith('  ') && !val.endsWith('\u00A0\u00A0')) {
+          processSpaceAPI(null);
         }
       }
     });
     
-    debug('Handlers attached');
+    debug('Handlers attached - Direct API Mode active');
   }
   
-  // Initialize
+  // Initialize when DOM ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', attachHandlers);
   } else {
     attachHandlers();
   }
   
-  // Expose API for testing
+  // Expose API
   window.YamliProHandler = {
     getManager: getYamliManager,
     isMenuVisible: isMenuVisible,
-    getItems: getSuggestionItems,
-    getSelected: getSelectedItem,
+    getCurrentWord: getCurrentWord,
+    triggerSpace: triggerAPISpace,
     test: function() {
-      debug('Manual test');
-      processSpace(null);
+      debug('Manual test - triggering API space');
+      triggerAPISpace();
     }
   };
   
-  debug('Pro Handler initialized');
+  debug('Pro Handler v3.0 initialized - Direct API Mode');
 })();
 </script>
 <script>
