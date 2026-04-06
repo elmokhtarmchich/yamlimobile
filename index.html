@@ -395,401 +395,346 @@ function insertAtCaret() {
   }
 </script>
 <script>
-// Yamli Android Space Key Handler - PRO VERSION v1.0
-// Handles all Android keyboards, browsers, and edge cases
+// Yamli Android Space Key Handler - PRO VERSION v2.0
+// Works WITH Yamli API internals instead of against them
 (function() {
   'use strict';
   
-  // Configuration
   var CONFIG = {
-    debug: false,                    // Set to true for visual debug
-    debounceMs: 50,                  // Debounce for rapid typing
-    maxRetries: 3,                   // Retry finding suggestions
-    retryDelay: 100,                 // Delay between retries
-    selectors: [                     // All possible Yamli selectors (from inspection)
-      '.yamliapi_menuContent div',    // Main container with div children
-      '.yamliapi_menuContent > div',  // Direct children
-      '[class*="yamliapi_menu"] div[style*="cursor: pointer"]', // Clickable divs
-      '[class*="yamliapi"] div[style*="background-color: rgb(198"]', // Selected item (darker blue)
-      '[class*="yamliapi"] div[style*="background-color: rgb(245"]', // All items (lighter blue)
-      '.yamli-suggestion-item',
-      '.ymsuggestion', 
-      '.ym-suggestion',
-      '.ymlistitem',
-      '[class*="yamli"]',
-      '[class*="ymsuggestion"]',
-      '[class*="ymlist"]'
-    ],
-    menuContainer: '.yamliapi_menuContent', // Container for all suggestions
-    selectedBgColor: 'rgb(198, 216, 255)', // The darker blue indicates selected
-    spaceChars: [' ', '\u00A0', '\u2000', '\u2001', '\u2002', '\u2003'] // Various space types
+    debug: true,
+    spaceChars: [' ', '\u00A0', '\u2000', '\u2001', '\u2002', '\u2003'],
+    yamliCheckInterval: 50,
+    maxCheckAttempts: 10
   };
   
-  // State
-  var state = {
-    lastInputTime: 0,
-    isProcessing: false,
-    consecutiveSpaces: 0,
-    lastValue: ''
-  };
-  
-  // Device detection
   var isAndroid = /Android/i.test(navigator.userAgent);
-  var isSamsung = /Samsung/i.test(navigator.userAgent);
-  var isChrome = /Chrome/i.test(navigator.userAgent) && !/Edg/i.test(navigator.userAgent);
-  var isFirefox = /Firefox/i.test(navigator.userAgent);
-  var isSamsungBrowser = /SamsungBrowser/i.test(navigator.userAgent);
-  
-  // Get textarea
   var textarea = document.getElementById('textbox_id_1');
-  if (!textarea) {
-    console.error('[YamliHandler] Textarea not found');
-    return;
-  }
+  if (!isAndroid || !textarea) return;
   
   // Debug logger
   function log(msg, type) {
-    var prefix = '[YamliHandler] ';
-    if (type === 'error') {
-      console.error(prefix + msg);
-    } else if (type === 'warn') {
-      console.warn(prefix + msg);
-    } else {
-      console.log(prefix + msg);
+    var prefix = '[YamliPro] ';
+    if (type === 'error') console.error(prefix + msg);
+    else if (type === 'warn') console.warn(prefix + msg);
+    else console.log(prefix + msg);
+  }
+  
+  // Visual debug panel
+  var debugDiv = document.createElement('div');
+  debugDiv.id = 'yamliProDebug';
+  debugDiv.style.cssText = 'position:fixed;bottom:10px;left:10px;background:rgba(0,0,0,0.9);color:#0f0;padding:10px;font-size:11px;z-index:99999;max-width:400px;max-height:250px;overflow:auto;font-family:monospace;border-radius:4px;border:2px solid #0f0;';
+  debugDiv.innerHTML = '<b style="color:#ff0;">🔧 Yamli Pro Debug</b><br>Android: ' + isAndroid + '<br>Status: Ready<hr style="border-color:#0f0;margin:5px 0;">';
+  document.body.appendChild(debugDiv);
+  
+  function debug(msg, type) {
+    log(msg, type);
+    var color = type === 'error' ? '#f66' : type === 'warn' ? '#ff6' : '#0f0';
+    debugDiv.innerHTML += '<br><span style="color:' + color + '">' + msg + '</span>';
+    debugDiv.scrollTop = debugDiv.scrollHeight;
+  }
+  
+  // Get Yamli manager for this textarea
+  function getYamliManager() {
+    return textarea.yamliManager || textarea._yamliManager || 
+           (window.Yamli && window.Yamli.getInstances && window.Yamli.getInstances().find(function(inst) {
+             return inst.getInput && inst.getInput() === textarea;
+           }));
+  }
+  
+  // Check if Yamli menu is visible
+  function isMenuVisible() {
+    var manager = getYamliManager();
+    if (manager && manager.isMenuVisible) {
+      return manager.isMenuVisible();
+    }
+    // Fallback: check DOM
+    var menu = document.querySelector('.yamliapi_menuContent, [class*="yamliapi_menu"]');
+    return menu && menu.offsetParent !== null;
+  }
+  
+  // Get suggestion items from the menu
+  function getSuggestionItems() {
+    var menu = document.querySelector('.yamliapi_menuContent, [class*="yamliapi_menuContent"]');
+    if (!menu) return [];
+    
+    var items = [];
+    var divs = menu.querySelectorAll('div');
+    
+    for (var i = 0; i < divs.length; i++) {
+      var div = divs[i];
+      var style = div.getAttribute('style') || '';
+      // Suggestion items have cursor: pointer
+      if (style.indexOf('cursor: pointer') !== -1 && div.textContent.trim()) {
+        items.push(div);
+      }
+    }
+    return items;
+  }
+  
+  // Find the selected/focused suggestion
+  function getSelectedItem(items) {
+    for (var i = 0; i < items.length; i++) {
+      var style = items[i].getAttribute('style') || '';
+      // Selected items have darker blue background (rgb(198, 216, 255))
+      if (style.indexOf('rgb(198') !== -1 || style.indexOf('rgb(198, 216, 255)') !== -1) {
+        return items[i];
+      }
+    }
+    return null;
+  }
+  
+  // Click a suggestion item using the same method Yamli API uses
+  function clickSuggestion(item) {
+    if (!item) return false;
+    
+    try {
+      debug('Clicking suggestion: "' + item.textContent.substring(0, 20) + '"');
+      
+      // Method 1: Direct click
+      item.click();
+      
+      // Method 2: Create proper mouse event (like Yamli does)
+      var evt = document.createEvent('MouseEvents');
+      evt.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+      item.dispatchEvent(evt);
+      
+      // Method 3: mousedown then click (Yamli's sequence)
+      var mdEvt = document.createEvent('MouseEvents');
+      mdEvt.initMouseEvent('mousedown', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+      item.dispatchEvent(mdEvt);
+      
+      return true;
+    } catch (e) {
+      debug('Click failed: ' + e.message, 'error');
+      return false;
     }
   }
   
-  // Visual debug (optional)
-  if (CONFIG.debug) {
-    var debugDiv = document.createElement('div');
-    debugDiv.id = 'yamliDebug';
-    debugDiv.style.cssText = 'position:fixed;bottom:10px;left:10px;background:rgba(0,0,0,0.85);color:#0f0;padding:10px;font-size:11px;z-index:99999;max-width:350px;max-height:200px;overflow:auto;font-family:monospace;border-radius:4px;';
-    debugDiv.innerHTML = '<b>Yamli Handler Debug</b><br>Android: ' + isAndroid + '<br>Browser: ' + (isChrome ? 'Chrome' : isFirefox ? 'Firefox' : isSamsungBrowser ? 'Samsung' : 'Other');
-    document.body.appendChild(debugDiv);
+  // Process space key
+  var processing = false;
+  
+  function processSpace(e) {
+    if (processing) return;
+    processing = true;
     
-    var originalLog = log;
-    log = function(msg, type) {
-      originalLog(msg, type);
-      var color = type === 'error' ? '#f66' : type === 'warn' ? '#ff6' : '#0f0';
-      debugDiv.innerHTML += '<br><span style="color:' + color + '">' + msg + '</span>';
-      debugDiv.scrollTop = debugDiv.scrollHeight;
-    };
+    debug('=== SPACE DETECTED ===');
+    
+    // Check if menu is visible
+    if (!isMenuVisible()) {
+      debug('Menu not visible, letting space through');
+      processing = false;
+      return;
+    }
+    
+    debug('Menu is visible');
+    
+    // Get suggestions
+    var items = getSuggestionItems();
+    debug('Found ' + items.length + ' suggestions');
+    
+    if (items.length === 0) {
+      debug('No suggestions found');
+      processing = false;
+      return;
+    }
+    
+    // Find selected item, or use 2nd item (first Arabic), or fallback to 1st
+    var target = getSelectedItem(items) || items[1] || items[0];
+    
+    if (target) {
+      debug('Target: "' + target.textContent.substring(0, 20) + '"');
+      
+      // Prevent default space insertion
+      if (e && e.preventDefault) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      
+      // Small delay to let Yamli finish any internal processing
+      setTimeout(function() {
+        clickSuggestion(target);
+        
+        // Add space after selection
+        setTimeout(function() {
+          var val = textarea.value;
+          if (!val.endsWith(' ')) {
+            textarea.value = val + ' ';
+            textarea.selectionStart = textarea.selectionEnd = textarea.value.length;
+          }
+        }, 50);
+        
+        processing = false;
+      }, 10);
+    } else {
+      processing = false;
+    }
   }
   
-  log('Initializing (Android: ' + isAndroid + ')');
-  
-  if (!isAndroid) {
-    log('Not Android - skipping', 'warn');
-    return;
+  // Attach handlers BEFORE Yamli initializes
+  function attachHandlers() {
+    debug('Attaching handlers...');
+    
+    // Capture space on keydown (before Yamli sees it)
+    textarea.addEventListener('keydown', function(e) {
+      if (e.key === ' ' || e.keyCode === 32 || e.which === 32) {
+        debug('keydown: SPACE');
+        processSpace(e);
+      }
+    }, true); // Use capture phase to get event first
+    
+    // Also handle input event as backup
+    textarea.addEventListener('input', function(e) {
+      var val = textarea.value;
+      var lastChar = val.slice(-1);
+      
+      if (CONFIG.spaceChars.indexOf(lastChar) !== -1 || lastChar === ' ') {
+        debug('input: SPACE detected');
+        // Only process if we haven't already handled this space
+        if (!val.endsWith('  ')) { // Not double space
+          processSpace(null);
+        }
+      }
+    });
+    
+    debug('Handlers attached');
   }
   
-  // Check if space character
-  function isSpaceChar(char) {
-    return CONFIG.spaceChars.indexOf(char) !== -1 || char === ' ';
+  // Initialize
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', attachHandlers);
+  } else {
+    attachHandlers();
   }
   
-  // Find Yamli suggestions with retry
-  function findYamliSuggestions(callback, attempt) {
-    attempt = attempt || 0;
+  // Expose API for testing
+  window.YamliProHandler = {
+    getManager: getYamliManager,
+    isMenuVisible: isMenuVisible,
+    getItems: getSuggestionItems,
+    getSelected: getSelectedItem,
+    test: function() {
+      debug('Manual test');
+      processSpace(null);
+    }
+  };
+  
+  debug('Pro Handler initialized');
+})();
+</script>
+<script>
+// YAMLI API INSPECTOR - Check what methods/events are available
+(function() {
+  function inspectYamli() {
+    console.log('=== YAMLI API INSPECTOR ===');
     
-    var items = [];
-    var selectedItem = null;
+    if (typeof Yamli === 'undefined') {
+      console.log('Yamli object not found');
+      return;
+    }
     
-    // First, try to find the menu container
-    var menuContainer = document.querySelector(CONFIG.menuContainer) || 
+    console.log('Yamli object found:', typeof Yamli);
+    console.log('Yamli methods:', Object.keys(Yamli));
+    
+    // Check for specific textbox instance
+    var textarea = document.getElementById('textbox_id_1');
+    if (textarea) {
+      console.log('Textarea found:', textarea);
+      
+      // Check if textarea has Yamli data
+      if (textarea.yamliData) {
+        console.log('textarea.yamliData:', textarea.yamliData);
+      }
+      if (textarea._yamli) {
+        console.log('textarea._yamli:', textarea._yamli);
+      }
+      
+      // Check all properties of textarea
+      for (var key in textarea) {
+        if (key.toLowerCase().indexOf('yamli') !== -1 || key.toLowerCase().indexOf('ym') === 0) {
+          console.log('Found Yamli property:', key, '=', textarea[key]);
+        }
+      }
+    }
+    
+    // Check window for Yamli-related objects
+    for (var winKey in window) {
+      if (winKey.toLowerCase().indexOf('yamli') !== -1 || winKey.toLowerCase().indexOf('ym') === 0) {
+        console.log('Found window.' + winKey + ':', typeof window[winKey]);
+      }
+    }
+  }
+  
+  // Run after Yamli loads
+  setTimeout(inspectYamli, 2000);
+})();
+</script>
+(function() {
+  var inspectorActive = true;
+  var textarea = document.getElementById('textbox_id_1');
+  if (!textarea) return;
+  
+  var inspectorDiv = document.createElement('div');
+  inspectorDiv.id = 'yamliInspector';
+  inspectorDiv.style.cssText = 'position:fixed;top:10px;right:10px;background:rgba(0,0,0,0.9);color:#0f0;padding:15px;font-size:12px;z-index:99999;width:450px;max-height:400px;overflow:auto;font-family:monospace;border:2px solid #0f0;border-radius:8px;';
+  inspectorDiv.innerHTML = '<b style="color:#ff0;font-size:14px;">🔍 Yamli Debug Inspector</b><br><br>Type to see suggestions...<hr style="border-color:#0f0;margin:10px 0;">';
+  document.body.appendChild(inspectorDiv);
+  
+  var output = document.createElement('div');
+  output.id = 'inspectorOutput';
+  inspectorDiv.appendChild(output);
+  
+  function inspect() {
+    if (!inspectorActive) return;
+    var html = '<b style="color:#f6f;">Found Elements:</b><br><br>';
+    
+    // Find menu container
+    var menuContainer = document.querySelector('.yamliapi_menuContent') || 
                         document.querySelector('[class*="yamliapi_menuContent"]') ||
                         document.querySelector('.yamliapi_menuPanel');
     
     if (menuContainer) {
-      log('Found menu container: ' + menuContainer.className);
+      html += '<b>Container found:</b> ' + menuContainer.className + '<br><br>';
       
-      // Get all div children that have cursor:pointer (these are suggestions)
       var allDivs = menuContainer.querySelectorAll('div');
+      var items = [];
       
       for (var i = 0; i < allDivs.length; i++) {
         var div = allDivs[i];
         var style = div.getAttribute('style') || '';
-        
-        // Check if it's a suggestion (has cursor:pointer and text content)
         if (style.indexOf('cursor: pointer') !== -1 && div.textContent.trim()) {
           items.push(div);
-          
-          // Check if it's the selected one (darker blue background)
-          if (style.indexOf(CONFIG.selectedBgColor) !== -1 || 
-              style.indexOf('rgb(198') !== -1 ||
-              style.indexOf('background-color: rgb(198') !== -1) {
-            selectedItem = div;
-            log('Found selected item by background color: "' + div.textContent.substring(0, 20) + '"');
-          }
         }
       }
-    }
-    
-    // Fallback to selectors if container method didn't work
-    if (items.length === 0) {
-      for (var j = 0; j < CONFIG.selectors.length; j++) {
-        try {
-          var found = document.querySelectorAll(CONFIG.selectors[j]);
-          if (found && found.length > 0) {
-            items = Array.from(found);
-            log('Found ' + items.length + ' suggestions with selector: ' + CONFIG.selectors[j]);
-            break;
-          }
-        } catch (e) {
-          // Invalid selector, skip
-        }
-      }
-    }
-    
-    // If we have a selected item, put it at the front of the array
-    if (selectedItem && items.length > 0) {
-      // Remove from current position if exists
-      var idx = items.indexOf(selectedItem);
-      if (idx > -1) {
-        items.splice(idx, 1);
-      }
-      // Add to front
-      items.unshift(selectedItem);
-      log('Selected item moved to front of array');
-    }
-    
-    if (items.length === 0 && attempt < CONFIG.maxRetries) {
-      log('No items found, retrying... (attempt ' + (attempt + 1) + ')');
-      setTimeout(function() {
-        findYamliSuggestions(callback, attempt + 1);
-      }, CONFIG.retryDelay);
-      return;
-    }
-    
-    callback(items, selectedItem);
-  }
-  
-  // Click target suggestion safely
-  function clickTargetItem(targetItem, allItems) {
-    if (!targetItem) {
-      log('No target item to click', 'warn');
-      return false;
-    }
-    
-    log('Target item: "' + (targetItem.textContent || targetItem.innerText || 'unknown').substring(0, 20) + '"');
-    
-    try {
-      // Try multiple click methods for compatibility
-      var clicked = false;
       
-      // Method 1: Direct click
-      targetItem.click();
-      clicked = true;
-      log('Clicked successfully (direct)');
+      html += '<b>Items found: ' + items.length + '</b><br><br>';
       
-      // Method 2: Mouse event (for some browsers)
-      if (!clicked && targetItem.dispatchEvent) {
-        var evt = new MouseEvent('click', {
-          bubbles: true,
-          cancelable: true,
-          view: window
-        });
-        targetItem.dispatchEvent(evt);
-        clicked = true;
-        log('Clicked successfully (mouse event)');
-      }
-      
-      // Method 3: Touch event (for mobile)
-      if (!clicked && 'ontouchstart' in window && targetItem.dispatchEvent) {
-        var touchEvt = new TouchEvent('touchstart', {
-          bubbles: true,
-          cancelable: true
-        });
-        targetItem.dispatchEvent(touchEvt);
-        clicked = true;
-        log('Clicked successfully (touch event)');
-      }
-      
-      return clicked;
-      
-    } catch (e) {
-      log('Click failed: ' + e.message, 'error');
-      return false;
-    }
-  }
-  
-  // Handle space key press
-  function handleSpace(e) {
-    if (state.isProcessing) {
-      log('Already processing, skipping');
-      return;
-    }
-    
-    state.isProcessing = true;
-    
-    findYamliSuggestions(function(items, selectedItem) {
-      if (items.length > 0) {
-        // Try 2nd item first (first Arabic suggestion), fallback to 1st or selected
-        var targetItem = items[1] || items[0] || selectedItem;
-        if (targetItem) {
-          log('Clicking 2nd item (or fallback): "' + (targetItem.textContent || '').substring(0, 20) + '"');
-          var success = clickTargetItem(targetItem, items);
-          
-          if (success && e && e.preventDefault) {
-            e.preventDefault();
-          }
-        }
-      } else {
-        log('No suggestions found after retries', 'warn');
-      }
-      
-      // Reset processing flag after a short delay
-      setTimeout(function() {
-        state.isProcessing = false;
-      }, 100);
-    });
-  }
-  
-  // Debounced input handler
-  function debounceInput(callback, delay) {
-    var timeoutId;
-    return function() {
-      var context = this;
-      var args = arguments;
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(function() {
-        callback.apply(context, args);
-      }, delay);
-    };
-  }
-  
-  // Input event handler
-  var handleInput = debounceInput(function(e) {
-    var now = Date.now();
-    var val = textarea.value;
-    var lastChar = val.slice(-1);
-    
-    // Skip if same value (prevent duplicates)
-    if (val === state.lastValue) {
-      return;
-    }
-    state.lastValue = val;
-    
-    // Check for space
-    if (isSpaceChar(lastChar)) {
-      state.consecutiveSpaces++;
-      
-      // Only process first space in sequence
-      if (state.consecutiveSpaces === 1) {
-        log('Space detected (input method)');
-        handleSpace(e);
+      for (var j = 0; j < items.length && j < 10; j++) {
+        var item = items[j];
+        var style = item.getAttribute('style') || '';
+        var isHidden = style.indexOf('display: none') !== -1;
+        var bg = style.match(/background-color:\s*([^;]+)/);
+        var bgColor = bg ? bg[1] : 'none';
+        var isSelected = bgColor.indexOf('rgb(198') !== -1;
+        
+        html += '<div style="border:1px solid ' + (isSelected ? '#ff0' : '#0f0') + ';padding:5px;margin:5px 0;' + (isHidden ? 'opacity:0.5;' : '') + '">';
+        html += '<b>#' + j + '</b> ' + (isSelected ? '★ SELECTED' : '') + (isHidden ? ' [HIDDEN]' : '') + '<br>';
+        html += 'Text: "' + item.textContent.substring(0, 25) + '"<br>';
+        html += 'BG: ' + bgColor + '<br>';
+        html += '</div>';
       }
     } else {
-      state.consecutiveSpaces = 0;
+      html += '<span style="color:#f66;">No menu container found!</span><br>';
     }
     
-    state.lastInputTime = now;
-  }, CONFIG.debounceMs);
-  
-  // Keydown handler (for physical keyboards and some soft keyboards)
-  function handleKeydown(e) {
-    var isSpace = e.key === ' ' || e.key === 'Spacebar' || e.keyCode === 32 || e.which === 32;
-    
-    if (isSpace) {
-      log('Space detected (keydown method)');
-      handleSpace(e);
-    }
+    output.innerHTML = html;
   }
   
-  // BeforeInput handler (modern browsers)
-  function handleBeforeInput(e) {
-    if (e.data === ' ' || isSpaceChar(e.data)) {
-      log('Space detected (beforeinput method)');
-      // Don't prevent default, just trigger handler after input
-      setTimeout(function() {
-        handleSpace(null);
-      }, 0);
-    }
-  }
+  textarea.addEventListener('input', function() {
+    setTimeout(inspect, 100);
+  });
   
-  // Attach event listeners with proper cleanup
-  function attachListeners() {
-    // Primary: input event (works with most soft keyboards)
-    textarea.addEventListener('input', handleInput, { passive: true });
-    
-    // Secondary: keydown (for physical keyboards)
-    textarea.addEventListener('keydown', handleKeydown, { passive: false });
-    
-    // Modern: beforeinput (newer browsers)
-    if ('onbeforeinput' in textarea) {
-      textarea.addEventListener('beforeinput', handleBeforeInput, { passive: true });
-    }
-    
-    // Samsung browser special handling
-    if (isSamsungBrowser) {
-      log('Samsung Browser detected - adding special handling');
-      textarea.addEventListener('keyup', function(e) {
-        if (e.key === ' ' || e.keyCode === 32) {
-          setTimeout(function() {
-            handleSpace(null);
-          }, 50);
-        }
-      }, { passive: true });
-    }
-    
-    // Firefox Android handling
-    if (isFirefox && isAndroid) {
-      log('Firefox Android detected - adding special handling');
-      textarea.addEventListener('textInput', function(e) {
-        if (e.data === ' ') {
-          setTimeout(function() {
-            handleSpace(null);
-          }, 10);
-        }
-      }, { passive: true });
-    }
-    
-    log('Event listeners attached');
-  }
-  
-  // Initialize
-  function init() {
-    try {
-      attachListeners();
-      log('Handler initialized successfully');
-      
-      // Expose API for debugging
-      window.YamliAndroidHandler = {
-        config: CONFIG,
-        state: state,
-        test: function() {
-          log('Manual test triggered');
-          handleSpace(null);
-        },
-        getStatus: function() {
-          return {
-            isAndroid: isAndroid,
-            isSamsung: isSamsung,
-            isChrome: isChrome,
-            isFirefox: isFirefox,
-            isSamsungBrowser: isSamsungBrowser,
-            textareaFound: !!textarea,
-            lastValue: state.lastValue
-          };
-        }
-      };
-      
-    } catch (e) {
-      log('Initialization failed: ' + e.message, 'error');
-    }
-  }
-  
-  // Wait for DOM to be ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
-  
+  setInterval(inspect, 500);
 })();
-</script>
-<script>
-document.querySelector('textbox_id_1').autofocus = true;
 </script>
 <script>
 var duplicating = browser.tabs.duplicate(
