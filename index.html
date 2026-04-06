@@ -452,22 +452,62 @@ function insertAtCaret() {
     return menu && menu.offsetParent !== null;
   }
   
-  // Get suggestion items from the menu
+  // Get suggestion items from the menu - multiple strategies
   function getSuggestionItems() {
-    var menu = document.querySelector('.yamliapi_menuContent, [class*="yamliapi_menuContent"]');
-    if (!menu) return [];
+    // Strategy 1: Try known Yamli container classes
+    var menu = document.querySelector('.yamliapi_menuContent') || 
+               document.querySelector('[class*="yamliapi_menuContent"]') ||
+               document.querySelector('.yamliapi_menuPanel') ||
+               document.querySelector('[class*="yamliapi_menu"]') ||
+               document.querySelector('.yamli-menu') ||
+               document.querySelector('[class*="ymlist"]') ||
+               document.querySelector('[class*="ymsuggestion"]');
+    
+    if (!menu) {
+      debug('No menu container found');
+      return [];
+    }
+    
+    debug('Menu container found: ' + (menu.className || 'unknown class'));
     
     var items = [];
+    
+    // Strategy 2: Look for divs with cursor:pointer (direct children or nested)
     var divs = menu.querySelectorAll('div');
+    debug('Checking ' + divs.length + ' divs in menu');
     
     for (var i = 0; i < divs.length; i++) {
       var div = divs[i];
       var style = div.getAttribute('style') || '';
-      // Suggestion items have cursor: pointer
-      if (style.indexOf('cursor: pointer') !== -1 && div.textContent.trim()) {
-        items.push(div);
+      var text = div.textContent.trim();
+      
+      // Suggestion items have cursor:pointer and Arabic-like text
+      if (style.indexOf('cursor: pointer') !== -1 && text && text.length > 0) {
+        // Skip "show more", "report word", etc by checking length
+        if (text.length < 50) {
+          items.push(div);
+          debug('Found item #' + items.length + ': "' + text.substring(0, 15) + '"');
+        }
       }
     }
+    
+    // Strategy 3: If no items found with cursor:pointer, try all divs with text
+    if (items.length === 0) {
+      debug('No items with cursor:pointer, trying all divs with Arabic text...');
+      for (var j = 0; j < divs.length; j++) {
+        var div2 = divs[j];
+        var text2 = div2.textContent.trim();
+        // Look for Arabic text or English text that looks like a suggestion
+        if (text2 && text2.length > 1 && text2.length < 30 && 
+            div2.children.length === 0 && // Leaf nodes only
+            text2.indexOf('Loading') === -1 &&
+            text2.indexOf('Powered by') === -1) {
+          items.push(div2);
+          debug('Fallback item #' + items.length + ': "' + text2.substring(0, 15) + '"');
+        }
+      }
+    }
+    
     return items;
   }
   
@@ -510,30 +550,44 @@ function insertAtCaret() {
     }
   }
   
-  // Process space key
+  // Process space key with retry for dynamic menu
   var processing = false;
   
-  function processSpace(e) {
-    if (processing) return;
-    processing = true;
+  function processSpaceWithRetry(e, attempt) {
+    attempt = attempt || 0;
     
-    debug('=== SPACE DETECTED ===');
+    if (attempt === 0) {
+      debug('=== SPACE DETECTED (attempt ' + (attempt + 1) + ') ===');
+    }
     
     // Check if menu is visible
     if (!isMenuVisible()) {
-      debug('Menu not visible, letting space through');
+      if (attempt === 0) {
+        debug('Menu not visible, letting space through');
+      }
       processing = false;
       return;
     }
     
-    debug('Menu is visible');
+    if (attempt === 0) {
+      debug('Menu is visible');
+    }
     
     // Get suggestions
     var items = getSuggestionItems();
-    debug('Found ' + items.length + ' suggestions');
+    
+    if (items.length === 0 && attempt < 3) {
+      debug('No suggestions yet, retrying in 50ms...');
+      setTimeout(function() {
+        processSpaceWithRetry(e, attempt + 1);
+      }, 50);
+      return;
+    }
+    
+    debug('Found ' + items.length + ' suggestions (after ' + (attempt + 1) + ' attempts)');
     
     if (items.length === 0) {
-      debug('No suggestions found');
+      debug('No suggestions found after retries');
       processing = false;
       return;
     }
@@ -550,24 +604,27 @@ function insertAtCaret() {
         e.stopPropagation();
       }
       
-      // Small delay to let Yamli finish any internal processing
+      clickSuggestion(target);
+      
+      // Add space after selection
       setTimeout(function() {
-        clickSuggestion(target);
-        
-        // Add space after selection
-        setTimeout(function() {
-          var val = textarea.value;
-          if (!val.endsWith(' ')) {
-            textarea.value = val + ' ';
-            textarea.selectionStart = textarea.selectionEnd = textarea.value.length;
-          }
-        }, 50);
-        
+        var val = textarea.value;
+        if (!val.endsWith(' ')) {
+          textarea.value = val + ' ';
+          textarea.selectionStart = textarea.selectionEnd = textarea.value.length;
+          debug('Added trailing space');
+        }
         processing = false;
-      }, 10);
+      }, 50);
     } else {
       processing = false;
     }
+  }
+  
+  function processSpace(e) {
+    if (processing) return;
+    processing = true;
+    processSpaceWithRetry(e, 0);
   }
   
   // Attach handlers BEFORE Yamli initializes
