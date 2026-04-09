@@ -429,13 +429,13 @@
       e.stopPropagation();
     }
     
-    // Try approaches in order
+    // Try approaches in order (prioritize Approach 4 since it works)
     var success = false;
     
+    if (!success) success = approach4_SimulateKeyboard();  // Try this first - it works!
     if (!success) success = approach1_DirectAPI();
     if (!success) success = approach2_ClickDOM();
     if (!success) success = approach3_ManagerMethods();
-    if (!success) success = approach4_SimulateKeyboard();
     
     if (success) {
       state.successCount++;
@@ -540,7 +540,7 @@
       return;
     }
     
-    log('Initializing Yamli Pro Handler v4.0...', 'info');
+    log('Initializing Yamli Pro Handler v4.1 (Approach 4 Optimized)...', 'info');
     
     // Create debug panel
     createDebugPanel();
@@ -631,7 +631,7 @@
     },
     
     // Version
-    version: '4.0'
+    version: '4.1'
   };
 
   // Auto-initialize
