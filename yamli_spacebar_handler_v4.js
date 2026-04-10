@@ -54,7 +54,7 @@
   }
 
   function log(msg, type) {
-    var prefix = '[YamliProHandler v4] ';
+    var prefix = '[YamliProHandler] ';
     if (type === 'error') {
       console.error(prefix + msg);
     } else if (type === 'warn') {
@@ -62,7 +62,10 @@
     } else {
       console.log(prefix + msg);
     }
-    updateDebugPanel(msg, type);
+    // Only update debug panel if debug mode is enabled
+    if (CONFIG.debug) {
+      updateDebugPanel(msg, type);
+    }
   }
 
   function updateDebugPanel(msg, type) {
@@ -86,6 +89,9 @@
   // ============================================
   
   function createDebugPanel() {
+    // Only create panel if debug mode is enabled
+    if (!CONFIG.debug) return;
+    
     var existing = document.getElementById('yamli-v4-debug');
     if (existing) existing.remove();
     
