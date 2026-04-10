@@ -183,6 +183,41 @@
     return false;
   }
 
+  function hideMenu() {
+    var manager = getManager();
+    if (manager) {
+      // Try API method first
+      if (manager.hideTransliterations) {
+        try {
+          manager.hideTransliterations();
+          log('Menu hidden via hideTransliterations()', 'success');
+          return true;
+        } catch (e) {
+          log('hideTransliterations failed: ' + e.message, 'error');
+        }
+      }
+      if (manager.hideMenu) {
+        try {
+          manager.hideMenu();
+          log('Menu hidden via hideMenu()', 'success');
+          return true;
+        } catch (e) {
+          log('hideMenu failed: ' + e.message, 'error');
+        }
+      }
+    }
+    
+    // Fallback: hide DOM element directly
+    var menu = document.querySelector('.yamliapi_menuPanel, .yamliapi_menuContent, [class*="yamliapi_menu"]');
+    if (menu) {
+      menu.style.display = 'none';
+      log('Menu hidden via DOM', 'success');
+      return true;
+    }
+    
+    return false;
+  }
+
   // ============================================
   // APPROACH 1: Direct API Call
   // ============================================
@@ -441,6 +476,11 @@
       state.successCount++;
       log('✓✓✓ SPACE HANDLED SUCCESSFULLY (Approach: ' + state.lastApproachUsed + ')', 'success');
       addTrailingSpace();
+      
+      // Hide the menu after selection
+      setTimeout(function() {
+        hideMenu();
+      }, 50);
     } else {
       log('✗✗✗ All approaches exhausted', 'error');
     }
@@ -623,7 +663,7 @@
       return;
     }
     
-    log('Initializing Yamli Pro Handler v4.2 (Android Space Fix)...', 'info');
+    log('Initializing Yamli Pro Handler v4.3 (Menu Auto-Hide)...', 'info');
     
     // Create debug panel
     createDebugPanel();
@@ -723,7 +763,7 @@
     },
     
     // Version
-    version: '4.2'
+    version: '4.3'
   };
 
   // Auto-initialize
