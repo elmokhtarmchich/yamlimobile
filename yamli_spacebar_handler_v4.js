@@ -463,24 +463,84 @@
     
     // Remove existing handlers first
     textarea.removeEventListener('keydown', onKeydown, true);
+    textarea.removeEventListener('beforeinput', onBeforeInput, true);
     textarea.removeEventListener('input', onInput);
+    textarea.removeEventListener('compositionend', onCompositionEnd);
     
-    // Attach keydown in capture phase
+    // Attach keydown in capture phase (catches physical keys)
     textarea.addEventListener('keydown', onKeydown, true);
     
-    // Attach input as backup
+    // Attach beforeinput in capture phase (catches before insertion)
+    textarea.addEventListener('beforeinput', onBeforeInput, true);
+    
+    // Attach input as backup (catches Android soft keyboard)
     textarea.addEventListener('input', onInput);
     
+    // Attach compositionend (Android IME)
+    textarea.addEventListener('compositionend', onCompositionEnd);
+    
+    // Also attach to document for more aggressive interception
+    document.removeEventListener('keydown', onDocumentKeydown, true);
+    document.addEventListener('keydown', onDocumentKeydown, true);
+    
     state.attached = true;
-    log('✓ Handlers attached and ready', 'success');
+    log('✓ Handlers attached (keydown, beforeinput, input, compositionend)', 'success');
     updateStatus('✓ Handler attached and ready');
     return true;
   }
 
+  function onDocumentKeydown(e) {
+    // Global space interception for aggressive catching
+    var isSpace = e.key === ' ' || e.keyCode === 32 || e.which === 32 || 
+                  e.code === 'Space' || (e.keyCode === 0 && e.key === 'Unidentified');
+    
+    if (isSpace && isMenuVisible()) {
+      var target = e.target;
+      var textarea = getTextarea();
+      
+      // Only intercept if targeting our textarea or within it
+      if (target === textarea || (textarea && textarea.contains && textarea.contains(target))) {
+        log('Document keydown: SPACE intercepted', 'info');
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        processSpace(e);
+        return false;
+      }
+    }
+  }
+
+  var spacePressed = false;
+  var lastValue = '';
+
   function onKeydown(e) {
-    if (e.key === ' ' || e.keyCode === 32 || e.which === 32) {
-      log('keydown: SPACE captured', 'info');
-      processSpace(e);
+    // Check multiple space identifiers (Android compatibility)
+    var isSpace = e.key === ' ' || e.keyCode === 32 || e.which === 32 || 
+                  e.code === 'Space' || (e.keyCode === 0 && e.key === 'Unidentified');
+    
+    if (isSpace) {
+      spacePressed = true;
+      log('keydown: SPACE captured (key=' + e.key + ', code=' + e.code + ')', 'info');
+      
+      // Only process if menu is visible
+      if (isMenuVisible()) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        processSpace(e);
+        return false;
+      }
+    }
+  }
+
+  function onBeforeInput(e) {
+    // Catch space before it's inserted
+    if (e.data === ' ' || e.data === '\u00A0') {
+      log('beforeinput: SPACE detected', 'info');
+      
+      if (isMenuVisible()) {
+        e.preventDefault();
+        processSpace(e);
+        return false;
+      }
     }
   }
 
@@ -491,13 +551,36 @@
     var val = textarea.value;
     var lastChar = val.slice(-1);
     
-    if (lastChar === ' ' || lastChar === '\u00A0') {
-      // Check for double space
-      if (!val.endsWith('  ') && !val.endsWith('\u00A0\u00A0')) {
-        log('input: SPACE detected (backup)', 'info');
+    // Detect space insertion
+    if ((lastChar === ' ' || lastChar === '\u00A0') && !spacePressed) {
+      // Space was inserted without keydown (Android soft keyboard)
+      if (val.length > lastValue.length && isMenuVisible()) {
+        log('input: SPACE detected (Android soft keyboard)', 'info');
+        // Remove the space and process
+        textarea.value = val.slice(0, -1);
         processSpace(null);
       }
     }
+    
+    spacePressed = false;
+    lastValue = val;
+  }
+
+  function onCompositionEnd(e) {
+    // Android often sends space after composition ends
+    log('compositionend: ' + e.data, 'info');
+    
+    setTimeout(function() {
+      var textarea = getTextarea();
+      if (!textarea) return;
+      
+      var val = textarea.value;
+      if (val.endsWith(' ') && isMenuVisible()) {
+        log('Space after composition detected', 'info');
+        textarea.value = val.slice(0, -1);
+        processSpace(null);
+      }
+    }, 10);
   }
 
   function tryAttachWithRetry() {
@@ -540,7 +623,7 @@
       return;
     }
     
-    log('Initializing Yamli Pro Handler v4.1 (Approach 4 Optimized)...', 'info');
+    log('Initializing Yamli Pro Handler v4.2 (Android Space Fix)...', 'info');
     
     // Create debug panel
     createDebugPanel();
@@ -617,6 +700,15 @@
     // Reattach
     reattach: function() {
       log('Reattaching handlers...', 'info');
+      var textarea = getTextarea();
+      if (textarea) {
+        // Clean up old listeners
+        textarea.removeEventListener('keydown', onKeydown, true);
+        textarea.removeEventListener('beforeinput', onBeforeInput, true);
+        textarea.removeEventListener('input', onInput);
+        textarea.removeEventListener('compositionend', onCompositionEnd);
+      }
+      document.removeEventListener('keydown', onDocumentKeydown, true);
       attachHandlers();
     },
     
@@ -631,7 +723,7 @@
     },
     
     // Version
-    version: '4.1'
+    version: '4.2'
   };
 
   // Auto-initialize
