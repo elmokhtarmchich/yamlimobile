@@ -669,9 +669,6 @@
     
     // Silent initialization for production
     
-    // Create debug panel
-    createDebugPanel();
-    
     // Start attachment process
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', tryAttachWithRetry);
