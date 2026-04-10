@@ -1,7 +1,7 @@
 <!doctype html><html lang="ar">
 <head>
   <meta charset = "utf-8" />
-  <title>Yamli Mobile </title>
+  <title>Yamli Mobile v1.0</title>
 <meta name="msapplication-TileColor" content="#3b5165">
 <meta name="msapplication-TileImage" content="/images/favicon/favicon-32x32.png">
 <meta name="theme-color" content="#3b5165">
@@ -32,6 +32,7 @@
 
 
 <body>
+<div id="versionBadge">v1.0</div>
 <div id="copyNotification">Text copied</div>
 
 <div id="languagePrompt">
@@ -395,144 +396,6 @@ function insertAtCaret() {
   }
 </script>
 <script src="yamli_spacebar_handler_v4.js"></script>
-<script>
-// YAMLI API INSPECTOR - Check what methods/events are available
-(function() {
-  function inspectYamli() {
-    console.log('=== YAMLI API INSPECTOR ===');
-    
-    if (typeof Yamli === 'undefined') {
-      console.log('Yamli object not found');
-      return;
-    }
-    
-    console.log('Yamli object found:', typeof Yamli);
-    console.log('Yamli methods:', Object.keys(Yamli));
-    
-    // Check for specific textbox instance
-    var textarea = document.getElementById('textbox_id_1');
-    if (textarea) {
-      console.log('Textarea found:', textarea);
-      
-      // Check if textarea has Yamli data
-      if (textarea.yamliData) {
-        console.log('textarea.yamliData:', textarea.yamliData);
-      }
-      if (textarea._yamli) {
-        console.log('textarea._yamli:', textarea._yamli);
-      }
-      
-      // Check all properties of textarea
-      for (var key in textarea) {
-        if (key.toLowerCase().indexOf('yamli') !== -1 || key.toLowerCase().indexOf('ym') === 0) {
-          console.log('Found Yamli property:', key, '=', textarea[key]);
-        }
-      }
-    }
-    
-    // Check window for Yamli-related objects
-    for (var winKey in window) {
-      if (winKey.toLowerCase().indexOf('yamli') !== -1 || winKey.toLowerCase().indexOf('ym') === 0) {
-        console.log('Found window.' + winKey + ':', typeof window[winKey]);
-      }
-    }
-  }
-  
-  // Run after Yamli loads
-  setTimeout(inspectYamli, 2000);
-})();
-</script>
-(function() {
-  var inspectorActive = true;
-  var textarea = document.getElementById('textbox_id_1');
-  if (!textarea) return;
-  
-  var inspectorDiv = document.createElement('div');
-  inspectorDiv.id = 'yamliInspector';
-  inspectorDiv.style.cssText = 'position:fixed;top:10px;right:10px;background:rgba(0,0,0,0.9);color:#0f0;padding:15px;font-size:12px;z-index:99999;width:450px;max-height:400px;overflow:auto;font-family:monospace;border:2px solid #0f0;border-radius:8px;';
-  inspectorDiv.innerHTML = '<b style="color:#ff0;font-size:14px;">🔍 Yamli Debug Inspector</b><br><br>Type to see suggestions...<hr style="border-color:#0f0;margin:10px 0;">';
-  document.body.appendChild(inspectorDiv);
-  
-  var output = document.createElement('div');
-  output.id = 'inspectorOutput';
-  inspectorDiv.appendChild(output);
-  
-  function inspect() {
-    if (!inspectorActive) return;
-    var html = '<b style="color:#f6f;">Found Elements:</b><br><br>';
-    
-    // Find menu container
-    var menuContainer = document.querySelector('.yamliapi_menuContent') || 
-                        document.querySelector('[class*="yamliapi_menuContent"]') ||
-                        document.querySelector('.yamliapi_menuPanel');
-    
-    if (menuContainer) {
-      html += '<b>Container found:</b> ' + menuContainer.className + '<br><br>';
-      
-      var allDivs = menuContainer.querySelectorAll('div');
-      var items = [];
-      
-      for (var i = 0; i < allDivs.length; i++) {
-        var div = allDivs[i];
-        var style = div.getAttribute('style') || '';
-        if (style.indexOf('cursor: pointer') !== -1 && div.textContent.trim()) {
-          items.push(div);
-        }
-      }
-      
-      html += '<b>Items found: ' + items.length + '</b><br><br>';
-      
-      for (var j = 0; j < items.length && j < 10; j++) {
-        var item = items[j];
-        var style = item.getAttribute('style') || '';
-        var isHidden = style.indexOf('display: none') !== -1;
-        var bg = style.match(/background-color:\s*([^;]+)/);
-        var bgColor = bg ? bg[1] : 'none';
-        var isSelected = bgColor.indexOf('rgb(198') !== -1;
-        
-        html += '<div style="border:1px solid ' + (isSelected ? '#ff0' : '#0f0') + ';padding:5px;margin:5px 0;' + (isHidden ? 'opacity:0.5;' : '') + '">';
-        html += '<b>#' + j + '</b> ' + (isSelected ? '★ SELECTED' : '') + (isHidden ? ' [HIDDEN]' : '') + '<br>';
-        html += 'Text: "' + item.textContent.substring(0, 25) + '"<br>';
-        html += 'BG: ' + bgColor + '<br>';
-        html += '</div>';
-      }
-    } else {
-      html += '<span style="color:#f66;">No menu container found!</span><br>';
-    }
-    
-    output.innerHTML = html;
-  }
-  
-  textarea.addEventListener('input', function() {
-    setTimeout(inspect, 100);
-  });
-  
-  setInterval(inspect, 500);
-})();
-</script>
-<script>
-var duplicating = browser.tabs.duplicate(
-  tabId,              // integer
-  duplicateProperties // optional object
-)
-function onDuplicated(tabInfo) {
-  console.log(tabInfo.id);
-}
-function onError(error) {
-  console.log(`Error: ${error}`);
-}
-// Duplicate the first tab in the array
-function duplicateFirstTab(tabs) {
-  console.log(tabs);
-  if (tabs.length > 0) {
-    var duplicating = browser.tabs.duplicate(tabs[0].id);
-    duplicating.then(onDuplicated, onError);
-  }
-}
-// Query for all open tabs
-var querying = browser.tabs.query({});
-querying.then(duplicateFirstTab, onError);
-</script>
 <script>
 function searchtext() {
   /* Get the text field */

@@ -1,6 +1,21 @@
 
 @font-face { font-family: 'MyWebFont'; src: url ('./font/maghribi.ttf'); }
 @font-face { font-family: 'Aljazeera'; src: url ('./font/aljazeera.ttf'); }
+#versionBadge {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background-color: #dbb44f;
+    color: #333;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    z-index: 100;
+    opacity: 0.8;
+}
+
 #copyNotification {
     visibility: hidden;
     background-color: #596a83c5;

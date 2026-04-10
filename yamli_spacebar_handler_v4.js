@@ -1,5 +1,5 @@
 /**
- * Yamli Android Spacebar Handler v4.0
+ * Yamli Android Spacebar Handler
  * 4-Approach Strategy for Auto-Selecting Arabic Suggestions
  * 
  * Features:
@@ -8,11 +8,9 @@
  * - Approach 3: Try available manager methods (acceptSuggestion, selectSuggestion, etc.)
  * - Approach 4: Simulate complete keyboard event sequence
  * - Auto-retry logic for attachment
- * - Real-time debug panel
- * - Manual testing API
+ * - Auto-hide menu after selection
  * 
- * @version 4.0
- * @author Claude Code
+ * @version 1.0.0
  */
 
 (function() {
@@ -22,7 +20,7 @@
   // CONFIGURATION
   // ============================================
   var CONFIG = {
-    debug: true,
+    debug: false,  // Set to true for debugging
     retryAttempts: 10,
     retryDelayMs: 100,
     textareaId: 'textbox_id_1',
@@ -663,7 +661,7 @@
       return;
     }
     
-    log('Initializing Yamli Pro Handler v4.3 (Menu Auto-Hide)...', 'info');
+    // Silent initialization for production
     
     // Create debug panel
     createDebugPanel();
@@ -763,7 +761,7 @@
     },
     
     // Version
-    version: '4.3'
+    version: '1.0.0'
   };
 
   // Auto-initialize
