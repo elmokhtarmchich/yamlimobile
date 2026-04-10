@@ -18,10 +18,15 @@
             "src": "/images/favicon/android-chrome-192x192.png",
             "sizes": "192x192",
             "type": "image/png"
+        },
+        {
+            "src": "/images/favicon/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
         }
     ],
     "name": "Yamli Mobile",
-    "short_name": "Yamli Mobile",
+    "short_name": "Yamli",
     "start_url": "/index.html",
 "screenshots" : [
   {
