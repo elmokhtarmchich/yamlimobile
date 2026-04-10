@@ -66,8 +66,8 @@
 
 
 <div class="button-container">
-  <div class="button" id="btn_12" onclick="changeBackgroundColor()">
-    <img src="./images/background_color.svg" alt="background color">
+  <div class="button" id="btn_12" onclick="toggleTheme()">
+    <img src="./images/background_color.svg" alt="Toggle theme">
   </div>
   <div class="button" id="btn_08" onclick="toggleAlignment()">
     <img src="./images/text_center.svg"  alt="Text center" >                                                
@@ -395,6 +395,22 @@ function insertAtCaret() {
 </script>
 <script src="yamli_spacebar_handler_v4.js?v=1.0"></script>
 <script>
+// Theme toggle function
+function toggleTheme() {
+  const html = document.documentElement;
+  const currentTheme = html.getAttribute('data-theme');
+  const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+  
+  html.setAttribute('data-theme', newTheme);
+  localStorage.setItem('theme', newTheme);
+}
+
+// Load saved theme on page load
+(function() {
+  const savedTheme = localStorage.getItem('theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+})();
+
 function searchtext() {
   /* Get the text field */
   var SerText = document.getElementById("textbox_id_1");

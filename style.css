@@ -1,6 +1,50 @@
 
 @font-face { font-family: 'MyWebFont'; src: url ('./font/maghribi.ttf'); }
 @font-face { font-family: 'Aljazeera'; src: url ('./font/aljazeera.ttf'); }
+
+/* ============================================
+   CSS VARIABLES - Light/Dark Mode
+   ============================================ */
+:root {
+  /* Dark mode (default) */
+  --bg-primary: #181a1c;
+  --bg-secondary: #172027;
+  --bg-tertiary: #3e495a;
+  --text-primary: #fff;
+  --text-secondary: #ccc;
+  --accent-color: #dbb44f;
+  --border-color: #4d4d4d;
+  --button-bg: rgba(59, 56, 73, 0.8);
+  --button-hover: rgba(156, 161, 160, 0.3);
+  --textarea-bg: #172027;
+  --footer-bg: rgb(59, 56, 73);
+  --notification-bg: #596a83c5;
+  --language-bg: #3e495a;
+  --info-bg: #0f2e2b;
+}
+
+[data-theme="light"] {
+  --bg-primary: #f5f5f5;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #e0e0e0;
+  --text-primary: #333;
+  --text-secondary: #666;
+  --accent-color: #d4a017;
+  --border-color: #ccc;
+  --button-bg: rgba(200, 200, 200, 0.8);
+  --button-hover: rgba(180, 180, 180, 0.5);
+  --textarea-bg: #ffffff;
+  --footer-bg: #e0e0e0;
+  --notification-bg: #4a5568c5;
+  --language-bg: #d0d0d0;
+  --info-bg: #e8f4f0;
+}
+
+/* Smooth transition for theme changes */
+body, textarea, .button-container, .footer, #languagePrompt, 
+#info, #contact, .field-input, #id_confrmdiv {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
 #versionBadge {
     position: fixed;
     bottom: 10px;
@@ -40,7 +84,7 @@
 
 #languagePrompt {
   display: none;
-  background-color: #3e495a;
+  background-color: var(--language-bg);
   border-radius: 5px;
   position: fixed;
   top: 80px;
@@ -48,7 +92,7 @@
   transform: translateX(-50%);
   padding: 10px;
   font-family: 'Roboto', sans-serif;
-  color: #eee;
+  color: var(--text-primary);
 }
 #languageGrid {
   display: grid;
@@ -85,7 +129,8 @@
 
 
 body {
-	  background-color: #181a1c;
+	  background-color: var(--bg-primary);
+    color: var(--text-primary);
     width: 100%;
     padding: 12px;
 }
@@ -168,11 +213,12 @@ background-color: rgb(59, 56, 73);
   align-items: center;
 }
 #textbox_id_1 {
-  background-color: #172027;
+  background-color: var(--textarea-bg);
   padding: 8px;
   font-size: 20px;
   font-family: 'Amiri', serif;  
-  color: #fff;
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
   width: 100%;
   min-height:200px;
   resize: vertical;
@@ -259,9 +305,9 @@ left: 0;
   bottom: 0;
   width: 100%;
   height: 60px;
-  background-color: rgb(59, 56, 73);
-  border-top: 3px SOLID #a09fcc;
-  color: white;
+  background-color: var(--footer-bg);
+  border-top: 3px SOLID var(--border-color);
+  color: var(--text-primary);
 padding: 2px;
 }
 .logo {
@@ -333,10 +379,10 @@ transition: background-color 0.5s ease;
   object-fit: contain;
 }
 .button:hover {
-  background: rgba(156, 161, 160,0.3);
+  background: var(--button-hover);
   }
   .button:not(:last-child) {
-    border-right: 1px solid #645f5f56;
+    border-right: 1px solid var(--border-color);
   }
   
 
