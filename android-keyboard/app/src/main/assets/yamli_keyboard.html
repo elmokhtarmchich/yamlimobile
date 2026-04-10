@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Yamli Keyboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a1a2e;
+            color: #fff;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        #inputArea {
+            flex: 1;
+            padding: 10px;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 100%;
+            background: #16213e;
+            border: 1px solid #0f3460;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 18px;
+            padding: 10px;
+            resize: none;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        #toolbar {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 10px;
+            background: #0f3460;
+            border-top: 1px solid #533483;
+        }
+        
+        .btn {
+            background: #e94560;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            min-width: 60px;
+        }
+        
+        .btn:active {
+            background: #ff6b6b;
+        }
+        
+        .btn-secondary {
+            background: #533483;
+        }
+        
+        .btn-space {
+            flex: 2;
+            margin: 0 5px;
+        }
+        
+        #status {
+            padding: 5px 10px;
+            background: #0f3460;
+            font-size: 12px;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+    <div id="status">Yamli Keyboard v1.0</div>
+    
+    <div id="inputArea">
+        <textarea id="textbox_id_1" placeholder="اكتب هنا..." autocomplete="off" autofocus></textarea>
+    </div>
+    
+    <div id="toolbar">
+        <button class="btn btn-secondary" onclick="goBack()">←</button>
+        <button class="btn btn-space" onclick="insertSpace()">مسافة</button>
+        <button class="btn" onclick="commitText()">تم</button>
+    </div>
+
+    <!-- Yamli API -->
+    <script src="https://api.yamli.com/js/yamli_api.js"></script>
+    <script>
+        var textarea = document.getElementById('textbox_id_1');
+        
+        // Initialize Yamli
+        if (typeof(Yamli) == "object") {
+            Yamli.init({
+                uiLanguage: "ar",
+                startMode: "onOrUserDefault",
+                uiFontFamily: 'Segoe UI',
+                settingsColor: '#e94560',
+                settingsLinkColor: '#e94560'
+            });
+            
+            Yamli.yamlify("textbox_id_1", {
+                settingsPlacement: 'inside',
+                showTutorialLink: false,
+                showDirectionLink: false
+            });
+        }
+        
+        // Track current text
+        var currentText = '';
+        var composingText = '';
+        
+        textarea.addEventListener('input', function(e) {
+            currentText = textarea.value;
+            // Send to Android
+            if (window.YamliKeyboard) {
+                window.YamliKeyboard.onTextChanged(currentText);
+            }
+        });
+        
+        function insertSpace() {
+            // Use our custom spacebar handler logic
+            if (window.YamliKeyboard) {
+                // Trigger space in Android input
+                window.YamliKeyboard.onKeyEvent(62); // KEYCODE_SPACE
+            }
+            
+            // Also update textarea
+            var start = textarea.selectionStart;
+            var end = textarea.selectionEnd;
+            var text = textarea.value;
+            textarea.value = text.substring(0, start) + ' ' + text.substring(end);
+            textarea.selectionStart = textarea.selectionEnd = start + 1;
+            
+            // Trigger input event for Yamli
+            textarea.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+        
+        function commitText() {
+            if (window.YamliKeyboard) {
+                window.YamliKeyboard.onCommitText(textarea.value);
+            }
+        }
+        
+        function goBack() {
+            if (window.YamliKeyboard) {
+                window.YamliKeyboard.onBackspace();
+            }
+        }
+        
+        // Handle keyboard events from Android
+        document.addEventListener('keydown', function(e) {
+            if (e.keyCode === 8) { // Backspace
+                goBack();
+            } else if (e.keyCode === 13) { // Enter
+                if (window.YamliKeyboard) {
+                    window.YamliKeyboard.onEnter();
+                }
+            }
+        });
+        
+        // ============================================
+        // YAMLI SPACEBAR HANDLER - Auto-select Arabic
+        // ============================================
+        (function() {
+            'use strict';
+            
+            var CONFIG = {
+                debug: false,
+                textareaId: 'textbox_id_1',
+                arabicIndex: 1,
+                spaceDelayMs: 50
+            };
+            
+            function getTextarea() {
+                return document.getElementById(CONFIG.textareaId);
+            }
+            
+            function getManager() {
+                var textarea = getTextarea();
+                return textarea && textarea.yamliManager ? textarea.yamliManager : null;
+            }
+            
+            function isMenuVisible() {
+                var manager = getManager();
+                if (manager && typeof manager.isMenuVisible === 'function') {
+                    return manager.isMenuVisible();
+                }
+                // Fallback: check DOM
+                var menu = document.querySelector('.yamliapi_menuContent');
+                return menu && menu.style.display !== 'none';
+            }
+            
+            function hideMenu() {
+                var manager = getManager();
+                if (manager && typeof manager.hideTransliterations === 'function') {
+                    manager.hideTransliterations();
+                }
+                // Fallback: hide via DOM
+                var menu = document.querySelector('.yamliapi_menuContent') || 
+                          document.querySelector('.yamliapi_menuPanel');
+                if (menu) {
+                    menu.style.display = 'none';
+                }
+            }
+            
+            function clickFirstArabicSuggestion() {
+                var menu = document.querySelector('.yamliapi_menuContent') || 
+                          document.querySelector('.yamliapi_menuPanel');
+                if (!menu) return false;
+                
+                var items = menu.querySelectorAll('div');
+                var suggestionItems = [];
+                
+                for (var i = 0; i < items.length; i++) {
+                    var style = items[i].getAttribute('style') || '';
+                    if (style.indexOf('cursor: pointer') !== -1 && items[i].textContent.trim()) {
+                        suggestionItems.push(items[i]);
+                    }
+                }
+                
+                if (suggestionItems.length > CONFIG.arabicIndex) {
+                    var arabicItem = suggestionItems[CONFIG.arabicIndex];
+                    arabicItem.click();
+                    return true;
+                }
+                return false;
+            }
+            
+            function simulateEnterKey() {
+                var textarea = getTextarea();
+                if (!textarea) return false;
+                
+                var events = ['keydown', 'keypress', 'keyup'];
+                var success = false;
+                
+                for (var i = 0; i < events.length; i++) {
+                    var event;
+                    try {
+                        event = new KeyboardEvent(events[i], {
+                            key: 'Enter',
+                            keyCode: 13,
+                            which: 13,
+                            bubbles: true,
+                            cancelable: true
+                        });
+                    } catch (e) {
+                        event = document.createEvent('KeyboardEvent');
+                        event.initKeyboardEvent(events[i], true, true, null, 'Enter', 0, false, false, false, false);
+                    }
+                    success = textarea.dispatchEvent(event) || success;
+                }
+                
+                return success;
+            }
+            
+            function addTrailingSpace() {
+                var textarea = getTextarea();
+                if (!textarea) return;
+                
+                setTimeout(function() {
+                    var start = textarea.selectionStart;
+                    var end = textarea.selectionEnd;
+                    var text = textarea.value;
+                    
+                    // Only add space if not already present
+                    if (text.length === 0 || text.charAt(text.length - 1) !== ' ') {
+                        textarea.value = text.substring(0, start) + ' ' + text.substring(end);
+                        var newPosition = start + 1;
+                        textarea.selectionStart = textarea.selectionEnd = newPosition;
+                        
+                        // Notify Android
+                        if (window.YamliKeyboard) {
+                            window.YamliKeyboard.onTextChanged(textarea.value);
+                        }
+                    }
+                    
+                    // Hide menu after space
+                    hideMenu();
+                }, CONFIG.spaceDelayMs);
+            }
+            
+            function processSpace(e) {
+                if (!isMenuVisible()) {
+                    return false; // Let Yamli handle normal space
+                }
+                
+                e.preventDefault();
+                e.stopPropagation();
+                
+                var handled = false;
+                
+                // Approach 1: Click Arabic suggestion
+                handled = clickFirstArabicSuggestion();
+                
+                // Approach 2: Simulate Enter if click didn't work
+                if (!handled) {
+                    handled = simulateEnterKey();
+                }
+                
+                // Add trailing space
+                if (handled) {
+                    addTrailingSpace();
+                }
+                
+                return handled;
+            }
+            
+            function onKeydown(e) {
+                if (e.key === ' ' || e.code === 'Space' || e.keyCode === 32) {
+                    return processSpace(e);
+                }
+            }
+            
+            function attachHandlers() {
+                var textarea = getTextarea();
+                if (!textarea) return;
+                
+                // Remove existing listeners
+                textarea.removeEventListener('keydown', onKeydown, true);
+                
+                // Add capture phase listener
+                textarea.addEventListener('keydown', onKeydown, true);
+                
+                // Also listen at document level for Android keyboards
+                document.removeEventListener('keydown', onKeydown, true);
+                document.addEventListener('keydown', onKeydown, true);
+            }
+            
+            // Initialize
+            function init() {
+                setTimeout(function() {
+                    attachHandlers();
+                }, 1000);
+            }
+            
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+            
+            // Re-attach periodically in case Yamli reinitializes
+            setInterval(attachHandlers, 2000);
+            
+        })();
+    </script>
+</body>
+</html>
