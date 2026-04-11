@@ -124,12 +124,16 @@
 
 </body>
 
-<footer>
-<div class="footer">
-<a class="active" ><img href="watsapgo.net" class="logo" src="./images/favicon/ms-icon-144x144.png" >Yamli Mobile </a>
-<a href="./contact.html"><img class="img" src="./icon/contact.svg"></a>
-<a onclick="notifyMe()"><img class="img" src="./icon/bell.svg"></a>
-<a href="#home" onclick="window.location.reload(true);"><img class="img" src="./icon/home.svg"></a>
+<footer class="footer">
+  <a class="active">
+    <img class="logo" src="./images/favicon/ms-icon-144x144.png" alt="Yamli Mobile">
+    <span>Yamli Mobile</span>
+  </a>
+  <div class="nav-links">
+    <a href="./contact.html" title="Contact"><img class="img" src="./icon/contact.svg" alt="Contact"></a>
+    <a onclick="notifyMe()" title="Notifications"><img class="img" src="./icon/bell.svg" alt="Notifications"></a>
+    <a href="#home" onclick="window.location.reload(true);" title="Home"><img class="img" src="./icon/home.svg" alt="Home"></a>
+  </div>
 </footer>
 
 <script>
