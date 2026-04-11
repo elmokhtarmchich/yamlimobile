@@ -179,6 +179,11 @@
 
   <script src="./config.js"></script>
   <script>
+    // Fallback password if config.js is not loaded (e.g., on GitHub Pages)
+    if (typeof ADMIN_PASSWORD === 'undefined') {
+      const ADMIN_PASSWORD = 'yamli2024';
+    }
+    
     // Check for notification support
     const notificationsSupported = 'Notification' in window && 'serviceWorker' in navigator;
     
@@ -187,7 +192,10 @@
       const input = document.getElementById('adminPassword').value;
       const error = document.getElementById('loginError');
       
-      if (input === ADMIN_PASSWORD) {
+      // Use the global ADMIN_PASSWORD or fallback
+      const correctPassword = typeof ADMIN_PASSWORD !== 'undefined' ? ADMIN_PASSWORD : 'yamli2024';
+      
+      if (input === correctPassword) {
         document.getElementById('loginScreen').classList.add('hidden');
         document.getElementById('adminPanel').classList.remove('hidden');
       } else {
