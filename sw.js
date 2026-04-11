@@ -20,3 +20,34 @@ self.addEventListener('fetch', (e) => {
   );
 });
 
+// Push notification handling
+self.addEventListener('push', (e) => {
+  const data = e.data.json();
+  const options = {
+    body: data.body || 'Yamli Mobile notification',
+    icon: './images/favicon/ms-icon-144x144.png',
+    badge: './images/favicon/favicon-32x32.png',
+    tag: data.tag || 'yamli-notification',
+    requireInteraction: true,
+    actions: [
+      { action: 'open', title: 'فتح', icon: './icon/home.svg' },
+      { action: 'close', title: 'إغلاق', icon: './icon/cancel.svg' }
+    ]
+  };
+  
+  e.waitUntil(
+    self.registration.showNotification(data.title || 'Yamli Mobile', options)
+  );
+});
+
+// Notification click handling
+self.addEventListener('notificationclick', (e) => {
+  e.notification.close();
+  
+  if (e.action === 'open' || !e.action) {
+    e.waitUntil(
+      clients.openWindow('/')
+    );
+  }
+});
+

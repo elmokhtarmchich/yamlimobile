@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yamli Mobile - Admin</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Amiri', 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    
+    .admin-container {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 40px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+    
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+      font-size: 28px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #555;
+      font-weight: 600;
+    }
+    
+    input, textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 16px;
+      font-family: inherit;
+      transition: border-color 0.3s ease;
+    }
+    
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: #dbb44f;
+    }
+    
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+    
+    .btn {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, #dbb44f 0%, #c9a03d 100%);
+      color: #333;
+      border: none;
+      border-radius: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(219, 180, 79, 0.4);
+    }
+    
+    .btn:active {
+      transform: translateY(0);
+    }
+    
+    .status {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      display: none;
+    }
+    
+    .status.success {
+      background: #d4edda;
+      color: #155724;
+      display: block;
+    }
+    
+    .status.error {
+      background: #f8d7da;
+      color: #721c24;
+      display: block;
+    }
+    
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      color: #666;
+      text-decoration: none;
+    }
+    
+    .back-link:hover {
+      color: #dbb44f;
+    }
+  </style>
+</head>
+<body>
+  <div class="admin-container">
+    <h1>📢 إرسال إشعار</h1>
+    
+    <div class="form-group">
+      <label for="notifTitle">عنوان الإشعار:</label>
+      <input type="text" id="notifTitle" placeholder="Yamli Mobile" value="Yamli Mobile">
+    </div>
+    
+    <div class="form-group">
+      <label for="notifBody">نص الإشعار:</label>
+      <textarea id="notifBody" placeholder="اكتب رسالتك هنا..."></textarea>
+    </div>
+    
+    <button class="btn" onclick="sendNotification()">إرسال الإشعار</button>
+    
+    <div id="status" class="status"></div>
+    
+    <a href="./index.html" class="back-link">← العودة للرئيسية</a>
+  </div>
+
+  <script>
+    // Check for notification support
+    const notificationsSupported = 'Notification' in window && 'serviceWorker' in navigator;
+    
+    function showStatus(message, type) {
+      const status = document.getElementById('status');
+      status.textContent = message;
+      status.className = 'status ' + type;
+      setTimeout(() => {
+        status.className = 'status';
+      }, 3000);
+    }
+    
+    async function sendNotification() {
+      if (!notificationsSupported) {
+        showStatus('الإشعارات غير مدعومة في هذا المتصفح', 'error');
+        return;
+      }
+      
+      const title = document.getElementById('notifTitle').value || 'Yamli Mobile';
+      const body = document.getElementById('notifBody').value;
+      
+      if (!body.trim()) {
+        showStatus('الرجاء كتابة نص الإشعار', 'error');
+        return;
+      }
+      
+      // Request permission if not granted
+      if (Notification.permission !== 'granted') {
+        const permission = await Notification.requestPermission();
+        if (permission !== 'granted') {
+          showStatus('تم رفض الإذن للإشعارات', 'error');
+          return;
+        }
+      }
+      
+      // Send notification
+      try {
+        new Notification(title, {
+          body: body,
+          icon: './images/favicon/ms-icon-144x144.png',
+          badge: './images/favicon/favicon-32x32.png',
+          tag: 'admin-notification'
+        });
+        
+        showStatus('تم إرسال الإشعار بنجاح!', 'success');
+        document.getElementById('notifBody').value = '';
+        
+      } catch (err) {
+        showStatus('خطأ: ' + err.message, 'error');
+      }
+    }
+    
+    // Register service worker for PWA support
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js');
+    }
+  </script>
+</body>
+</html>
