@@ -121,11 +121,43 @@
     .back-link:hover {
       color: #dbb44f;
     }
+    
+    .login-container {
+      text-align: center;
+    }
+    
+    .login-container input {
+      margin-bottom: 15px;
+    }
+    
+    .hidden {
+      display: none !important;
+    }
+    
+    .error-msg {
+      color: #dc3545;
+      margin-top: 10px;
+      font-size: 14px;
+    }
   </style>
 </head>
 <body>
   <div class="admin-container">
-    <h1>📢 إرسال إشعار</h1>
+    <!-- Password Login Screen -->
+    <div id="loginScreen" class="login-container">
+      <h1>🔐 تسجيل الدخول</h1>
+      <div class="form-group">
+        <label for="adminPassword">كلمة المرور:</label>
+        <input type="password" id="adminPassword" placeholder="أدخل كلمة المرور">
+      </div>
+      <button class="btn" onclick="checkPassword()">دخول</button>
+      <div id="loginError" class="error-msg hidden">كلمة المرور غير صحيحة</div>
+      <a href="./index.html" class="back-link">← العودة للرئيسية</a>
+    </div>
+    
+    <!-- Admin Panel (Hidden by default) -->
+    <div id="adminPanel" class="hidden">
+      <h1>📢 إرسال إشعار</h1>
     
     <div class="form-group">
       <label for="notifTitle">عنوان الإشعار:</label>
@@ -142,11 +174,32 @@
     <div id="status" class="status"></div>
     
     <a href="./index.html" class="back-link">← العودة للرئيسية</a>
+    </div>
   </div>
 
+  <script src="./config.js"></script>
   <script>
     // Check for notification support
     const notificationsSupported = 'Notification' in window && 'serviceWorker' in navigator;
+    
+    // Password check function
+    function checkPassword() {
+      const input = document.getElementById('adminPassword').value;
+      const error = document.getElementById('loginError');
+      
+      if (input === ADMIN_PASSWORD) {
+        document.getElementById('loginScreen').classList.add('hidden');
+        document.getElementById('adminPanel').classList.remove('hidden');
+      } else {
+        error.classList.remove('hidden');
+        document.getElementById('adminPassword').value = '';
+      }
+    }
+    
+    // Allow Enter key to submit password
+    document.getElementById('adminPassword')?.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') checkPassword();
+    });
     
     function showStatus(message, type) {
       const status = document.getElementById('status');

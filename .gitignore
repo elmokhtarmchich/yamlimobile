@@ -36,3 +36,6 @@ yarn-error.log*
 *.temp
 coverage/
 .nyc_output/
+
+# Admin config (contains password)
+config.js
