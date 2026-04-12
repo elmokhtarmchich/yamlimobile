@@ -145,6 +145,9 @@ window.notifyMe = notifyMe;
 // PUSH SUBSCRIPTION FOR MULTI-DEVICE
 // ============================================
 
+// Cloudflare Worker URL - Update this after deploying your worker
+const CLOUDFLARE_WORKER_URL = 'https://yamli-push-notifications.your-account.workers.dev';
+
 // VAPID public key for push subscriptions
 const VAPID_PUBLIC_KEY = 'BEl62iTM0R5R4gF9U6F1D1Q1H1L1T1N1P1R1T1V1X1Z1a1c1e1g1i1k1m1o1q1s1u1w1y1';
 
@@ -162,7 +165,7 @@ function urlBase64ToUint8Array(base64String) {
   return outputArray;
 }
 
-// Subscribe this device for push notifications
+// Subscribe this device for push notifications and sync to Cloudflare
 async function subscribeForPush() {
   try {
     const registration = await navigator.serviceWorker.ready;
@@ -171,7 +174,7 @@ async function subscribeForPush() {
     let subscription = await registration.pushManager.getSubscription();
     
     if (!subscription) {
-      // Subscribe
+      // Subscribe to push
       subscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
@@ -179,20 +182,47 @@ async function subscribeForPush() {
       console.log('Subscribed to push:', subscription);
     }
     
-    // Store subscription locally (in production, send to backend)
+    // Also store locally as backup
     const subscriptions = JSON.parse(localStorage.getItem('pushSubscriptions') || '[]');
     const subData = JSON.stringify(subscription);
     
     if (!subscriptions.includes(subData)) {
       subscriptions.push(subData);
       localStorage.setItem('pushSubscriptions', JSON.stringify(subscriptions));
-      console.log('Device added to subscription list');
     }
+    
+    // Sync to Cloudflare Worker
+    await syncSubscriptionToCloudflare(subscription);
     
     return subscription;
   } catch (err) {
     console.error('Push subscription failed:', err);
     return null;
+  }
+}
+
+// Sync subscription to Cloudflare Worker
+async function syncSubscriptionToCloudflare(subscription) {
+  try {
+    const response = await fetch(`${CLOUDFLARE_WORKER_URL}/subscribe`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(subscription)
+    });
+    
+    if (response.ok) {
+      const result = await response.json();
+      console.log('Synced to Cloudflare:', result);
+      // Store Cloudflare ID locally
+      if (result.id) {
+        localStorage.setItem('cloudflareSubId', result.id);
+      }
+    } else {
+      console.warn('Cloudflare sync failed:', response.status);
+    }
+  } catch (err) {
+    console.warn('Could not sync to Cloudflare:', err);
+    // Continue anyway - local subscription still works
   }
 }
 

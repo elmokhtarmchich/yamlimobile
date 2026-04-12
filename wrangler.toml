@@ -1,0 +1,16 @@
+# Cloudflare Workers Configuration
+name = "yamli-push-notifications"
+main = "workers/push-notifications.js"
+compatibility_date = "2024-01-01"
+
+# KV Namespace for storing subscriptions
+[[kv_namespaces]]
+binding = "PUSH_SUBSCRIPTIONS"
+id = "your_kv_namespace_id_here"
+
+# Environment variables
+[vars]
+VAPID_PUBLIC_KEY = "BEl62iTM0R5R4gF9U6F1D1Q1H1L1T1N1P1R1T1V1X1Z1a1c1e1g1i1k1m1o1q1s1u1w1y1"
+
+# Secrets (set via wrangler secret put)
+# VAPID_PRIVATE_KEY
