@@ -140,3 +140,78 @@ function notifyMe() {
 
 // Make notifyMe globally available
 window.notifyMe = notifyMe;
+
+// ============================================
+// PUSH SUBSCRIPTION FOR MULTI-DEVICE
+// ============================================
+
+// VAPID public key for push subscriptions
+const VAPID_PUBLIC_KEY = 'BEl62iTM0R5R4gF9U6F1D1Q1H1L1T1N1P1R1T1V1X1Z1a1c1e1g1i1k1m1o1q1s1u1w1y1';
+
+// Helper: Convert VAPID key
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding)
+    .replace(/\-/g, '+')
+    .replace(/_/g, '/');
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+}
+
+// Subscribe this device for push notifications
+async function subscribeForPush() {
+  try {
+    const registration = await navigator.serviceWorker.ready;
+    
+    // Check if already subscribed
+    let subscription = await registration.pushManager.getSubscription();
+    
+    if (!subscription) {
+      // Subscribe
+      subscription = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+      });
+      console.log('Subscribed to push:', subscription);
+    }
+    
+    // Store subscription locally (in production, send to backend)
+    const subscriptions = JSON.parse(localStorage.getItem('pushSubscriptions') || '[]');
+    const subData = JSON.stringify(subscription);
+    
+    if (!subscriptions.includes(subData)) {
+      subscriptions.push(subData);
+      localStorage.setItem('pushSubscriptions', JSON.stringify(subscriptions));
+      console.log('Device added to subscription list');
+    }
+    
+    return subscription;
+  } catch (err) {
+    console.error('Push subscription failed:', err);
+    return null;
+  }
+}
+
+// Auto-subscribe when permission is granted
+async function requestNotificationPermission() {
+  if (!notificationsSupported) {
+    alert('إشعارات غير مدعومة في هذا المتصفح');
+    return;
+  }
+  
+  Notification.requestPermission().then(async (permission) => {
+    if (permission === 'granted') {
+      await subscribeForPush();
+      showTestNotification();
+    }
+  });
+}
+
+// Subscribe on page load if already granted
+if (Notification.permission === 'granted') {
+  subscribeForPush();
+}
