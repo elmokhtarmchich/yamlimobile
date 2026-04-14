@@ -7,7 +7,7 @@ compatibility_flags = []
 # KV Namespace for storing subscriptions
 [[kv_namespaces]]
 binding = "PUSH_SUBSCRIPTIONS"
-id = "your_kv_namespace_id_here"
+id = "130d802e56d449eb950c52e789b69f3d"
 
 # Environment variables
 [vars]

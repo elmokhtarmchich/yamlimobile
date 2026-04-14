@@ -146,7 +146,7 @@ window.notifyMe = notifyMe;
 // ============================================
 
 // Cloudflare Worker URL - Update this after deploying your worker
-const CLOUDFLARE_WORKER_URL = 'https://yamli-push-notifications.your-account.workers.dev';
+const CLOUDFLARE_WORKER_URL = 'https://yamli-push-notifications.elmokhtar-mchich.workers.dev';
 
 // VAPID public key for push subscriptions
 const VAPID_PUBLIC_KEY = 'BL6iSz-YuFdNzbBS7rVLzmJDw0mNiNX-uKXDuPTuPoDXI6qAZiErTQ04FmuD_zoZRXGCaFKrj74OIqcclUgs6Vk';
