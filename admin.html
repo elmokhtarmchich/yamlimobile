@@ -243,12 +243,17 @@
       }
       
       console.log('Getting service worker registration...');
-      // Get service worker registration - wait for it with timeout
-      const registration = await Promise.race([
-        navigator.serviceWorker.ready,
-        new Promise((_, reject) => setTimeout(() => reject(new Error('Service Worker timeout')), 5000))
-      ]);
-      console.log('Service worker ready:', registration);
+      // Use the registered service worker directly
+      let registration = swRegistration;
+      if (!registration) {
+        // Fallback: try to get existing registration
+        const registrations = await navigator.serviceWorker.getRegistrations();
+        registration = registrations.find(r => r.scope.includes('yamlimobile')) || registrations[0];
+      }
+      if (!registration) {
+        throw new Error('No service worker registered');
+      }
+      console.log('Using service worker:', registration.scope);
       
       // Subscribe to push
       try {
@@ -370,7 +375,15 @@
         
         // Fallback: Send locally
         try {
-          const registration = await navigator.serviceWorker.ready;
+          // Use existing registration or get from list
+          let registration = swRegistration;
+          if (!registration) {
+            const registrations = await navigator.serviceWorker.getRegistrations();
+            registration = registrations[0];
+          }
+          if (!registration) {
+            throw new Error('No service worker available');
+          }
           await registration.showNotification(title, {
             body: body,
             icon: './images/favicon/ms-icon-144x144.png',
