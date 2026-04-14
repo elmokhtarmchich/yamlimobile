@@ -243,8 +243,11 @@
       }
       
       console.log('Getting service worker registration...');
-      // Get service worker registration
-      const registration = await navigator.serviceWorker.ready;
+      // Get service worker registration - wait for it with timeout
+      const registration = await Promise.race([
+        navigator.serviceWorker.ready,
+        new Promise((_, reject) => setTimeout(() => reject(new Error('Service Worker timeout')), 5000))
+      ]);
       console.log('Service worker ready:', registration);
       
       // Subscribe to push
@@ -388,8 +391,16 @@
     });
     
     // Register service worker for PWA support
+    let swRegistration = null;
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js');
+      navigator.serviceWorker.register('./sw.js')
+        .then(reg => {
+          swRegistration = reg;
+          console.log('Service Worker registered:', reg.scope);
+        })
+        .catch(err => {
+          console.error('Service Worker registration failed:', err);
+        });
     }
   </script>
 </body>
