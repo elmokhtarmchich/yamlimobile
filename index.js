@@ -149,7 +149,7 @@ window.notifyMe = notifyMe;
 const CLOUDFLARE_WORKER_URL = 'https://yamli-push-notifications.your-account.workers.dev';
 
 // VAPID public key for push subscriptions
-const VAPID_PUBLIC_KEY = 'BEl62iTM0R5R4gF9U6F1D1Q1H1L1T1N1P1R1T1V1X1Z1a1c1e1g1i1k1m1o1q1s1u1w1y1';
+const VAPID_PUBLIC_KEY = 'BL6iSz-YuFdNzbBS7rVLzmJDw0mNiNX-uKXDuPTuPoDXI6qAZiErTQ04FmuD_zoZRXGCaFKrj74OIqcclUgs6Vk';
 
 // Helper: Convert VAPID key
 function urlBase64ToUint8Array(base64String) {
