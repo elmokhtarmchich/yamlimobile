@@ -221,31 +221,42 @@
     // Store subscription in localStorage for demo purposes
     // In production, send this to your backend server
     async function subscribeDevice() {
+      console.log('subscribeDevice called');
+      
       if (!notificationsSupported) {
+        console.log('Notifications not supported');
         showStatus('الإشعارات غير مدعومة في هذا المتصفح', 'error');
         return;
       }
       
+      console.log('Notification permission:', Notification.permission);
+      
       // Request permission if not granted
       if (Notification.permission !== 'granted') {
+        console.log('Requesting permission...');
         const permission = await Notification.requestPermission();
+        console.log('Permission result:', permission);
         if (permission !== 'granted') {
           showStatus('تم رفض الإذن للإشعارات', 'error');
           return false;
         }
       }
       
+      console.log('Getting service worker registration...');
       // Get service worker registration
       const registration = await navigator.serviceWorker.ready;
+      console.log('Service worker ready:', registration);
       
       // Subscribe to push
       try {
+        console.log('Subscribing to push...');
         const subscription = await registration.pushManager.subscribe({
           userVisibleOnly: true,
           applicationServerKey: urlBase64ToUint8Array(
             'BL6iSz-YuFdNzbBS7rVLzmJDw0mNiNX-uKXDuPTuPoDXI6qAZiErTQ04FmuD_zoZRXGCaFKrj74OIqcclUgs6Vk'
           )
         });
+        console.log('Push subscription:', subscription);
         
         // Store subscription locally (in real app, send to backend)
         const subscriptions = JSON.parse(localStorage.getItem('pushSubscriptions') || '[]');
