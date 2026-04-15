@@ -119,7 +119,7 @@ function urlBase64ToUint8Array(base64String) {
 }
 
 // Main notification function - called by the bell button
-function notifyMe() {
+async function notifyMe() {
   if (!notificationsSupported) {
     alert('إشعارات غير مدعومة في هذا المتصفح');
     return;
@@ -127,14 +127,16 @@ function notifyMe() {
   
   // Check current permission
   if (Notification.permission === 'granted') {
-    // Already granted, show test notification
+    // Already granted, subscribe to Cloudflare and show test notification
+    console.log('Permission granted, subscribing to Cloudflare...');
+    await subscribeForPush();
     showTestNotification();
   } else if (Notification.permission === 'denied') {
     // Denied, ask user to enable in settings
     alert('الإشعارات معطلة. يرجى تفعيلها من إعدادات المتصفح');
   } else {
     // Not decided yet, request permission
-    requestNotificationPermission();
+    await requestNotificationPermission();
   }
 }
 
@@ -168,7 +170,14 @@ function urlBase64ToUint8Array(base64String) {
 // Subscribe this device for push notifications and sync to Cloudflare
 async function subscribeForPush() {
   try {
-    const registration = await navigator.serviceWorker.ready;
+    // Get service worker registration without hanging
+    const registrations = await navigator.serviceWorker.getRegistrations();
+    const registration = registrations.find(r => r.scope.includes('yamlimobile')) || registrations[0];
+    
+    if (!registration) {
+      console.error('No service worker found');
+      return null;
+    }
     
     // Check if already subscribed
     let subscription = await registration.pushManager.getSubscription();
