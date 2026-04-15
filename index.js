@@ -174,23 +174,42 @@ function urlBase64ToUint8Array(base64String) {
 // Subscribe this device for push notifications and sync to Cloudflare
 async function subscribeForPush() {
   try {
-    // Wait for service worker registration to complete
+    // Wait for service worker registration with retry
     let registration = null;
-    if (swRegistrationPromise) {
-      registration = await swRegistrationPromise;
-      console.log('Using service worker registration:', registration.scope);
+    let attempts = 0;
+    const maxAttempts = 10;
+    
+    while (!registration && attempts < maxAttempts) {
+      if (swRegistrationPromise) {
+        try {
+          registration = await Promise.race([
+            swRegistrationPromise,
+            new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 1000))
+          ]);
+        } catch (e) {
+          // Timeout, will retry
+        }
+      }
+      
+      if (!registration) {
+        const registrations = await navigator.serviceWorker.getRegistrations();
+        registration = registrations.find(r => r.scope.includes('yamlimobile')) || registrations[0];
+      }
+      
+      if (!registration) {
+        attempts++;
+        console.log(`Waiting for service worker... attempt ${attempts}/${maxAttempts}`);
+        await new Promise(r => setTimeout(r, 500));
+      }
     }
     
-    // Fallback: check existing registrations
     if (!registration) {
-      const registrations = await navigator.serviceWorker.getRegistrations();
-      registration = registrations.find(r => r.scope.includes('yamlimobile')) || registrations[0];
-    }
-    
-    if (!registration) {
-      console.error('No service worker found');
+      console.error('No service worker found after waiting');
+      alert('Service Worker not ready yet. Please wait a moment and try again.');
       return null;
     }
+    
+    console.log('Using service worker registration:', registration.scope);
     
     // Check if already subscribed
     let subscription = await registration.pushManager.getSubscription();
