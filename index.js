@@ -211,6 +211,25 @@ async function subscribeForPush() {
     
     console.log('Using service worker registration:', registration.scope);
     
+    // Wait for service worker to become active
+    if (registration.installing) {
+      console.log('Waiting for service worker to install...');
+      await new Promise(resolve => {
+        registration.installing.addEventListener('statechange', () => {
+          if (registration.active) resolve();
+        });
+      });
+    }
+    
+    // Ensure we have an active service worker
+    if (!registration.active) {
+      console.error('Service worker not active yet');
+      alert('Service Worker still initializing. Please wait 2-3 seconds and try again.');
+      return null;
+    }
+    
+    console.log('Service worker is active, subscribing...');
+    
     // Check if already subscribed
     let subscription = await registration.pushManager.getSubscription();
     
