@@ -210,21 +210,35 @@ async function subscribeForPush() {
     }
     
     console.log('Using service worker registration:', registration.scope);
+    console.log('SW state - installing:', !!registration.installing, 'waiting:', !!registration.waiting, 'active:', !!registration.active);
     
-    // Wait for service worker to become active
-    if (registration.installing) {
-      console.log('Waiting for service worker to install...');
-      await new Promise(resolve => {
-        registration.installing.addEventListener('statechange', () => {
-          if (registration.active) resolve();
-        });
-      });
+    // Force the service worker to activate immediately
+    if (registration.waiting) {
+      registration.waiting.postMessage({type: 'SKIP_WAITING'});
     }
     
-    // Ensure we have an active service worker
-    if (!registration.active) {
-      console.error('Service worker not active yet');
-      alert('Service Worker still initializing. Please wait 2-3 seconds and try again.');
+    // Wait for active service worker with timeout
+    let sw = registration.active;
+    if (!sw) {
+      console.log('Waiting for service worker to become active...');
+      sw = await Promise.race([
+        new Promise(resolve => {
+          const check = () => {
+            if (registration.active) {
+              resolve(registration.active);
+            } else {
+              setTimeout(check, 100);
+            }
+          };
+          check();
+        }),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000))
+      ]);
+    }
+    
+    if (!sw) {
+      console.error('Service worker not active');
+      alert('Service Worker not ready. Try again in a few seconds.');
       return null;
     }
     

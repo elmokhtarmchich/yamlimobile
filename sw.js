@@ -9,8 +9,17 @@ self.addEventListener('install', (e) => {
       '/audioPlayer.js',
       './image/med.png',
       './image/coran.png',
-    ])),
+    ])).then(() => {
+      self.skipWaiting(); // Activate immediately
+    }),
   );
+});
+
+// Listen for skip waiting message
+self.addEventListener('message', (e) => {
+  if (e.data && e.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
 
 self.addEventListener('fetch', (e) => {
