@@ -20,6 +20,9 @@ self.addEventListener('message', (e) => {
   if (e.data && e.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
   }
+  if (e.data && e.data.type === 'CLAIM_CLIENTS') {
+    self.clients.claim();
+  }
 });
 
 self.addEventListener('fetch', (e) => {

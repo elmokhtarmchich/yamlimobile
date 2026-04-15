@@ -212,37 +212,51 @@ async function subscribeForPush() {
     console.log('Using service worker registration:', registration.scope);
     console.log('SW state - installing:', !!registration.installing, 'waiting:', !!registration.waiting, 'active:', !!registration.active);
     
-    // Force the service worker to activate immediately
+    // If service worker is waiting, claim it immediately
     if (registration.waiting) {
+      console.log('Sending skip waiting to service worker...');
       registration.waiting.postMessage({type: 'SKIP_WAITING'});
     }
     
-    // Wait for active service worker with timeout
+    // Try to claim control immediately
+    if (registration.active) {
+      registration.active.postMessage({type: 'CLAIM_CLIENTS'});
+    }
+    
+    // Wait longer for activation with better checking
     let sw = registration.active;
-    if (!sw) {
-      console.log('Waiting for service worker to become active...');
-      sw = await Promise.race([
-        new Promise(resolve => {
-          const check = () => {
-            if (registration.active) {
-              resolve(registration.active);
-            } else {
-              setTimeout(check, 100);
-            }
-          };
-          check();
-        }),
-        new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000))
-      ]);
+    let activeAttempts = 0;
+    const maxActiveAttempts = 50; // 5 seconds total
+    
+    while (!sw && activeAttempts < maxActiveAttempts) {
+      await new Promise(r => setTimeout(r, 100));
+      
+      // Re-check registration state
+      const regs = await navigator.serviceWorker.getRegistrations();
+      const currentReg = regs.find(r => r.scope.includes('yamlimobile'));
+      if (currentReg) {
+        sw = currentReg.active;
+        if (currentReg.waiting) {
+          currentReg.waiting.postMessage({type: 'SKIP_WAITING'});
+        }
+      }
+      
+      activeAttempts++;
+      if (activeAttempts % 10 === 0) {
+        console.log(`Still waiting for SW... attempt ${activeAttempts}/${maxActiveAttempts}`);
+      }
     }
     
     if (!sw) {
-      console.error('Service worker not active');
-      alert('Service Worker not ready. Try again in a few seconds.');
+      console.error('Service worker not active after waiting');
+      // Try to reload the page to activate the new service worker
+      if (confirm('Service Worker needs to reload the page to activate. Reload now?')) {
+        window.location.reload();
+      }
       return null;
     }
     
-    console.log('Service worker is active, subscribing...');
+    console.log('Service worker is active after', attempts, 'attempts, subscribing...');
     
     // Check if already subscribed
     let subscription = await registration.pushManager.getSubscription();
