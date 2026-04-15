@@ -37,22 +37,53 @@ self.addEventListener('fetch', (e) => {
 
 // Push notification handling
 self.addEventListener('push', (e) => {
-  const data = e.data.json();
-  const options = {
-    body: data.body || 'Yamli Mobile notification',
-    icon: './images/favicon/ms-icon-144x144.png',
-    badge: './images/favicon/favicon-32x32.png',
-    tag: data.tag || 'yamli-notification',
-    requireInteraction: true,
-    actions: [
-      { action: 'open', title: 'فتح', icon: './icon/home.svg' },
-      { action: 'close', title: 'إغلاق', icon: './icon/cancel.svg' }
-    ]
-  };
+  console.log('Push event received:', e);
   
-  e.waitUntil(
-    self.registration.showNotification(data.title || 'Yamli Mobile', options)
-  );
+  try {
+    let data = {};
+    
+    if (e.data) {
+      try {
+        data = e.data.json();
+        console.log('Push data:', data);
+      } catch (parseErr) {
+        console.error('Failed to parse push data:', parseErr);
+        data = { title: 'Yamli Mobile', body: 'New notification' };
+      }
+    } else {
+      console.log('No push data, using default');
+      data = { title: 'Yamli Mobile', body: 'New notification' };
+    }
+    
+    const options = {
+      body: data.body || 'Yamli Mobile notification',
+      icon: './images/favicon/ms-icon-144x144.png',
+      badge: './images/favicon/favicon-32x32.png',
+      tag: data.tag || 'yamli-notification',
+      requireInteraction: true,
+      actions: [
+        { action: 'open', title: 'فتح', icon: './icon/home.svg' },
+        { action: 'close', title: 'إغلاق', icon: './icon/cancel.svg' }
+      ]
+    };
+    
+    console.log('Showing notification:', data.title, options);
+    
+    e.waitUntil(
+      self.registration.showNotification(data.title || 'Yamli Mobile', options)
+        .then(() => console.log('Notification shown successfully'))
+        .catch(err => console.error('Failed to show notification:', err))
+    );
+  } catch (err) {
+    console.error('Error in push handler:', err);
+    // Show default notification on error
+    e.waitUntil(
+      self.registration.showNotification('Yamli Mobile', {
+        body: 'New notification',
+        icon: './images/favicon/ms-icon-144x144.png'
+      })
+    );
+  }
 });
 
 // Notification click handling
