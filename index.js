@@ -1,11 +1,15 @@
 
 
 // Register service worker to control making site work offline
+let swRegistrationPromise = null;
 
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker
+  swRegistrationPromise = navigator.serviceWorker
     .register('./sw.js')
-    .then(() => { console.log('Service Worker Registered'); });
+    .then((reg) => { 
+      console.log('Service Worker Registered');
+      return reg;
+    });
 }
 
 
@@ -170,9 +174,18 @@ function urlBase64ToUint8Array(base64String) {
 // Subscribe this device for push notifications and sync to Cloudflare
 async function subscribeForPush() {
   try {
-    // Get service worker registration without hanging
-    const registrations = await navigator.serviceWorker.getRegistrations();
-    const registration = registrations.find(r => r.scope.includes('yamlimobile')) || registrations[0];
+    // Wait for service worker registration to complete
+    let registration = null;
+    if (swRegistrationPromise) {
+      registration = await swRegistrationPromise;
+      console.log('Using service worker registration:', registration.scope);
+    }
+    
+    // Fallback: check existing registrations
+    if (!registration) {
+      const registrations = await navigator.serviceWorker.getRegistrations();
+      registration = registrations.find(r => r.scope.includes('yamlimobile')) || registrations[0];
+    }
     
     if (!registration) {
       console.error('No service worker found');
