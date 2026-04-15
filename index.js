@@ -174,6 +174,21 @@ function urlBase64ToUint8Array(base64String) {
 // Subscribe this device for push notifications and sync to Cloudflare
 async function subscribeForPush() {
   try {
+    // Check if there's a stuck service worker and try to recover
+    const existingRegs = await navigator.serviceWorker.getRegistrations();
+    const stuckReg = existingRegs.find(r => r.scope.includes('yamlimobile') && !r.active);
+    
+    if (stuckReg) {
+      console.log('Found stuck service worker, trying to recover...');
+      // Try to unregister the stuck one
+      try {
+        await stuckReg.unregister();
+        console.log('Unregistered stuck service worker');
+      } catch (e) {
+        console.warn('Could not unregister:', e);
+      }
+    }
+    
     // Wait for service worker registration with retry
     let registration = null;
     let attempts = 0;

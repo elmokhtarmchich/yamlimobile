@@ -1,15 +1,18 @@
 self.addEventListener('install', (e) => {
   e.waitUntil(
-    caches.open('yamli-store').then((cache) => cache.addAll([
-      '/index.html',
-      '/index.js',
-      '/style.css',
-      '/sw.js',
-      '/script.js',
-      '/audioPlayer.js',
-      './image/med.png',
-      './image/coran.png',
-    ])).then(() => {
+    caches.open('yamli-store').then((cache) => {
+      // Cache essential files, but don't fail if some are missing
+      return cache.addAll([
+        '/index.html',
+        '/index.js',
+        '/style.css',
+        '/sw.js',
+      ]).catch(err => {
+        console.warn('Some files failed to cache:', err);
+        // Continue even if caching fails
+      });
+    }).then(() => {
+      console.log('Service Worker installed, skipping waiting');
       self.skipWaiting(); // Activate immediately
     }),
   );
