@@ -130,13 +130,23 @@ function hideLanguagePrompt() {
 
 function translateText(targetLang) {
   var textarea = document.getElementById('textbox_id_1');
-  var textToTranslate = encodeURIComponent(textarea.value);
+  var textToTranslate = textarea.value;
   var sourceLang = 'ar';
-  var webUrl = `https://translate.google.com/?sl=${sourceLang}&tl=${targetLang}&text=${textToTranslate}`;
+  var isAndroid = /Android/i.test(navigator.userAgent);
 
-  // Open Google Translate web in a new tab
-  window.open(webUrl, '_blank');
-  
+  if (isAndroid && navigator.share) {
+    navigator.share({
+      title: 'Translate',
+      text: textToTranslate
+    }).catch(function() {
+      var webUrl = 'https://translate.google.com/m/translate?sl=' + sourceLang + '&tl=' + targetLang + '&text=' + encodeURIComponent(textToTranslate);
+      window.open(webUrl, '_blank');
+    });
+  } else {
+    var webUrl = 'https://translate.google.com/?sl=' + sourceLang + '&tl=' + targetLang + '&text=' + encodeURIComponent(textToTranslate);
+    window.open(webUrl, '_blank');
+  }
+
   hideLanguagePrompt();
 }
 
