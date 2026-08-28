@@ -5,22 +5,37 @@
     "display": "standalone",
     "icons": [
         {
+            "src": "/images/favicon/favicon-16x16.png",
+            "sizes": "16x16",
+            "type": "image/png"
+        },
+        {
             "src": "/images/favicon/favicon-32x32.png",
             "sizes": "32x32",
             "type": "image/png"
         },
         {
-            "src": "/images/favicon/ms-icon-144x144.png",
-            "sizes": "144x144",
+            "src": "/images/favicon/favicon-48x48.png",
+            "sizes": "48x48",
             "type": "image/png"
         },
         {
-            "src": "/images/favicon/android-chrome-192x192.png",
+            "src": "/images/favicon/favicon-128x128.png",
+            "sizes": "128x128",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/favicon/favicon-180x180.png",
+            "sizes": "180x180",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/favicon/favicon-192x192.png",
             "sizes": "192x192",
             "type": "image/png"
         },
         {
-            "src": "/images/favicon/android-chrome-512x512.png",
+            "src": "/images/favicon/favicon-512x512.png",
             "sizes": "512x512",
             "type": "image/png"
         }
@@ -28,20 +43,20 @@
     "name": "Yamli Mobile",
     "short_name": "Yamli",
     "start_url": "/index.html",
-"screenshots" : [
-  {
-    "src": "/images/screenshot1.png",
-    "sizes": "720x1268",
-    "type": "image/png",
-    "form_factor": "narrow",
-    "label": "Phone"
-  },
-  {
-    "src": "/images/screenshot2.png",
-    "sizes": "1560x720",
-    "type": "image/png",
-    "form_factor": "wide",
-    "label": "PhoneLS"
+    "screenshots" : [
+      {
+        "src": "/images/screenshot1.png",
+        "sizes": "720x1268",
+        "type": "image/png",
+        "form_factor": "narrow",
+        "label": "Phone"
+      },
+      {
+        "src": "/images/screenshot2.png",
+        "sizes": "1560x720",
+        "type": "image/png",
+        "form_factor": "wide",
+        "label": "PhoneLS"
+      }
+    ]
   }
-]
-}

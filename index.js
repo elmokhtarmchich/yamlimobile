@@ -98,7 +98,7 @@ function showTestNotification() {
     navigator.serviceWorker.ready.then((registration) => {
       registration.showNotification('Yamli Mobile', {
         body: 'تم تفعيل الإشعارات بنجاح!',
-        icon: './images/favicon/ms-icon-144x144.png',
+        icon: './images/favicon/favicon-192x192.png',
         badge: './images/favicon/favicon-32x32.png',
         tag: 'test-notification'
       });
