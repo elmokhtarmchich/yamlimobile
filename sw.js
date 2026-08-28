@@ -30,6 +30,10 @@ self.addEventListener('message', (e) => {
 
 self.addEventListener('fetch', (e) => {
   console.log(e.request.url);
+  if (e.request.method !== 'GET') {
+    e.respondWith(fetch(e.request));
+    return;
+  }
   e.respondWith(
     caches.match(e.request).then((response) => response || fetch(e.request)),
   );

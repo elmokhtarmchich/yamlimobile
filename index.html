@@ -163,6 +163,8 @@
 <a href="#home" onclick="window.location.reload(true);"><img class="img" src="./icon/home.svg"></a>
 </footer>
 
+
+
 <script>
   function getUrlParameter(name) {
     name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
@@ -171,334 +173,40 @@
     return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
   }
 
-  (function() {
+  function applySharedText(text) {
+    if (!text) return;
+    var textarea = document.getElementById('textbox_id_1');
+    if (textarea) {
+      textarea.value = text;
+      textarea.focus();
+    }
+  }
+
+  function initFromUrl() {
     var text = getUrlParameter('text');
     if (text) {
-      var textarea = document.getElementById('textbox_id_1');
-      if (textarea) {
-        textarea.value = text;
-      }
+      applySharedText(text);
     }
-  })();
-</script>
-
-
-<script>
-
-// Create a new KeyboardEvent for keyup event
-const spaceKeyRelease = new KeyboardEvent('keyup', {
-  key: ' ',
-  code: 'Space',
-  keyCode: 32,
-  which: 32,
-  charCode: 32,
-});
-
-// Dispatch the event to the target element
-document.dispatchEvent(spaceKeyRelease);
-</script>
-
-
-<script>
-  const fonts = [
-      'Courier New, monospace',
-      'Tajawal, sans-serif',
-        'Lateef, cursive',
-        'Reem Kufi, sans-serif',
-        'Amiri, serif',
-        'Kufam, sans-serif',
-        'Amiri, serif'
-  ];
-
-  let currentFontIndex = 0;
-
-  function toggleFonts() {
-      const textarea = document.getElementById('textbox_id_1');
-      currentFontIndex = (currentFontIndex + 1) % fonts.length;
-      textarea.style.fontFamily = fonts[currentFontIndex];
   }
-</script> 
 
-    <script>
-      var currentSizeIndex = 0;
-      var sizes = [16, 34, 20];
-
-      function toggleTextSize() {
-          var textarea = document.getElementById("textbox_id_1");
-          currentSizeIndex = (currentSizeIndex + 1) % sizes.length;
-          textarea.style.fontSize = sizes[currentSizeIndex] + "px";
+  if ('launchQueue' in window) {
+    window.launchQueue.setConsumer(function(launchParams) {
+      var files = launchParams.files;
+      if (files && files.length > 0) {
+        Promise.all(files.map(function(file) {
+          return file.text();
+        })).then(function(texts) {
+          applySharedText(texts.join('\n'));
+        });
       }
-  </script>
-
-<script> 
-function updateConf() {
-var myTextArea1 = document.getElementById('textbox_id_1').value;
-var inputBox = document.getElementById('printchatbox');
-//alert(myTextArea1);
-inputBox.focus();
-inputBox.value = myTextArea1 ;
-document.getElementById('textbox_id_1').focus();
-}
-</script> 
-
-<script>
-  function toggleAlignment() {
-      var textarea = document.getElementById("textbox_id_1");
-
-      if (textarea.style.textAlign === "center") {
-          textarea.style.textAlign = "right";
-      } else {
-          textarea.style.textAlign = "center";
+      if (launchParams.text) {
+        applySharedText(launchParams.text);
       }
-  }
-</script>
-<script>
-  function toggleFontWeight() {
-      const textarea = document.getElementById('textbox_id_1');
-      const currentWeight = getComputedStyle(textarea).fontWeight;
-
-      // Toggle between normal and bold
-      textarea.style.fontWeight = currentWeight === 'normal' ? 'bold' : 'normal';
-  }
-</script>
-
-<script>
-  function updateTextColor()  {
-      var textarea = document.getElementById("textbox_id_1");
-
-      if (textarea.style.color === "black") {
-          textarea.style.color = "white";
-      } else {
-          textarea.style.color = "black";
-      }
-  }
-</script>
-
-
-<script>
-
-  function changeBackgroundColor() {
-      var colors = ["burlywood", "cadetblue", "chocolate", "coral", "cornflowerblue", "darkcyan", "darkgrey", "darkslategrey","darksalmon"];
-      var textarea = document.getElementById("textbox_id_1");
-      var currentColor = textarea.style.backgroundColor;
-
-      // Get the index of the current color in the array
-      var currentIndex = colors.indexOf(currentColor);
-
-      // Determine the index of the next color
-      var newIndex = (currentIndex + 1) % colors.length;
-
-      textarea.style.backgroundColor = colors[newIndex];
-  }
-
-</script>
-
-		<script> 
-			// Function to get the Selected Text 
-			function getSelectedText() { 
-				var myTextArea = ''; 
-				var myTextArea1 = document.getElementById('textbox_id_1');
-                var myTextArea2 = document.getElementById('textbox_id_2');
-				// window.getSelection 
-				if (window.getSelection) { 
-					myTextArea = window.getSelection(); 
-				} 
-				// document.getSelection 
-				else if (document.getSelection) { 
-					myTextArea = document.getSelection(); 
-				} 
-				// document.selection 
-				else if (document.selection) { 
-					myTextArea = 
-					document.selection.createRange().text; 
-				} else return; 
-				// To write the selected text into the textarea 
-				document.execCommand("copy");
-                myTextArea2.innerHTML = myTextArea; 
-			}
-		</script> 
- <script>
- function selectall(){
-  /* Get the text field */
-  var fct_copy = document.getElementById("textbox_id_1");
-  /* Select the text field */
-  fct_copy.select();
-  fct_copy.setSelectionRange(0, 99999); /*For mobile devices*/
-}
-</script>
- <script>
-    'use strict';
-    function sleep(delay) {
-      return new Promise(resolve => {
-        setTimeout(resolve, delay);
-      });
-    }
-    function logText(message, isError) {
-      if (isError)
-        console.error(message);
-      else
-        console.log(message);
-      const p = document.createElement('p');
-      if (isError)
-        p.setAttribute('class', 'error');
-      document.querySelector('#output').appendChild(p);
-      p.appendChild(document.createTextNode(message));
-    }
-    function logError(message) {
-      logText(message, true);
-    }
-  //  function setShareButtonsEnabled(enabled) {
- //     document.querySelector('#btn_06').disabled = !enabled;
- //   }
-    async function testWebShare() {
-      const text_input = document.querySelector('#textbox_id_1');
-	  
-      const title = 'yamli mobile';
-      const text = text_input.disabled ? undefined : text_input.value;
-      // setShareButtonsEnabled(false);
-      try {
-        await navigator.share({title, text});
-        logText('Successfully sent share');
-      } catch (error) {
-        logError('Error sharing: ' + error);
-      }
-      //setShareButtonsEnabled(true);
-    }
-    function onLoad() {
-      // Checkboxes disable and delete textfields.
-      document.querySelector('#btn_06').addEventListener('click', testWebShare);
-	  
-      if (navigator.share === undefined) {
-       // setShareButtonsEnabled(true);
-        if (window.location.protocol === 'http:') {
-          // navigator.share() is only available in secure contexts.
-          window.location.replace(window.location.href.replace(/^http:/, 'https:'));
-        } else {
-          logError('Error: You need to use a browser that supports this draft ' +
-                   'proposal.');
-        }
-      }
-    }
-    window.addEventListener('load', onLoad);
-</script>
-<script>
-function insertAtCaret() {
-        var text = document.getElementById('textbox_id_2').innerHTML;
-		var txtarea = document.getElementById('textbox_id_1');
-		var scrollPos = txtarea.scrollTop;
-		var strPos = 0;
-		var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ? 
-			"ff" : (document.selection ? "ie" : false ) );
-		if (br == "ie") { 
-			txtarea.focus();
-			var range = document.selection.createRange();
-			range.moveStart ('character', -txtarea.value.length);
-			strPos = range.text.length;
-		}
-		else if (br == "ff") strPos = txtarea.selectionStart;
-	
-		var front = (txtarea.value).substring(0,strPos);  
-		var back = (txtarea.value).substring(strPos,txtarea.value.length); 
-		txtarea.value=front+text+back;
-		strPos = strPos + text.length;
-		if (br == "ie") { 
-			txtarea.focus();
-			var range = document.selection.createRange();
-			range.moveStart ('character', -txtarea.value.length);
-			range.moveStart ('character', strPos);
-			range.moveEnd ('character', 0);
-			range.select();
-		}
-		else if (br == "ff") {
-			txtarea.selectionStart = strPos;
-			txtarea.selectionEnd = strPos;
-			txtarea.focus();
-		}
-		txtarea.scrollTop = scrollPos;
-	}
-</script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script>
-</script>
-<!-- YAMLI CODE START -->
-<script type="text/javascript" src="https://api.yamli.com/js/yamli_api.js"></script>
-<script type="text/javascript">
-  if (typeof(Yamli) == "object" && Yamli.init( { uiLanguage: "ar" ,  startMode: "onOrUserDefault" , uiFontFamily: 'Amiri' , settingsColor: '#dbb44f' , settingsLinkColor: '#dbb44f'} ))
-  {
-    Yamli.yamlify( "textbox_id_1", { settingsPlacement: 'inside' , showTutorialLink: true, showDirectionLink: true} );
-  }
-</script>
-<script src="yamli_spacebar_handler_v4.js?v=1.0"></script>
-<script>
-// Theme toggle function
-function toggleTheme() {
-  const html = document.documentElement;
-  const currentTheme = html.getAttribute('data-theme');
-  const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-  const icon = document.getElementById('themeIcon');
-  
-  html.setAttribute('data-theme', newTheme);
-  localStorage.setItem('theme', newTheme);
-  
-  // Update icon
-  if (icon) {
-    icon.textContent = newTheme === 'light' ? '☀️' : '🌙';
-  }
-}
-
-// Load saved theme and update icon
-(function() {
-  const savedTheme = localStorage.getItem('theme') || 'dark';
-  document.documentElement.setAttribute('data-theme', savedTheme);
-  const icon = document.getElementById('themeIcon');
-  if (icon) {
-    icon.textContent = savedTheme === 'light' ? '☀️' : '🌙';
-  }
-})();
-
-function searchtext() {
-  /* Get the text field */
-  var SerText = document.getElementById("textbox_id_1");
-  /* Select the text field */
-  SerText.select();
-  SerText.setSelectionRange(0, 99999); /*For mobile devices*/
-  /* Copy the text inside the text field */
-  window.open('http://google.com/search?q='+SerText.value,"_blank");
-  /* Alert the copied text 
-  alert("Copied the text: " + fct_copy.value);*/
-}
-</script>
-<script>
-function doConfirm(msg, yesFn, noFn)
-{
-    var confirmBox = $("#confirmBox");
-    confirmBox.find(".message").text(msg);
-    confirmBox.find(".yes,.no").unbind().click(function()
-    {
-        confirmBox.hide();
     });
-    confirmBox.find(".yes").click(yesFn);
-    confirmBox.find(".no").click(noFn);
-    confirmBox.show();
-}
-</script>
-<script>
-doConfirm("Are you sure?", function yes()
-{
-    form.submit();
-}, function no()
-{
-    // do nothing
-});
-</script>
+  }
 
-<script> //if the website Is not opened an app mode show (i.e. in a browser) the add to homescreen prompt 
-	if ((("standalone" in window.navigator) && !window.navigator.standalone) || (!window.matchMedia('(display-mode: standalone)').matches )) // android 
-	 {
-			addToHomescreen();
-		}
-	</script> 
+  setTimeout(initFromUrl, 100);
+</script>
 
 </body>
 </html>
