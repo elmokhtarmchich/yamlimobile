@@ -164,19 +164,24 @@
 </footer>
 
 <script>
-// Create a new KeyboardEvent
-const spaceKeyPress = new KeyboardEvent('keydown', {
-  key: ' ',
-  code: 'Space',
-  keyCode: 32,
-  which: 32,
-  charCode: 32,
-});
+  function getUrlParameter(name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    var results = regex.exec(window.location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+  }
 
-// Dispatch the event to the target element
-document.dispatchEvent(spaceKeyPress);
-	
+  (function() {
+    var text = getUrlParameter('text');
+    if (text) {
+      var textarea = document.getElementById('textbox_id_1');
+      if (textarea) {
+        textarea.value = text;
+      }
+    }
+  })();
 </script>
+
 
 <script>
 
