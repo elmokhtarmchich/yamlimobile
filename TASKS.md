@@ -11,7 +11,7 @@
 | Verify changes | Codex | Complete locally | JavaScript syntax, diff check, required-file check, and browser smoke test passed |
 | Commit and push requested changes | Codex | Complete | Pushed commit `d1f0c43` to `origin/main` |
 | Fix share and translate buttons | Codex | Complete | Share uses Web Share with clipboard fallback; translate opens encoded Google Translate URL |
-| Commit and push share/translate fixes | Codex | In progress | Stage only the intended UI and coordination files |
+| Commit and push share/translate fixes | Codex | Complete | Pushed commit `4d61598` to `origin/main` |
 
 ## Handoff rules
 

@@ -22,4 +22,4 @@ Last updated: 2026-10-28
 - Browser pages cannot reliably invoke a user's configured default search provider; the Web Platform does not expose that setting. The current search action therefore keeps an explicit web search URL until a provider-selection UX is added.
 - The requested changes were committed and pushed; `.kilo/kilo.jsonc` remains intentionally excluded.
 - Share and translate toolbar fixes are complete and passed browser smoke tests.
-- The share/translate fix commit is being prepared for push; `.kilo/kilo.jsonc` remains excluded.
+- The share/translate fixes were committed and pushed; `.kilo/kilo.jsonc` remains excluded.
