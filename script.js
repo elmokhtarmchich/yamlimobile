@@ -83,6 +83,20 @@ document.getElementById('id_confrmdiv').style.display = "none";
 
 //select all and copy all functions
 
+// Search the current text on Google.
+function searchtext() {
+  var textarea = document.getElementById('textbox_id_1');
+  var textToSearch = textarea ? textarea.value.trim() : '';
+
+  if (!textToSearch) {
+    if (textarea) textarea.focus();
+    return;
+  }
+
+  var searchUrl = 'https://www.google.com/search?q=' + encodeURIComponent(textToSearch);
+  window.open(searchUrl, '_blank', 'noopener,noreferrer');
+}
+
 function selectAndCopy() {
   var textarea = document.getElementById('textbox_id_1');
   textarea.select();
