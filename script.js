@@ -1,23 +1,47 @@
 
-function share_txt(){
-const shareData = {
-  title: 'MDN',
-  text: 'Learn web development on MDN!',
-  url: 'https://developer.mozilla.org',
+function shareText() {
+  var textarea = document.getElementById('textbox_id_1');
+  var textToShare = textarea ? textarea.value.trim() : '';
+
+  if (!textToShare) {
+    if (textarea) textarea.focus();
+    return;
+  }
+
+  var shareData = {
+    title: 'Yamli Mobile',
+    text: textToShare
+  };
+
+  if (navigator.share) {
+    navigator.share(shareData).catch(function(error) {
+      // Closing the native share sheet is not an error that needs reporting.
+      if (error.name !== 'AbortError') console.error('Unable to share text:', error);
+    });
+    return;
+  }
+
+  // Desktop browsers without Web Share still get a useful fallback.
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(textToShare).then(showCopyNotification).catch(function(error) {
+      console.error('Unable to copy text for sharing:', error);
+    });
+    return;
+  }
+
+  textarea.focus();
+  textarea.select();
+  document.execCommand('copy');
+  showCopyNotification();
 }
 
-const btn = document.querySelector('button');
-const resultPara = document.querySelector('.result');
-
-// Must be triggered some kind of "user activation"
-btn.addEventListener('click', async () => {
-  try {
-    await navigator.share(shareData)
-    resultPara.textContent = 'MDN shared successfully'
-  } catch(err) {
-    resultPara.textContent = 'Error: ' + err
-  }
-});
+function showCopyNotification() {
+  var notification = document.getElementById('copyNotification');
+  if (!notification) return;
+  notification.style.visibility = 'visible';
+  setTimeout(function() {
+    notification.style.visibility = 'hidden';
+  }, 1000);
 }
 
 
@@ -144,21 +168,22 @@ function hideLanguagePrompt() {
 
 function translateText(targetLang) {
   var textarea = document.getElementById('textbox_id_1');
-  var textToTranslate = textarea.value;
-  var sourceLang = 'ar';
-  var isAndroid = /Android/i.test(navigator.userAgent);
+  var textToTranslate = textarea ? textarea.value.trim() : '';
 
-  if (isAndroid && navigator.share) {
-    navigator.share({
-      title: 'Translate',
-      text: textToTranslate
-    }).catch(function() {
-      var webUrl = 'https://translate.google.com/m/translate?sl=' + sourceLang + '&tl=' + targetLang + '&text=' + encodeURIComponent(textToTranslate);
-      window.open(webUrl, '_blank');
-    });
+  if (!textToTranslate) {
+    if (textarea) textarea.focus();
+    hideLanguagePrompt();
+    return;
+  }
+
+  var webUrl = 'https://translate.google.com/?sl=auto&tl=' + encodeURIComponent(targetLang) + '&text=' + encodeURIComponent(textToTranslate);
+  var openedWindow = window.open(webUrl, '_blank');
+
+  // If a browser blocks the new tab, keep the action usable in the current tab.
+  if (openedWindow) {
+    openedWindow.opener = null;
   } else {
-    var webUrl = 'https://translate.google.com/?sl=' + sourceLang + '&tl=' + targetLang + '&text=' + encodeURIComponent(textToTranslate);
-    window.open(webUrl, '_blank');
+    window.location.assign(webUrl);
   }
 
   hideLanguagePrompt();
