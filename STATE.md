@@ -20,4 +20,4 @@ Last updated: 2026-10-28
 - The main site is a static HTML/CSS/JavaScript app; the notification worker and Android keyboard are separate subprojects.
 - The GitHub Actions workflows still need to run in GitHub after they are pushed.
 - Browser pages cannot reliably invoke a user's configured default search provider; the Web Platform does not expose that setting. The current search action therefore keeps an explicit web search URL until a provider-selection UX is added.
-- The requested changes are being committed and pushed; `.kilo/kilo.jsonc` remains intentionally excluded.
+- The requested changes were committed and pushed; `.kilo/kilo.jsonc` remains intentionally excluded.

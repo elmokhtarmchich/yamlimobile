@@ -9,7 +9,7 @@
 | Document agent startup requirements | Codex | Complete | Added `AGENTS.md` requiring `STATE.md` and `TASKS.md` first |
 | Use device default search provider | Codex | Blocked by web platform | Browser JavaScript cannot access or invoke the configured provider generically |
 | Verify changes | Codex | Complete locally | JavaScript syntax, diff check, required-file check, and browser smoke test passed |
-| Commit and push requested changes | Codex | In progress | Commit only the intentional files from this work |
+| Commit and push requested changes | Codex | Complete | Pushed commit `d1f0c43` to `origin/main` |
 
 ## Handoff rules
 
