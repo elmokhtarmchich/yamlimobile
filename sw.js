@@ -75,12 +75,12 @@ self.addEventListener('push', (e) => {
   // Ensure data has required fields
   const title = data.title || data.notification?.title || 'Yamli Mobile';
   const body = data.body || data.message || data.notification?.body || 'New notification';
-  const icon = data.icon || './images/favicon/favicon-192x192.png';
+  const icon = data.icon || './images/favicon/web-app-manifest-192x192.png';
   
   const options = {
     body: body,
     icon: icon,
-    badge: './images/favicon/favicon-32x32.png',
+    badge: './images/favicon/favicon-96x96.png',
     tag: data.tag || 'yamli-notification',
     requireInteraction: false,
     renotify: false,
@@ -102,7 +102,7 @@ self.addEventListener('push', (e) => {
         // Fallback: show simple notification
         return self.registration.showNotification('Yamli Mobile', {
           body: 'New notification',
-          icon: './images/favicon/favicon-192x192.png'
+          icon: './images/favicon/web-app-manifest-192x192.png'
         });
       })
   );

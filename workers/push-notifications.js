@@ -90,7 +90,7 @@ export default {
             await sendPushNotification(subscription, {
               title: title || 'Yamli Mobile',
               body: body || 'New notification',
-              icon: icon || './images/favicon/favicon-192x192.png'
+              icon: icon || './images/favicon/web-app-manifest-192x192.png'
             }, env.VAPID_PUBLIC_KEY, env.VAPID_PRIVATE_KEY);
             
             results.push({ id: key.name, status: 'sent' });
