@@ -1,11 +1,19 @@
+const CACHE_NAME = 'yamli-store-v3';
+
 self.addEventListener('install', (e) => {
   e.waitUntil(
-    caches.open('yamli-store').then((cache) => {
+    caches.open(CACHE_NAME).then((cache) => {
       // Cache essential files, but don't fail if some are missing
       return cache.addAll([
         '/index.html',
+        '/support.html',
+        '/support.html?v=3',
+        '/return-policy/index.html',
+        '/return-policy/',
         '/index.js',
+        '/theme.js',
         '/style.css',
+        '/style.css?v=4',
         '/sw.js',
       ]).catch(err => {
         console.warn('Some files failed to cache:', err);
@@ -15,6 +23,16 @@ self.addEventListener('install', (e) => {
       console.log('Service Worker installed, skipping waiting');
       self.skipWaiting(); // Activate immediately
     }),
+  );
+});
+
+self.addEventListener('activate', (e) => {
+  e.waitUntil(
+    caches.keys().then((cacheNames) => Promise.all(
+      cacheNames
+        .filter((cacheName) => cacheName.startsWith('yamli-store') && cacheName !== CACHE_NAME)
+        .map((cacheName) => caches.delete(cacheName))
+    )).then(() => self.clients.claim())
   );
 });
 

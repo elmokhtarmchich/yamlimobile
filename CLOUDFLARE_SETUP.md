@@ -8,6 +8,22 @@ This setup enables cross-device push notifications using Cloudflare Workers (fre
 2. Wrangler CLI installed: `npm install -g wrangler`
 3. VAPID keys generated
 
+## DeepL Translation API
+
+The website sends translation requests to the Worker at `/translate`. The DeepL
+credential must remain a Worker secret and must never be added to frontend files.
+
+1. Create a DeepL API Developer account and create an API key.
+2. Store it as a Cloudflare Worker secret:
+
+```bash
+wrangler secret put DEEPL_API_KEY
+```
+
+After deploying the Worker, the translation buttons return the translated text
+directly to the page. If the secret is not configured, the frontend keeps its
+browser fallback behavior.
+
 ## Step 1: Generate VAPID Keys
 
 ```bash
@@ -31,7 +47,7 @@ name = "yamli-push-notifications"
 
 Update `index.js` and `admin.html`:
 ```javascript
-const CLOUDFLARE_WORKER_URL = 'https://yamli-push-notifications.YOUR-ACCOUNT.workers.dev';
+const CLOUDFLARE_WORKER_URL = 'https://muddy-glade-1ceb.elmokhtar-mchich.workers.dev';
 ```
 
 ## Step 3: Create KV Namespace
@@ -57,6 +73,10 @@ wrangler login
 wrangler secret put VAPID_PRIVATE_KEY
 # Enter your private key when prompted
 
+# Set a new, strong admin password as a Worker secret
+wrangler secret put ADMIN_PASSWORD
+# Enter the new password when prompted; do not put it in frontend files
+
 # Deploy the worker
 wrangler deploy
 ```
@@ -72,7 +92,8 @@ wrangler deploy
 
 - `POST /subscribe` - Register a device
 - `POST /unsubscribe` - Unregister a device
-- `POST /broadcast` - Send to all devices (requires admin password)
+- `POST /admin/auth` - Validate the admin password
+- `POST /broadcast` - Send to all devices (requires the admin password)
 - `GET /subscribers` - Get subscriber count
 
 ## Free Tier Limits
@@ -94,7 +115,9 @@ wrangler deploy
 
 ## Security Note
 
-The current setup uses a simple password (`yamli2024`) for the broadcast endpoint. For production:
-1. Use a stronger password
-2. Consider adding IP whitelisting
-3. Implement proper authentication (JWT, API keys)
+The admin password is validated only by the Worker and must be configured with
+`wrangler secret put ADMIN_PASSWORD`. The Worker applies approximate per-location
+limits of 30 requests per minute per route and client IP for public API routes,
+and 5 requests per minute for admin routes. Rotate any password that was
+previously published in frontend assets. Cloudflare's rate limits are approximate
+and do not provide a strict global quota.

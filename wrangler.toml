@@ -9,9 +9,26 @@ compatibility_flags = ["nodejs_compat"]
 binding = "PUSH_SUBSCRIPTIONS"
 id = "130d802e56d449eb950c52e789b69f3d"
 
+[[ratelimits]]
+name = "API_RATE_LIMITER"
+namespace_id = "1001"
+
+	[ratelimits.simple]
+	limit = 30
+	period = 60
+
+[[ratelimits]]
+name = "ADMIN_RATE_LIMITER"
+namespace_id = "1002"
+
+	[ratelimits.simple]
+	limit = 5
+	period = 60
+
 # Environment variables
 [vars]
 VAPID_PUBLIC_KEY = "BL6iSz-YuFdNzbBS7rVLzmJDw0mNiNX-uKXDuPTuPoDXI6qAZiErTQ04FmuD_zoZRXGCaFKrj74OIqcclUgs6Vk"
 
 # Secrets (set via wrangler secret put)
 # VAPID_PRIVATE_KEY
+# DEEPL_API_KEY

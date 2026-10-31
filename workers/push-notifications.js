@@ -18,7 +18,34 @@ export default {
     const url = new URL(request.url);
     const path = url.pathname;
 
+    const rateLimitBinding = path === '/admin/auth' || path === '/broadcast'
+      ? 'ADMIN_RATE_LIMITER'
+      : ['/subscribe', '/unsubscribe', '/translate', '/subscribers'].includes(path)
+        ? 'API_RATE_LIMITER'
+        : null;
+
+    if (rateLimitBinding) {
+      const rateLimitResponse = await enforceRateLimit(env, request, path, rateLimitBinding);
+      if (rateLimitResponse) return rateLimitResponse;
+    }
+
     try {
+      if (path === '/admin/auth' && request.method === 'POST') {
+        if (!env.ADMIN_PASSWORD) {
+          return jsonResponse({
+            success: false,
+            error: 'Admin authentication is not configured'
+          }, 503);
+        }
+
+        const { adminPassword } = await request.json();
+        if (adminPassword !== env.ADMIN_PASSWORD) {
+          return jsonResponse({ success: false, error: 'Invalid admin password' }, 401);
+        }
+
+        return jsonResponse({ success: true });
+      }
+
       // Subscribe endpoint - Store device subscription
       if (path === '/subscribe' && request.method === 'POST') {
         const subscription = await request.json();
@@ -54,19 +81,96 @@ export default {
         });
       }
 
+      // Translate text without exposing the DeepL API key to the browser.
+      if (path === '/translate' && request.method === 'POST') {
+        if (!env.DEEPL_API_KEY) {
+          return jsonResponse({
+            success: false,
+            error: 'Translation service is not configured'
+          }, 503);
+        }
+
+        const body = await request.json();
+        const text = typeof body.text === 'string' ? body.text.trim() : '';
+        const target = typeof body.target === 'string' ? body.target.trim() : '';
+        const targetLanguages = {
+          en: 'EN',
+          de: 'DE',
+          fr: 'FR',
+          es: 'ES',
+          'zh-CN': 'ZH',
+          it: 'IT',
+          ar: 'AR'
+        };
+
+        if (!text || text.length > 5000) {
+          return jsonResponse({
+            success: false,
+            error: 'Text must contain between 1 and 5000 characters'
+          }, 400);
+        }
+
+        if (!Object.prototype.hasOwnProperty.call(targetLanguages, target)) {
+          return jsonResponse({
+            success: false,
+            error: 'Unsupported target language'
+          }, 400);
+        }
+
+        const translationResponse = await fetch(
+          'https://api-free.deepl.com/v2/translate',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `DeepL-Auth-Key ${env.DEEPL_API_KEY}`
+            },
+            body: JSON.stringify({
+              text: [text],
+              target_lang: targetLanguages[target]
+            })
+          }
+        );
+
+        if (!translationResponse.ok) {
+          console.error('DeepL Translation API failed:', translationResponse.status);
+          return jsonResponse({
+            success: false,
+            error: 'Translation provider unavailable'
+          }, 502);
+        }
+
+        const translation = await translationResponse.json();
+        const result = translation.translations?.[0];
+
+        if (!result?.text) {
+          return jsonResponse({
+            success: false,
+            error: 'Translation provider returned no result'
+          }, 502);
+        }
+
+        return jsonResponse({
+          success: true,
+          translatedText: result.text,
+          detectedLanguage: result.detected_source_language || null,
+          target
+        });
+      }
+
       // Broadcast endpoint - Send to all subscribers
       if (path === '/broadcast' && request.method === 'POST') {
         const { title, body, icon, adminPassword } = await request.json();
-        
-        // Verify admin password (should match config.js)
-        if (adminPassword !== 'yamli2024') {
-          return new Response(JSON.stringify({ 
-            success: false, 
-            error: 'Invalid admin password'
-          }), {
-            status: 401,
-            headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-          });
+
+        if (!env.ADMIN_PASSWORD) {
+          return jsonResponse({
+            success: false,
+            error: 'Admin authentication is not configured'
+          }, 503);
+        }
+
+        if (adminPassword !== env.ADMIN_PASSWORD) {
+          return jsonResponse({ success: false, error: 'Invalid admin password' }, 401);
         }
 
         // Get all subscriptions from KV
@@ -143,6 +247,29 @@ export default {
     }
   }
 };
+
+async function enforceRateLimit(env, request, path, bindingName) {
+  const rateLimiter = env[bindingName];
+  if (!rateLimiter) {
+    return jsonResponse({
+      success: false,
+      error: 'Rate limiting is not configured'
+    }, 503);
+  }
+
+  const clientIp = request.headers.get('CF-Connecting-IP') || 'unknown';
+  const { success } = await rateLimiter.limit({ key: `${path}:${clientIp}` });
+  if (success) return null;
+
+  return jsonResponse({ success: false, error: 'Rate limit exceeded' }, 429);
+}
+
+function jsonResponse(payload, status = 200) {
+  return new Response(JSON.stringify(payload), {
+    status,
+    headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+  });
+}
 
 // Send Web Push notification using Web Crypto API
 async function sendPushNotification(subscription, payload, vapidPublicKey, vapidPrivateKey) {

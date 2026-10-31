@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#181a1c">
+  <meta name="apple-mobile-web-app-title" content="Yamli Mobile">
+  <title>Donate &amp; Support | Yamli Mobile</title>
+  <link rel="icon" type="image/svg+xml" href="/images/favicon/favicon.svg">
+  <link rel="icon" type="image/x-icon" href="/images/favicon/favicon.ico">
+  <link rel="apple-touch-icon" href="/images/favicon/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="./style.css?v=4">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+  <script src="./theme.js"></script>
+  <script async src="https://js.stripe.com/v3/buy-button.js"></script>
+</head>
+<body class="support-page">
+  <header class="support-header">
+    <a class="support-brand" href="./index.html">
+      <img src="./images/favicon/favicon.svg" alt="">
+      <span>Yamli Mobile</span>
+    </a>
+    <a href="./contact.html">Contact</a>
+  </header>
+
+  <button id="themeToggle" class="theme-toggle-btn" type="button" onclick="toggleTheme()" title="Switch theme" aria-label="Switch theme">
+    <span id="themeIcon">🌙</span>
+  </button>
+
+  <main class="support-main">
+    <section class="support-intro" aria-labelledby="supportTitle">
+      <p class="support-eyebrow"><span aria-hidden="true"></span> Community supported</p>
+      <h1 id="supportTitle">Help keep Yamli Mobile free.</h1>
+      <p class="support-arabic" lang="ar" dir="rtl">ساهموا في استمرار يملي موبايل</p>
+      <p class="support-copy">Yamli Mobile makes Arabic writing easier for people everywhere. Your contribution helps us keep the service available, reliable, and improving.</p>
+
+      <ul class="support-list">
+        <li><span>01</span> Keep Arabic writing tools accessible</li>
+        <li><span>02</span> Maintain hosting and translation services</li>
+        <li><span>03</span> Make thoughtful improvements over time</li>
+      </ul>
+    </section>
+
+    <aside class="donation-panel" aria-labelledby="donationTitle">
+      <p class="donation-kicker">Secure checkout · Stripe</p>
+      <h2 id="donationTitle">Make a contribution</h2>
+      <p class="donation-description">Choose your contribution in Stripe’s secure checkout.</p>
+      <div class="stripe-donation-button">
+        <stripe-buy-button
+          buy-button-id="buy_btn_1UWREBGfR7JgjXGZeVOZSAyF"
+          publishable-key="pk_live_51UOoCYGfR7JgjXGZI097cCfBUrqPJeJ8TKAnpXBslBGTQDzgXEdGk81SJWgbYRz2zyD6TEdUKpPkvX4B5JQkKEmU00oZMjRfTw">
+        </stripe-buy-button>
+      </div>
+      <p class="payment-assurance">Your payment is handled securely by Stripe. Yamli Mobile never receives your card details.</p>
+      <a class="refund-link" href="./return-policy/">Read our refund policy</a>
+      <p class="support-email">Questions? <a href="mailto:support@yamlimobile.com">support@yamlimobile.com</a></p>
+    </aside>
+  </main>
+
+  <footer class="support-footer">
+    <a href="./return-policy/">Refund policy</a>
+    <a href="./index.html">Back to Yamli Mobile</a>
+  </footer>
+</body>
+</html>

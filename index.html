@@ -13,12 +13,15 @@
 <link rel="icon" type="image/svg+xml" href="/images/favicon/favicon.svg">
 <link rel="icon" type="image/x-icon" href="/images/favicon/favicon.ico">
 <link rel="manifest" href="/site.webmanifest">
-<link rel="stylesheet" href="./style.css?v=2">
+<link rel="stylesheet" href="./style.css?v=4">
 <script src="./index.js" defer></script>
 <script src="./listen.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Roboto&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=El+Messiri:wght@400;700&family=Lateef&family=Noto+Naskh+Arabic:wght@400;700&family=Noto+Sans+Arabic:wght@400;700&family=Reem+Kufi:wght@400;700&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+<script src="./theme.js"></script>
 <script type="text/javascript" src="script.js"></script>
 <script type="text/javascript" src="https://api.yamli.com/js/yamli_api.js"></script>
 <script type="text/javascript">
@@ -43,6 +46,7 @@
       <button onclick="translateText('es')">Español</button>
       <button onclick="translateText('zh-CN')">中文</button>
       <button onclick="translateText('it')">Italiano</button>
+      <button onclick="translateText('ar')">العربية</button>
   </div>
   <br>
   <button id="cancelbutton" onclick="hideLanguagePrompt()">🗙</button>
@@ -51,21 +55,20 @@
 <div class="container">
 <div class="button-container">
 <div class="button" id="btn_01" onclick="window.open(window.location.href, '_blank')"><img src="./images/newtab.svg"></div>
-<div class="button" id="btn_06" onclick="shareText()" role="button" tabindex="0" title="Share text" aria-label="Share text"><img src="./images/share.svg" alt="Share"></div>
-<div class="button" id="btn_02" onclick = "searchtext()" ><img src="./images/search.svg"></div>
-<div class="button" id="btn_03" onclick = "fct_cut()"><img src="./images/cut.svg"></div>
+<div class="button text-action" id="btn_06" onclick="shareText()" role="button" tabindex="0" title="Share text" aria-label="Share text"><img src="./images/share.svg" alt="Share"></div>
+<div class="button text-action" id="btn_02" onclick = "searchtext()" ><img src="./images/search.svg"></div>
+<div class="button text-action" id="btn_03" onclick = "fct_cut()"><img src="./images/cut.svg"></div>
 <div class="button" id="btn_04" onclick = "pasteFromClipboard()"><img src="./images/paste.svg"></div>
-<div class="button" id="btn_05" onclick = "selectAndCopy()"><img src="./images/copy.svg"></div>
-<div class="button" id="btn_07" onclick = "showLanguagePrompt()" role="button" tabindex="0" title="Translate text" aria-label="Translate text"><img src="./images/translate.svg" alt="Translate"></div>
+<div class="button text-action" id="btn_05" onclick = "selectAndCopy()"><img src="./images/copy.svg"></div>
+<div class="button text-action" id="btn_07" onclick = "showLanguagePrompt()" role="button" tabindex="0" title="Translate Arabic text" aria-label="Translate Arabic text"><img src="./images/translate.svg" alt="Translate"></div>
 </div>   
 
 <div name="myForm" class="center">
-<textarea class="field-input" name="myTextArea" type="text" id="textbox_id_1" onChange="updateConf()" onkeyup="updateConf()" placeholder="Oktob hona..اكتب هنا" autocomplete="on" autofocus></textarea>
+<textarea class="field-input" name="myTextArea" type="text" id="textbox_id_1" oninput="updateActionButtonState()" placeholder="Oktob hona..اكتب هنا" autocomplete="on" autofocus></textarea>
 <form style="display: none" name="testform">
 <p  name="TextArea_vide" id="textbox_id_2" ></p>
 </form>
 </div>
-
 
 <div class="button-container">
   <div class="button" id="btn_12" onclick="changeBackgroundColor()">
@@ -74,7 +77,7 @@
   <div class="button" id="btn_08" onclick="toggleAlignment()">
     <img src="./images/text_center.svg"  alt="Text center" >                                                
   </div>
-  <div class="button" id="btn_09" onclick="toggleFonts()" alt="Change font">
+  <div class="button arabic-only-action" id="btn_09" onclick="toggleFonts()" alt="Change Arabic font" aria-label="Change Arabic font" aria-disabled="true">
     <img src="./images/font_change.svg"   >                                                
   </div>  
   <div class="button" id="btn_10" onclick="updateTextColor()" alt="Font color">
@@ -86,12 +89,44 @@
   <div class="button" id="btn_13" onclick="toggleFontWeight()" alt="Bold">
     <img src="./images/font_bold.svg"   >                                                
   </div>
-  <div class="button" id="btn_14" alt="Listen">
+  <div class="button text-action" id="btn_14" alt="Listen">
     <img src="./images/listen.svg"   >                                                
   </div>
 </div>
 </div>
 </div>   
+
+<div id="translationSectionShell" class="translation-section-shell" hidden>
+  <div class="translated-text-header">
+    <h2 id="translatedTextTitle">Translated text</h2>
+    <div class="translated-text-header-actions">
+      <button type="button" id="toggleTranslationSectionButton" class="translation-visibility-button" onclick="toggleTranslationSection()" aria-controls="translatedTextSection" aria-expanded="true" title="Hide translated text">
+        <img src="./images/visibility.svg" alt="Hide translated text">
+      </button>
+      <button type="button" id="openDeepLButton" onclick="openDeepLTranslator()" disabled>
+        Open in DeepL
+      </button>
+    </div>
+  </div>
+  <section id="translatedTextSection" class="translated-text-section" aria-labelledby="translatedTextTitle">
+    <textarea id="translatedTextOutput" class="translated-text-output" readonly aria-live="polite" aria-label="Translated text"></textarea>
+    <div class="button-container translated-text-actions" aria-label="Translated text actions">
+      <button type="button" class="button translated-action" id="translatedShareButton" onclick="shareTranslatedText()" title="Share translated text" aria-label="Share translated text">
+        <img src="./images/share.svg" alt="Share translated text">
+      </button>
+      <button type="button" class="button translated-action" id="translatedSearchButton" onclick="searchTranslatedText()" title="Search translated text" aria-label="Search translated text">
+        <img src="./images/search.svg" alt="Search translated text">
+      </button>
+      <button type="button" class="button translated-action" id="translatedCopyButton" onclick="copyTranslatedText()" title="Copy translated text" aria-label="Copy translated text">
+        <img src="./images/copy.svg" alt="Copy translated text">
+      </button>
+      <button type="button" class="button translated-action" id="translatedListenButton" onclick="speakTranslatedText()" title="Listen to translated text" aria-label="Listen to translated text">
+        <img src="./images/listen.svg" alt="Listen to translated text">
+      </button>
+    </div>
+    <p id="translationStatus" class="translation-status" role="status"></p>
+  </section>
+</div>
 
 <div style="display:none"  class="overlay" id="dialog-container">
 <div id="id_confrmdiv">  تأكيد !  
@@ -107,12 +142,21 @@
   يمكن للمستخدم أيضاً من خلال هذه الخدمة أن يقوم بنسخ ، لصق، حدف، البحث على جوجل و مشاركة النص عبر التطبيقات.</p>	
 </div>
 
+<section class="box support-callout" aria-labelledby="supportCalloutTitle">
+  <p class="support-eyebrow">SUPPORT THE PROJECT</p>
+  <h2 id="supportCalloutTitle">Help keep Yamli Mobile free</h2>
+  <p>Support the work behind Arabic typing, translation, and continued improvements.</p>
+  <a class="support-donate-button" href="./support.html?v=3">Donate / تبرع</a>
+</section>
+
 <div class="box" id="webapp">
   <h1>
     إضافة على شكل تطبيق ⓘ
   </h1>
     <p class="info">هذا الموقع يدعم خاصية التنزيل على شكل تطبيق للويب. يمكنك إضافة تطبيق الويب من خلال النقر على زر في الأسفل</p>
-    <input class="add-button" type="button" value="Add Web App">
+    <button class="add-button" type="button" aria-label="Add Yamli Mobile to the home screen" title="Add Web App">
+      <img src="./icon/pwa.svg" alt="Add Web App">
+    </button>
   </div>
 
 <div class="box" id="info1">
@@ -122,6 +166,10 @@
   <p class="info">إذا لم تشتغل هذه الأداة بظهور أيقونة يملي البنفسجية على اليسار وتحول  الكتابة من اليمين إلى اليسار، المرجوا إيقاف تفعيل</p>
   <p class="info">"Ad Blocker"</p>
   <p class="info"> . فهذا الموقع لا يحتوي على أية برامج خبيثة أو ضارة.</p>
+  <button id="adBlockerHelpButton" type="button" onclick="toggleAdBlockerHelp()" aria-controls="adBlockerHelp" aria-expanded="false">كيفية إيقاف مانع الإعلانات</button>
+  <div id="adBlockerHelp" hidden>
+    <p class="info">لا يستطيع الموقع إيقاف مانع الإعلانات تلقائياً. افتح إعدادات المتصفح أو إضافة الحجب، اسمح لهذا الموقع، ثم أعد تحميل الصفحة.</p>
+  </div>
 </div>
 
 <!-- Floating Theme Toggle Button -->
@@ -133,6 +181,7 @@
 <section class="bottom-section">
   <div class="bottom-content">
     <div class="bottom-links">
+      <a href="./support.html?v=3">تبرع / Support</a>
       <a href="./contact.html">اتصل بنا</a>
       <a href="#info">عن يملي</a>
       <a href="#webapp">تنزيل التطبيق</a>
@@ -154,7 +203,7 @@
         </svg>
       </a>
     </div>
-    <p class="bottom-copyright">© 2024 Yamli Mobile. جميع الحقوق محفوظة.</p>
+    <p class="bottom-copyright"><span class="latin-text">© 2026 Yamli Mobile.</span> <span class="arabic-text">جميع الحقوق محفوظة.</span></p>
     <div id="versionBadge">v1.0</div>
   </div>
 </section>
