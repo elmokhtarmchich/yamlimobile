@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'testversion-deploy/**'
+      - 'testversion/**'
       - '.github/workflows/pages-testversion.yml'
 
   workflow_dispatch:
