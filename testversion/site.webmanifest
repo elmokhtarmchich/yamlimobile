@@ -1,0 +1,48 @@
+{
+    "background_color": "#0a1018",
+    "description": "Yamli Mobile : Your Arabic Keyboard Assistant",
+    "display_override": ["fullscreen", "minimal-ui"],
+    "display": "standalone",
+    "icons": [
+        {
+            "src": "/images/favicon/web-app-manifest-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "/images/favicon/web-app-manifest-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ],
+    "name": "Yamli Mobile",
+    "short_name": "Yamli",
+    "start_url": "/index.html",
+    "share_target": {
+      "action": "/",
+      "method": "POST",
+      "enctype": "multipart/form-data",
+      "params": {
+        "title": "title",
+        "text": "text"
+      }
+    },
+    "screenshots" : [
+      {
+        "src": "/images/screenshot1.png",
+        "sizes": "720x1268",
+        "type": "image/png",
+        "form_factor": "narrow",
+        "label": "Phone"
+      },
+      {
+        "src": "/images/screenshot2.png",
+        "sizes": "1560x720",
+        "type": "image/png",
+        "form_factor": "wide",
+        "label": "PhoneLS"
+      }
+    ]
+  }

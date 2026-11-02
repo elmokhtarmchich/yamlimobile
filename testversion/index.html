@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yamli Mobile Pro - Test Version</title>
+    <meta property="og:title" content="Yamli Mobile Pro - Test Version">
+    <meta property="og:description" content="Test version of Yamli Mobile Pro - Franco-Arabic transliteration application">
+    <meta property="og:image" content="https://yamlimobile.com/images/yamli-mobile-logo.png">
+    <meta property="og:url" content="https://yamlimobile.com/testversion/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="description" content="Test version of Yamli Mobile Pro - The smart Franco-Arabic transliteration editor">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        .version-badge {
+            background: #3498db;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        .feature-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .feature-list li:before {
+            content: "✓";
+            color: #2ecc71;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .cta-button {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+        .cta-button:hover {
+            background: #2980b9;
+        }
+        .test-links {
+            margin-top: 30px;
+        }
+        .test-links a {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            background: #ecf0f1;
+            color: #2c3e50;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .test-links a:hover {
+            background: #bdc3c7;
+        }
+        .notice {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎉 Yamli Mobile Pro - Test Version</h1>
+        <div class="version-badge">v2.0 Pro Test Build</div>
+
+        <div class="notice">
+            <strong>⚠️ Notice:</strong> This is a test version of Yamli Mobile Pro running at https://yamlimobile.com/testversion/
+        </div>
+
+        <h2>What's in this test version:</h2>
+        <ul class="feature-list">
+            <li>🚀 Complete Franco-Arabic transliteration editor</li>
+            <li>📖 Interactive dictionary with root exploration</li>
+            <li>🎨 Material Design 3 UI (exact Google Stitch copy)</li>
+            <li>📱 Mobile-optimized responsive design</li>
+            <li>🔄 RTL support for Arabic text</li>
+            <li>💬 Real-time transliteration suggestions</li>
+            <li>🔍 Dictionary search with Franco-Arabic input</li>
+            <li>🔤 Root decoder helper</li>
+            <li>⚡ Fast offline performance</li>
+        </ul>
+
+        <h2>Test Links:</h2>
+        <div class="test-links">
+            <a href="index.html">📝 Editor Page</a>
+            <a href="dictionary.html">📚 Dictionary Page</a>
+            <a href="../index.html">🏠 Back to Main Site</a>
+        </div>
+
+        <h2>How to use:</h2>
+        <ol>
+            <li>Open the <strong>Editor Page</strong> to type in Franco-Arabic and see real-time transliteration</li>
+            <li>Try the <strong>Dictionary Page</strong> to search for words and explore their roots</li>
+            <li>Test the Franco-Arabic numeral system (2=ء/ق, 3=ع, 7=ح, etc.)</li>
+            <li>Switch between dark/light mode in the editor</li>
+        </ol>
+
+        <a href="index.html" class="cta-button">Start Testing →</a>
+    </div>
+
+    <script>
+        // Add some interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            const links = document.querySelectorAll('.test-links a');
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (this.getAttribute('href').startsWith('http')) {
+                        window.open(this.href, '_blank');
+                        return false;
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

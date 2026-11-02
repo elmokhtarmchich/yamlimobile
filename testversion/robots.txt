@@ -1,0 +1,12 @@
+User-agent: *
+Disallow: /private/
+Disallow: /tmp/
+Disallow: /admin/
+
+User-agent: Googlebot
+Disallow: /no-google/
+
+User-agent: Bingbot
+Disallow: /no-bing/
+
+Sitemap: http://www.yourwebsite.com/sitemap.xml
