@@ -14,7 +14,7 @@
 | Commit and push share/translate fixes | Codex | Complete | Pushed commit `4d61598` to `origin/main` |
 | Fix Samsung Internet translation handoff | Codex | Complete | Samsung Internet now shares the text payload instead of launching a blank app URL |
 | Add secure DeepL Translation API path | Codex | Complete | `DEEPL_API_KEY` attached; old `GOOGLE_TRANSLATE_API_KEY` removed; Arabic `مرحبا بالعالم` translated successfully |
-| Harden Worker admin auth and rate limits | Codex | Implemented locally; production pending | Removed the bundled password, added `ADMIN_PASSWORD` secret validation and Cloudflare rate-limit bindings; deployment requires secret rotation |
+| Harden Worker admin auth and rate limits | Codex | Complete | Configured `ADMIN_PASSWORD` as a Worker secret, deployed the rate-limit bindings, and verified invalid credentials receive 401 from `/admin/auth` and `/broadcast` |
 | Try local LibreTranslate prototype | Codex | Complete | Temporary localhost-only container translated `Hello` to `Bonjour`; container was stopped after testing |
 | Run HTTPS mobile test server | Codex | Complete | Static site on port 8000 exposed at `https://two-zoos-sin.loca.lt`; endpoint verified with HTTP 200 |
 | Add translated text display section | Codex | Complete | Added hidden output section, Worker result display, and Google Translate handoff button; browser smoke test returned `Bonjour` |
@@ -38,6 +38,8 @@
 | Display full PWA badge and style version badge | Codex | Complete | Preserved 40px badge height, restored the SVG's natural width, and applied JetBrains Mono to `v1.0` |
 | Add ad-blocker guidance button | Codex | Complete | Added an accessible help toggle; browsers do not allow websites to disable blockers automatically |
 | Verify GitHub security workflows | Codex | Complete | Secret scan and Security checks succeeded on `main` at `a49b440` on 2026-10-30 |
+| Configure production Claude Code models | Copilot | Blocked | Updated and JSON-validated the user-level model defaults and picker; production API verification requires revoking the exposed key and replacing it with an active GLM Coding Plan key |
+| Integrate history management into index.html | Codex | Complete | Added saveToHistory(), extractTags(), auto-save every 10s, and quickSave() functions to persist Arabic text entries |
 
 ## Handoff rules
 

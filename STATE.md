@@ -4,13 +4,14 @@ Last updated: 2026-10-31
 
 ## Current work
 
-- Roll out Worker admin authentication and rate limits after rotating the exposed admin password.
+- Production Claude Code model settings are configured; API verification is blocked pending API-key rotation.
 
 ## Verification status
 
 - [x] Run the browser smoke check for the Google search button.
 - [x] Run the repository safety workflows in GitHub Actions.
 - [x] Verify Worker authentication, rate limiting, and Wrangler deployment configuration locally.
+- [x] Configure the Worker admin secret and deploy the protected endpoints.
 - [x] Confirm the working tree contains only intentional changes.
 
 ## Coordination notes
@@ -38,7 +39,8 @@ Last updated: 2026-10-31
 - The share/translate fixes were committed and pushed; `.kilo/kilo.jsonc` remains excluded.
 - Samsung Internet translation handoff is fixed: it shares the text payload, while Chrome/PWA keep the direct Translate URL path.
 - The frontend targets `https://muddy-glade-1ceb.elmokhtar-mchich.workers.dev/translate`; DeepL support is deployed and `DEEPL_API_KEY` is attached to the Worker. The unused `GOOGLE_TRANSLATE_API_KEY` secret was removed. Arabic translation tests succeed.
-- Worker admin authentication now uses the `ADMIN_PASSWORD` Worker secret, and API/admin routes use Cloudflare rate-limit bindings. The previously published password must be rotated and the Worker redeployed; this checkout does not contain or set the new secret.
+- Worker admin authentication now uses the `ADMIN_PASSWORD` Worker secret, and API/admin routes use Cloudflare rate-limit bindings. The new secret was configured and deployed on 2026-10-31; invalid credentials receive 401 from both `/admin/auth` and `/broadcast`. The secret value is not stored in this repository.
+- Claude Code model defaults and picker use Z.AI's current GLM-5.3 and GLM-5.3-Flash recommendations. The exposed API key must be revoked and replaced with an active GLM Coding Plan key before production use or API verification.
 - Donate and Support page has a responsive, theme-aware layout with the Stripe Buy Button, refund-policy link, and `support@yamlimobile.com` fallback.
 - Return/refund policy is available at `/return-policy/` and linked from the Support page; it covers voluntary contributions, mistaken/duplicate payments, and recurring-support cancellation.
 - LibreTranslate local prototype smoke test passed in a temporary localhost-only Docker container: `Hello` translated to `Bonjour`; the container was stopped afterward.
