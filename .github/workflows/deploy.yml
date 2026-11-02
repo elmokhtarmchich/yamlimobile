@@ -32,6 +32,9 @@ jobs:
         with:
           path: './testversion'
 
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
   deploy:
     if: github.ref == 'refs/heads/main'
     environment:
