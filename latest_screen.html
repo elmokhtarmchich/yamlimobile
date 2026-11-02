@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yamli Mobile - Google Fonts Inspired Redesign</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #c2652a;
+            --primary-dark: #8c4a1c;
+            --primary-light: #d28858;
+            --secondary-color: #212121;
+            --background-color: #ffffff;
+            --surface-color: #ffffff;
+            --text-primary: #212121;
+            --text-secondary: #757575;
+            --text-disabled: #9e9e9e;
+            --border-color: #e0e0e0;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.1);
+            --shadow-md: 0 2px 4px rgba(0,0,0,0.1);
+            --shadow-lg: 0 4px 8px rgba(0,0,0,0.1);
+            --border-radius: 16px;
+            --border-radius-lg: 24px;
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            direction: rtl;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: var(--spacing-lg) var(--spacing-xl);
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .logo .material-icons {
+            font-size: 32px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        .header-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            transition: all 0.3s ease;
+        }
+
+        .header-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Quick Insert */
+        .quick-insert {
+            background: var(--surface-color);
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow-sm);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .quick-insert-title {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: var(--spacing-md);
+            color: var(--text-primary);
+        }
+
+        .character-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(48px, 1fr));
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .character-btn {
+            aspect-ratio: 1;
+            border: 2px solid var(--border-color);
+            background: white;
+            border-radius: var(--border-radius);
+            font-size: 20px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .character-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+        .character-btn.recent {
+            background: var(--primary-light);
+            color: white;
+            border-color: var(--primary-light);
+        }
+
+        /* Editor Container */
+        .editor-container {
+            background: var(--surface-color);
+            margin: 0;
+            padding: var(--spacing-xl);
+            min-height: 400px;
+        }
+
+        .editor-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .mode-selector {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        .mode-btn {
+            background: white;
+            border: 2px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .mode-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .mode-btn:hover:not(.active) {
+            background: var(--primary-light);
+            color: var(--text-primary);
+            border-color: var(--primary-light);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        .action-btn {
+            background: white;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            background: var(--primary-light);
+            color: white;
+            border-color: var(--primary-light);
+        }
+
+        .action-btn.primary {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .action-btn.primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .editor-textarea {
+            width: 100%;
+            min-height: 300px;
+            padding: var(--spacing-lg);
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            font-size: 16px;
+            line-height: 1.8;
+            resize: vertical;
+            font-family: 'Tajawal', sans-serif;
+            background: var(--surface-color);
+            transition: border-color 0.3s ease;
+        }
+
+        .editor-textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        /* Translation Panel */
+        .translation-panel {
+            background: var(--surface-color);
+            border-top: 1px solid var(--border-color);
+            padding: var(--spacing-xl);
+        }
+
+        .translation-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .translation-section {
+            padding: var(--spacing-lg);
+            background: #f5f5f5;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+        }
+
+        .translation-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .translation-text {
+            font-size: 16px;
+            line-height: 1.6;
+            min-height: 100px;
+            padding: var(--spacing-sm);
+            background: white;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+        }
+
+        .action-bar {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-md);
+        }
+
+        /* History Panel */
+        .history-panel {
+            background: var(--surface-color);
+            border-top: 1px solid var(--border-color);
+            padding: var(--spacing-xl);
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .history-title {
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+        .clear-history {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .clear-history:hover {
+            background: #f44336;
+            color: white;
+            border-color: #f44336;
+        }
+
+        .history-items {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md);
+            background: #f5f5f5;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .history-item:hover {
+            background: #e0e0e0;
+            transform: translateX(-4px);
+        }
+
+        .history-item-time {
+            color: var(--text-secondary);
+            font-size: 12px;
+            min-width: 80px;
+        }
+
+        .history-item-text {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* Footer Actions */
+        .footer-actions {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--surface-color);
+            padding: var(--spacing-lg) var(--spacing-xl);
+            box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-md);
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Utility Classes */
+        .material-icons {
+            font-size: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .character-grid {
+                grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+            }
+
+            .translation-content {
+                grid-template-columns: 1fr;
+            }
+
+            .editor-toolbar {
+                flex-direction: column;
+                gap: var(--spacing-md);
+            }
+
+            .footer-actions {
+                flex-wrap: wrap;
+            }
+        }
+
+        /* Dark Mode Styles */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --primary-color: #e69556;
+                --primary-dark: #c2652a;
+                --primary-light: #f2b888;
+                --secondary-color: #ffffff;
+                --background-color: #121212;
+                --surface-color: #1e1e1e;
+                --text-primary: #ffffff;
+                --text-secondary: #b0b0b0;
+                --text-disabled: #757575;
+                --border-color: #333333;
+            }
+
+            .history-item {
+                background: #2d2d2d;
+            }
+
+            .history-item:hover {
+                background: #3d3d3d;
+            }
+
+            .translation-section {
+                background: #2d2d2d;
+            }
+
+            .translation-text {
+                background: #1e1e1e;
+                color: #ffffff;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <span class="material-icons">translate</span>
+                Yamli Mobile
+            </div>
+            <div class="header-actions">
+                <button class="header-btn" onclick="toggleTheme()">
+                    <span class="material-icons" id="theme-icon">dark_mode</span>
+                    <span id="theme-text">الغوص</span>
+                </button>
+                <button class="header-btn" onclick="toggleHistory()">
+                    <span class="material-icons">history</span>
+                    <span>التاريخ</span>
+                </button>
+                <button class="header-btn" onclick="showSettings()">
+                    <span class="material-icons">settings</span>
+                    <span>إعدادات</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Quick Insert -->
+    <section class="quick-insert">
+        <h2 class="quick-insert-title">إدراج سريع للحروف</h2>
+        <div class="character-grid" id="character-grid">
+            <!-- Characters will be dynamically added -->
+        </div>
+        <div class="action-buttons">
+            <button class="action-btn" onclick="copyPattern()">
+                <span class="material-icons">content_copy</span>
+                نسخ النمط
+            </button>
+            <button class="action-btn" onclick="clearQuickInsert()">
+                <span class="material-icons">clear</span>
+                مسح
+            </button>
+        </div>
+    </section>
+
+    <!-- Editor Container -->
+    <main class="editor-container">
+        <div class="editor-toolbar">
+            <div class="mode-selector">
+                <button class="mode-btn active" onclick="setMode('franco')">
+                    <span class="material-icons">keyboard</span>
+                    فرانكو
+                </button>
+                <button class="mode-btn" onclick="setMode('kbd')">
+                    <span class="material-icons">keyboard_alt</span>
+                    كيوبت
+                </button>
+                <button class="mode-btn" onclick="setMode('buckwalter')">
+                    <span class="material-icons">keyboard_double</span>
+                    باكويلتر
+                </button>
+                <button class="mode-btn" onclick="setMode('transliteration')">
+                    <span class="material-icons">text_fields</span>
+                    نقل الحركات
+                </button>
+            </div>
+            <div class="action-buttons">
+                <button class="action-btn" onclick="undo()">
+                    <span class="material-icons">undo</span>
+                    تراجع
+                </button>
+                <button class="action-btn" onclick="redo()">
+                    <span class="material-icons">redo</span>
+                    تقدم
+                </button>
+                <button class="action-btn primary" onclick="translateText()">
+                    <span class="material-icons" id="translate-icon">sync</span>
+                    ترجمة
+                </button>
+            </div>
+        </div>
+        <textarea
+            id="yamli-unified-text"
+            class="editor-textarea"
+            placeholder="ابدأ الكتابة هنا..."
+            dir="rtl"
+            oninput="updateCharCount()"
+            onkeydown="handleKeyboardShortcuts(event)"
+        ></textarea>
+    </main>
+
+    <!-- Translation Panel -->
+    <section class="translation-panel hidden" id="translation-panel">
+        <div class="translation-content">
+            <div class="translation-section">
+                <h3 class="translation-title">النص المدخل</h3>
+                <div class="translation-text" id="input-text-display"></div>
+            </div>
+            <div class="translation-section">
+                <h3 class="translation-title">الترجمة إلى الإنجليزية</h3>
+                <div class="translation-text" id="translation-display">
+                    <span class="loading" id="loading-spinner"></span>
+                    الجاري الترجمة...
+                </div>
+            </div>
+        </div>
+        <div class="action-bar">
+            <button class="action-btn" onclick="copyToClipboard('translation-display')">
+                <span class="material-icons">content_copy</span>
+                نسخ الترجمة
+            </button>
+            <button class="action-btn" onclick="shareTranslation()">
+                <span class="material-icons">share</span>
+                مشاركة
+            </button>
+            <button class="action-btn" onclick="toggleTranslation()">
+                <span class="material-icons" id="toggle-translation-icon">close</span>
+                إغلاق
+            </button>
+        </div>
+    </section>
+
+    <!-- History Panel -->
+    <section class="history-panel hidden" id="history-panel">
+        <div class="history-header">
+            <h2 class="history-title">العناصر الأخيرة</h2>
+            <button class="clear-history" onclick="clearAllHistory()">
+                مسح الكل
+            </button>
+        </div>
+        <div class="history-items" id="history-items">
+            <!-- History items will be dynamically added -->
+        </div>
+    </section>
+
+    <!-- Footer Actions -->
+    <div class="footer-actions">
+        <button class="action-btn primary" onclick="saveToHistory()">
+            <span class="material-icons">save</span>
+            حفظ
+        </button>
+        <button class="action-btn" onclick="shareText()">
+            <span class="material-icons">share</span>
+            مشاركة
+        </button>
+        <button class="action-btn" onclick="showDictionary()">
+            <span class="material-icons">menu_book</span>
+            قاموس
+        </button>
+        <button class="action-btn" onclick="showCheatSheet()">
+            <span class="material-icons">help_outline</span>
+            المساعدة
+        </button>
+    </div>
+
+    <script>
+        // Initialize variables
+        let currentMode = 'franco';
+        let history = [];
+        let historyIndex = -1;
+        let currentText = '';
+        let recentCharacters = JSON.parse(localStorage.getItem('recentCharacters') || '[]');
+
+        // Character sets for each mode
+        const characterSets = {
+            franco: ['ء', 'أ', 'إ', 'آ', 'ؤ', 'ئ', 'ا', 'ب', 'ت', 'ث', 'ج', 'ح', 'خ', 'د', 'ذ', 'ر', 'ز', 'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف', 'ق', 'ك', 'ل', 'م', 'ن', 'ه', 'و', 'ى', 'ي'],
+            kbd: ['\'', '|', '>', '&', '<', '~', '}', '{', 'P', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'A', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', '[', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '?', '؛', '/', ']', 'ג'],
+            buckwalter: ['\'', '|', '>', '&', '<', '~', '}', '{', 'A', 'B', 'P', 'T', 'TH', 'G', 'H', 'X', 'D', 'DH', 'R', 'Z', 'S', 'SH', 'S', 'D', 'T', 'Z', 'E', '3', '7', 'JH', 'CH', '8', 'GH', 'F', 'Q', 'K', 'L', 'M', 'N', 'H', 'W', 'Y', 'Y', 'A', 'E', 'I', 'U', 'O', 'a', 'e', 'i', 'u', 'o'],
+            transliteration: ['a', 'b', 't', 'th', 'j', 'h', 'kh', 'd', 'dh', 'r', 'z', 's', 'sh', 's', 'd', 't', 'z', '3', 7, 'gh', 'f', 'q', 'k', 'l', 'm', 'n', 'h', 'w', 'y', 'a', 'aa', 'i', 'ee', 'u', 'oo', 'an', 'on', 'in', 'en', 'un']
+        };
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            loadRecentItems();
+            loadCharacterGrid();
+            loadHistoryFromStorage();
+            loadTheme();
+        });
+
+        // Load character grid
+        function loadCharacterGrid() {
+            const grid = document.getElementById('character-grid');
+            grid.innerHTML = '';
+
+            const characters = characterSets[currentMode];
+            characters.forEach(char => {
+                const btn = document.createElement('button');
+                btn.className = 'character-btn';
+                btn.textContent = char;
+                btn.onclick = () => insertCharacter(char);
+                grid.appendChild(btn);
+            });
+
+            // Show recent characters
+            if (recentCharacters.length > 0) {
+                recentCharacters.forEach(char => {
+                    const btn = document.createElement('button');
+                    btn.className = 'character-btn recent';
+                    btn.textContent = char;
+                    btn.onclick = () => insertCharacter(char);
+                    grid.appendChild(btn);
+                });
+            }
+        }
+
+        // Insert character
+        function insertCharacter(char) {
+            const textarea = document.getElementById('yamli-unified-text');
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const text = textarea.value;
+
+            // Insert character at cursor position
+            const newText = text.substring(0, start) + char + text.substring(end);
+            textarea.value = newText;
+
+            // Move cursor after inserted character
+            textarea.selectionStart = textarea.selectionEnd = start + char.length;
+            textarea.focus();
+
+            // Update character count and history
+            currentText = newText;
+            updateCharCount();
+            addToRecent(char);
+
+            // Auto-translate
+            if (text.length > 0) {
+                setTimeout(translateText, 500);
+            }
+        }
+
+        // Add to recent characters
+        function addToRecent(char) {
+            if (!recentCharacters.includes(char)) {
+                recentCharacters.unshift(char);
+                if (recentCharacters.length > 10) {
+                    recentCharacters.pop();
+                }
+                localStorage.setItem('recentCharacters', JSON.stringify(recentCharacters));
+            }
+        }
+
+        // Set mode
+        function setMode(mode) {
+            currentMode = mode;
+
+            // Update active button
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.closest('.mode-btn').classList.add('active');
+
+            // Reload character grid
+            loadCharacterGrid();
+
+            // Show notification
+            showNotification(`تم التبديل إلى وضع ${getModeName(mode)}`);
+        }
+
+        // Get mode name in Arabic
+        function getModeName(mode) {
+            const names = {
+                franco: 'فرانكو',
+                kbd: 'كيوبت',
+                buckwalter: 'باكويلتر',
+                transliteration: 'نقل الحركات'
+            };
+            return names[mode] || mode;
+        }
+
+        // Undo/Redo functionality
+        function undo() {
+            if (historyIndex > 0) {
+                historyIndex--;
+                const textarea = document.getElementById('yamli-unified-text');
+                textarea.value = history[historyIndex];
+                currentText = textarea.value;
+                updateCharCount();
+            }
+        }
+
+        function redo() {
+            if (historyIndex < history.length - 1) {
+                historyIndex++;
+                const textarea = document.getElementById('yamli-unified-text');
+                textarea.value = history[historyIndex];
+                currentText = textarea.value;
+                updateCharCount();
+            }
+        }
+
+        // Save state to history
+        function saveState() {
+            const textarea = document.getElementById('yamli-unified-text');
+            currentText = textarea.value;
+
+            // Add to history
+            if (historyIndex < history.length - 1) {
+                history = history.slice(0, historyIndex + 1);
+            }
+
+            history.push(currentText);
+            historyIndex = history.length - 1;
+
+            // Limit history size
+            if (history.length > 50) {
+                history.shift();
+                historyIndex--;
+            }
+        }
+
+        // Update character count
+        function updateCharCount() {
+            const textarea = document.getElementById('yamli-unified-text');
+            const count = textarea.value.length;
+            // Optionally update a character counter in the UI
+        }
+
+        // Keyboard shortcuts
+        function handleKeyboardShortcuts(event) {
+            if (event.ctrlKey || event.metaKey) {
+                switch(event.key) {
+                    case 'z':
+                        event.preventDefault();
+                        if (event.shiftKey) {
+                            redo();
+                        } else {
+                            undo();
+                        }
+                        break;
+                    case 'y':
+                        event.preventDefault();
+                        redo();
+                        break;
+                    case 'Enter':
+                        event.preventDefault();
+                        translateText();
+                        break;
+                }
+            }
+
+            // Save state on input
+            saveState();
+        }
+
+        // Translate text
+        function translateText() {
+            const textarea = document.getElementById('yamli-unified-text');
+            const inputText = textarea.value.trim();
+
+            if (!inputText) return;
+
+            // Show translation panel
+            const translationPanel = document.getElementById('translation-panel');
+            translationPanel.classList.remove('hidden');
+
+            // Show input text
+            document.getElementById('input-text-display').textContent = inputText;
+
+            // Show loading spinner
+            const loadingSpinner = document.getElementById('loading-spinner');
+            const translationDisplay = document.getElementById('translation-display');
+            loadingSpinner.style.display = 'inline-block';
+            translationDisplay.innerHTML = '<span class="loading"></span> الجاري الترجمة...';
+
+            // Simulate translation API call
+            setTimeout(() => {
+                loadingSpinner.style.display = 'none';
+                // This would be replaced with actual translation API call
+                const mockTranslation = `Mock translation for: ${inputText}`;
+                translationDisplay.textContent = mockTranslation;
+            }, 1000);
+        }
+
+        // Toggle translation panel
+        function toggleTranslation() {
+            const panel = document.getElementById('translation-panel');
+            panel.classList.toggle('hidden');
+        }
+
+        // Copy to clipboard
+        function copyToClipboard(elementId) {
+            const element = document.getElementById(elementId);
+            const text = element.textContent;
+
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showNotification('تم النسخ إلى الحافظة');
+                });
+            } else {
+                // Fallback for older browsers
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                showNotification('تم النسخ إلى الحافظة');
+            }
+        }
+
+        // Share text
+        function shareText() {
+            const textarea = document.getElementById('yamli-unified-text');
+            const text = textarea.value.trim();
+
+            if (text && navigator.share) {
+                navigator.share({
+                    title: 'نص من Yamli Mobile',
+                    text: text
+                }).catch(() => {
+                    // Handle share cancellation
+                });
+            } else {
+                copyToClipboard('yamli-unified-text');
+            }
+        }
+
+        // Save to history
+        function saveToHistory() {
+            const textarea = document.getElementById('yamli-unified-text');
+            const text = textarea.value.trim();
+
+            if (text) {
+                const timestamp = new Date().toLocaleString('ar-EG');
+                const historyItem = { text, timestamp };
+
+                // Add to history
+                history.unshift(historyItem);
+                if (history.length > 20) {
+                    history.pop();
+                }
+
+                // Save to localStorage
+                localStorage.setItem('yamliHistory', JSON.stringify(history));
+
+                // Update UI
+                loadHistoryFromStorage();
+                showNotification('تم حفظ النص في التاريخ');
+            }
+        }
+
+        // Load history from storage
+        function loadHistoryFromStorage() {
+            const savedHistory = localStorage.getItem('yamliHistory');
+            if (savedHistory) {
+                history = JSON.parse(savedHistory);
+
+                // Update UI
+                const historyItems = document.getElementById('history-items');
+                historyItems.innerHTML = '';
+
+                history.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'history-item';
+                    div.innerHTML = `
+                        <span class="history-item-time">${item.timestamp}</span>
+                        <span class="history-item-text">${item.text}</span>
+                    `;
+                    div.onclick = () => loadHistoryItem(item.text);
+                    historyItems.appendChild(div);
+                });
+            }
+        }
+
+        // Load history item
+        function loadHistoryItem(text) {
+            const textarea = document.getElementById('yamli-unified-text');
+            textarea.value = text;
+            currentText = text;
+            updateCharCount();
+            textarea.focus();
+            showNotification('تم تحميل النص من التاريخ');
+        }
+
+        // Toggle history panel
+        function toggleHistory() {
+            const panel = document.getElementById('history-panel');
+            panel.classList.toggle('hidden');
+        }
+
+        // Clear all history
+        function clearAllHistory() {
+            if (confirm('هل أنت متأكد من مسح كل التاريخ؟')) {
+                history = [];
+                localStorage.removeItem('yamliHistory');
+                loadHistoryFromStorage();
+                showNotification('تم مسح التاريخ');
+            }
+        }
+
+        // Theme toggle
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+
+            if (body.classList.contains('dark-theme')) {
+                body.classList.remove('dark-theme');
+                themeIcon.textContent = 'dark_mode';
+                themeText.textContent = 'الغوص';
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.classList.add('dark-theme');
+                themeIcon.textContent = 'light_mode';
+                themeText.textContent = 'فاتح';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Load theme
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-theme');
+                themeIcon.textContent = 'light_mode';
+                themeText.textContent = 'فاتح';
+            }
+        }
+
+        // Copy pattern
+        function copyPattern() {
+            const textarea = document.getElementById('yamli-unified-text');
+            const text = textarea.value.trim();
+
+            if (text) {
+                copyToClipboard('yamli-unified-text');
+                showNotification('تم نسخ النمط');
+            }
+        }
+
+        // Clear quick insert
+        function clearQuickInsert() {
+            const textarea = document.getElementById('yamli-unified-text');
+            textarea.value = '';
+            currentText = '';
+            updateCharCount();
+            showNotification('تم مسح الحقل');
+        }
+
+        // Show settings
+        function showSettings() {
+            showNotification('ميزة الإعدادات قيد التطوير');
+        }
+
+        // Show dictionary
+        function showDictionary() {
+            window.location.href = 'dictionary.html';
+        }
+
+        // Show cheat sheet
+        function showCheatSheet() {
+            window.location.href = 'cheat-sheet.html';
+        }
+
+        // Show notification
+        function showNotification(message) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: var(--primary-color);
+                color: white;
+                padding: 12px 24px;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+                z-index: 1000;
+                animation: slideDown 0.3s ease;
+            `;
+            notification.textContent = message;
+
+            // Add animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideDown {
+                    from {
+                        transform: translateX(-50%) translateY(-100%);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(-50%) translateY(0);
+                        opacity: 1;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+
+            document.body.appendChild(notification);
+
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideDown 0.3s ease reverse';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Load recent items
+        function loadRecentItems() {
+            // This would load recent items from localStorage or API
+            // For now, it's handled by the history panel
+        }
+    </script>
+</body>
+</html>

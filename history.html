@@ -1,0 +1,1160 @@
+<!doctype html>
+<html lang="ar">
+<head>
+  <meta charset="utf-8">
+  <title>Yamli Mobile - سجل الترجمة (Translation History)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#c2652a">
+  <meta name="apple-mobile-web-app-title" content="Yamli Mobile">
+
+  <!-- Material Design Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Manrope:wght@300;400;500;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=El+Messiri:wght@400;700&family=Noto+Sans+Arabic:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <style>
+    @layer base {
+      html, body {
+        width: 100vw;
+        margin: 0;
+        padding: 0;
+        font-family: 'Manrope', sans-serif;
+        background-color: #faf5ee;
+        color: #3a302a;
+        overscroll-behavior: none;
+      }
+
+      ::-webkit-scrollbar {
+        display: none;
+      }
+
+      .pb-safe {
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+      }
+
+      .pt-safe {
+        padding-top: env(safe-area-inset-top, 0px);
+      }
+    }
+
+    /* Colors from the design system */
+    :root {
+      --primary: #c2652a;
+      --primary-light: #e08850;
+      --primary-dark: #8a4518;
+      --surface: #faf5ee;
+      --surface-container: #f2ece4;
+      --surface-container-high: #ece6dc;
+      --surface-container-low: #f6f0e8;
+      --surface-container-lowest: #ffffff;
+      --on-surface: #3a302a;
+      --on-surface-variant: #605850;
+      --secondary: #78706a;
+      --secondary-light: #eae2da;
+      --secondary-dark: #504840;
+      --tertiary: #8c3c3c;
+      --tertiary-light: #d47070;
+      --tertiary-dark: #6e3030;
+      --error: #c0392b;
+      --outline: #9a9088;
+      --outline-variant: #d8d0c8;
+    }
+
+    /* Base styles */
+    .container {
+      padding: 1rem;
+      padding-top: 5rem;
+      padding-bottom: 7rem;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4rem;
+      background-color: rgba(250, 245, 238, 0.9);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--outline-variant);
+      z-index: 50;
+      padding-top: env(safe-area-inset-top);
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1rem;
+      height: 100%;
+    }
+
+    .header-title {
+      font-family: 'EB Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Empty State */
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    .empty-icon {
+      font-size: 4rem;
+      color: var(--outline-variant);
+      margin-bottom: 1.5rem;
+    }
+
+    .empty-title {
+      font-family: 'EB Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--on-surface);
+      margin-bottom: 0.5rem;
+    }
+
+    .empty-description {
+      font-size: 1rem;
+      color: var(--on-surface-variant);
+      line-height: 1.5;
+      margin-bottom: 2rem;
+    }
+
+    .empty-button {
+      background-color: var(--primary);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+    }
+
+    .empty-button:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    /* History Items */
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .history-item {
+      background-color: var(--surface-container);
+      border: 1px solid var(--outline-variant);
+      border-radius: 1rem;
+      padding: 1.25rem;
+      transition: all 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .history-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    .history-item.pinned::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background-color: var(--tertiary);
+    }
+
+    .history-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .history-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .history-time {
+      font-size: 0.75rem;
+      color: var(--on-surface-variant);
+    }
+
+    .history-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .action-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 0.5rem;
+      background-color: var(--surface-container-lowest);
+      border: 1px solid var(--outline-variant);
+      color: var(--on-surface);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .action-btn:hover {
+      background-color: var(--surface-container);
+      transform: scale(1.05);
+    }
+
+    .action-btn.pinned {
+      color: var(--tertiary);
+    }
+
+    .action-btn.pinned:hover {
+      background-color: var(--tertiary-light);
+    }
+
+    /* Content Sections */
+    .content-section {
+      margin-bottom: 1rem;
+    }
+
+    .content-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--on-surface-variant);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .content-label .icon {
+      font-size: 1rem;
+      color: var(--primary);
+    }
+
+    .history-text {
+      font-family: 'Amiri', serif;
+      font-size: 1.125rem;
+      line-height: 1.6;
+      color: var(--on-surface);
+      direction: rtl;
+      margin-bottom: 0.5rem;
+    }
+
+    .history-text.empty {
+      color: var(--on-surface-variant);
+      font-style: italic;
+    }
+
+    .history-english {
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.875rem;
+      color: var(--on-surface-variant);
+      margin-bottom: 0.5rem;
+    }
+
+    .history-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.25rem 0.75rem;
+      background-color: var(--surface-container-low);
+      border: 1px solid var(--outline-variant);
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--on-surface-variant);
+    }
+
+    .tag .icon {
+      font-size: 0.75rem;
+    }
+
+    /* Quick Actions Bar */
+    .quick-actions {
+      position: fixed;
+      bottom: 7rem;
+      left: 1rem;
+      right: 1rem;
+      background-color: rgba(250, 245, 238, 0.9);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--outline-variant);
+      border-radius: 0.75rem;
+      padding: 1rem;
+      display: flex;
+      gap: 0.5rem;
+      z-index: 40;
+    }
+
+    .quick-action-btn {
+      flex: 1;
+      padding: 0.625rem 1rem;
+      background-color: var(--surface-container-lowest);
+      border: 1px solid var(--outline-variant);
+      border-radius: 0.5rem;
+      color: var(--on-surface);
+      font-weight: 600;
+      font-size: 0.875rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+    }
+
+    .quick-action-btn:hover {
+      background-color: var(--surface-container);
+    }
+
+    .quick-action-btn.primary {
+      background-color: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .quick-action-btn.primary:hover {
+      background-color: var(--primary-dark);
+    }
+
+    /* Search Bar */
+    .search-container {
+      position: sticky;
+      top: 4rem;
+      background-color: var(--surface);
+      padding-bottom: 1rem;
+      z-index: 30;
+    }
+
+    .search-bar {
+      background-color: var(--surface-container);
+      border: 1px solid var(--outline-variant);
+      border-radius: 0.75rem;
+      padding: 0.75rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .search-input {
+      flex: 1;
+      border: none;
+      background: none;
+      font-size: 1rem;
+      color: var(--on-surface);
+      outline: none;
+    }
+
+    .search-input::placeholder {
+      color: var(--on-surface-variant);
+    }
+
+    .search-icon {
+      font-size: 1.125rem;
+      color: var(--on-surface-variant);
+    }
+
+    /* Filter Pills */
+    .filter-container {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+      overflow-x: auto;
+      padding-bottom: 0.25rem;
+    }
+
+    .filter-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background-color: var(--surface-container);
+      border: 1px solid var(--outline-variant);
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      color: var(--on-surface);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .filter-pill:hover {
+      background-color: var(--surface-container-high);
+    }
+
+    .filter-pill.active {
+      background-color: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    /* Clear History Modal */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.2s ease;
+    }
+
+    .modal.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-content {
+      background-color: var(--surface-container-lowest);
+      border: 1px solid var(--outline-variant);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      max-width: 90%;
+      width: 400px;
+      transform: scale(0.9);
+      transition: transform 0.2s ease;
+    }
+
+    .modal.show .modal-content {
+      transform: scale(1);
+    }
+
+    .modal-header {
+      font-family: 'EB Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--on-surface);
+      margin-bottom: 1rem;
+    }
+
+    .modal-body {
+      color: var(--on-surface-variant);
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: flex-end;
+    }
+
+    .modal-btn {
+      padding: 0.625rem 1.25rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .modal-btn.cancel {
+      background-color: var(--surface-container);
+      color: var(--on-surface);
+    }
+
+    .modal-btn.cancel:hover {
+      background-color: var(--surface-container-high);
+    }
+
+    .modal-btn.confirm {
+      background-color: var(--error);
+      color: white;
+    }
+
+    .modal-btn.confirm:hover {
+      background-color: var(--tertiary-dark);
+    }
+
+    /* Navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 4rem;
+      background-color: rgba(250, 245, 238, 0.9);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid var(--outline-variant);
+      padding-bottom: env(safe-area-inset-bottom);
+      z-index: 50;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 3.5rem;
+      height: 3.5rem;
+      gap: 0.25rem;
+      color: var(--on-surface-variant);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .nav-item:hover {
+      color: var(--primary);
+    }
+
+    .nav-item.active {
+      color: var(--primary);
+    }
+
+    .nav-item span.material-symbols-outlined {
+      font-size: 1.375rem;
+    }
+
+    .nav-item span {
+      font-size: 0.625rem;
+      font-weight: 600;
+      letter-spacing: 0.025em;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .container {
+        padding: 0.5rem;
+      }
+
+      .history-item {
+        padding: 1rem;
+      }
+
+      .quick-actions {
+        left: 0.5rem;
+        right: 0.5rem;
+      }
+
+      .quick-action-btn {
+        font-size: 0.75rem;
+        padding: 0.5rem 0.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <div class="header-title">
+        <span class="material-symbols-outlined">history</span>
+        سجل الترجمة (Translation History)
+      </div>
+    </div>
+  </header>
+
+  <!-- Search Bar -->
+  <div class="search-container">
+    <div class="search-bar">
+      <span class="material-symbols-outlined search-icon">search</span>
+      <input type="text" class="search-input" placeholder="البحث في السجل..." id="searchInput">
+    </div>
+    <div class="filter-container">
+      <button class="filter-pill active" data-filter="all">
+        <span>الكل</span>
+      </button>
+      <button class="filter-pill" data-filter="today">
+        <span>اليوم</span>
+      </button>
+      <button class="filter-pill" data-filter="week">
+        <span>هذا الأسبوع</span>
+      </button>
+      <button class="filter-pill" data-filter="month">
+        <span>هذا الشهر</span>
+      </button>
+      <button class="filter-pill" data-filter="favorites">
+        <span>المفضلة</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container">
+    <!-- Empty State -->
+    <div class="empty-state" id="emptyState">
+      <span class="material-symbols-outlined empty-icon">history_toggle_off</span>
+      <h2 class="empty-title">لا توجد سجلات ترجمة</h2>
+      <p class="empty-description">
+        ابدأ بالكتابة في المحرر لعرض الترجمات السابقة هنا. سيتم حفظ جميع ترجماتك تلقائيًا.
+      </p>
+      <button class="empty-button" onclick="goToEditor()">
+        <span class="material-symbols-outlined">edit_note</span>
+        ابدأ الكتابة
+      </button>
+    </div>
+
+    <!-- History List -->
+    <div class="history-list" id="historyList" style="display: none;">
+      <!-- Sample History Item 1 -->
+      <div class="history-item" data-time="2026-10-31T10:30:00">
+        <div class="history-header">
+          <div class="history-meta">
+            <div class="history-time">قبل 10 دقائق</div>
+          </div>
+          <div class="history-actions">
+            <button class="action-btn" onclick="copyToClipboard(this)" title="نسخ">
+              <span class="material-symbols-outlined">content_copy</span>
+            </button>
+            <button class="action-btn pinned" onclick="togglePin(this)" title="دوّن">
+              <span class="material-symbols-outlined">push_pin</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="content-section">
+          <div class="content-label">
+            <span class="material-symbols-outlined">translate</span>
+            <span>الترجمة العربية</span>
+          </div>
+          <div class="history-text">
+            مرحباً بك في عالم يملي الجديد!
+          </div>
+        </div>
+
+        <div class="content-section">
+          <div class="content-label">
+            <span class="material-symbols-outlined">english</span>
+            <span>النص الإنجليزي</span>
+          </div>
+          <div class="history-english">
+            Welcome to the new Yamli world!
+          </div>
+        </div>
+
+        <div class="content-section">
+          <div class="content-label">
+            <span class="material-symbols-outlined">tag</span>
+            <span>الوسوم</span>
+          </div>
+          <div class="history-tags">
+            <span class="tag">
+              <span class="material-symbols-outlined icon">star</span>
+              مفضل
+            </span>
+            <span class="tag">
+              <span class="material-symbols-outlined icon">favorite</span>
+              مرحباً
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sample History Item 2 -->
+      <div class="history-item" data-time="2026-10-31T09:15:00">
+        <div class="history-header">
+          <div class="history-meta">
+            <div class="history-time">قبل ساعة</div>
+          </div>
+          <div class="history-actions">
+            <button class="action-btn" onclick="copyToClipboard(this)" title="نسخ">
+              <span class="material-symbols-outlined">content_copy</span>
+            </button>
+            <button class="action-btn" onclick="togglePin(this)" title="دوّن">
+              <span class="material-symbols-outlined">push_pin</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="content-section">
+          <div class="content-label">
+            <span class="material-symbols-outlined">translate</span>
+            <span>الترجمة العربية</span>
+          </div>
+          <div class="history-text">
+            كيف حالك اليوم؟
+          </div>
+        </div>
+
+        <div class="content-section">
+          <div class="content-label">
+            <span class="material-symbols-outlined">english</span>
+            <span>النص الإنجليزي</span>
+          </div>
+          <div class="history-english">
+            How are you today?
+          </div>
+        </div>
+
+        <div class="content-section">
+          <div class="content-label">
+            <span class="material-symbols-outlined">tag</span>
+            <span>الوسوم</span>
+          </div>
+          <div class="history-tags">
+            <span class="tag">
+              <span class="material-symbols-outlined icon">chat</span>
+              تحية
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sample History Item 3 -->
+      <div class="history-item" data-time="2026-10-30T15:45:00">
+        <div class="history-header">
+          <div class="history-meta">
+            <div class="history-time">أمس</div>
+          </div>
+          <div class="history-actions">
+            <button class="action-btn" onclick="copyToClipboard(this)" title="نسخ">
+              <span class="material-symbols-outlined">content_copy</span>
+            </button>
+            <button class="action-btn pinned" onclick="togglePin(this)" title="دوّن">
+              <span class="material-symbols-outlined">push_pin</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="content-section">
+          <div class="content-label">
+            <span class="material-symbols-outlined">translate</span>
+            <span>الترجمة العربية</span>
+          </div>
+          <div class="history-text empty">
+            (لم يتم حفظ النص الإنجليزي)
+          </div>
+        </div>
+
+        <div class="content-section">
+          <div class="content-label">
+            <span class="material-symbols-outlined">english</span>
+            <span>النص الإنجليزي</span>
+          </div>
+          <div class="history-english">
+            Thanks for your help!
+          </div>
+        </div>
+
+        <div class="content-section">
+          <div class="content-label">
+            <span class="material-symbols-outlined">tag</span>
+            <span>الوسوم</span>
+          </div>
+          <div class="history-tags">
+            <span class="tag">
+              <span class="material-symbols-outlined icon">sentiment_satisfied</span>
+              شكر
+            </span>
+            <span class="tag">
+              <span class="material-symbols-outlined icon">favorite</span>
+              مساعدة
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions Bar -->
+    <div class="quick-actions">
+      <button class="quick-action-btn" onclick="shareAll()">
+        <span class="material-symbols-outlined">share</span>
+        مشاركة الكل
+      </button>
+      <button class="quick-action-btn" onclick="exportHistory()">
+        <span class="material-symbols-outlined">download</span>
+        تصدير
+      </button>
+      <button class="quick-action-btn primary" onclick="clearHistory()">
+        <span class="material-symbols-outlined">delete_sweep</span>
+        مسح الكل
+      </button>
+    </div>
+  </div>
+
+  <!-- Clear History Modal -->
+  <div class="modal" id="clearModal">
+    <div class="modal-content">
+      <h3 class="modal-header">تأكيد الحذف</h3>
+      <p class="modal-body">
+        هل أنت متأكد من أنك تريد حذف جميع سجلات الترجمة؟ لا يمكن التراجع عن هذا الإجراء.
+      </p>
+      <div class="modal-actions">
+        <button class="modal-btn cancel" onclick="hideClearModal()">إلغاء</button>
+        <button class="modal-btn confirm" onclick="confirmClearHistory()">حذف الكل</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <a href="./index.html" class="nav-item" data-path="editor">
+      <span class="material-symbols-outlined">edit_note</span>
+      <span>Editor</span>
+    </a>
+    <a href="#" class="nav-item" data-path="dictionary">
+      <span class="material-symbols-outlined">menu_book</span>
+      <span>Dictionary</span>
+    </a>
+    <a href="#" class="nav-item" data-path="arabic-search">
+      <span class="material-symbols-outlined">search</span>
+      <span>Search</span>
+    </a>
+    <a href="#" class="nav-item" data-path="cheat-sheet">
+      <span class="material-symbols-outlined">tag</span>
+      <span>Cheat Sheet</span>
+    </a>
+    <a href="#" class="nav-item active" data-path="history">
+      <span class="material-symbols-outlined">history</span>
+      <span>History</span>
+    </a>
+  </nav>
+
+  <!-- JavaScript -->
+  <script>
+    // Load history from localStorage
+    let history = JSON.parse(localStorage.getItem('translationHistory')) || [];
+
+    // Check if history exists
+    function checkHistory() {
+      const emptyState = document.getElementById('emptyState');
+      const historyList = document.getElementById('historyList');
+
+      if (history.length === 0) {
+        emptyState.style.display = 'flex';
+        historyList.style.display = 'none';
+      } else {
+        emptyState.style.display = 'none';
+        historyList.style.display = 'flex';
+        renderHistory();
+      }
+    }
+
+    // Render history items
+    function renderHistory(filteredHistory = null) {
+      const historyList = document.getElementById('historyList');
+      const itemsToRender = filteredHistory || history;
+
+      historyList.innerHTML = '';
+
+      itemsToRender.forEach((item, index) => {
+        const historyItem = createHistoryItem(item, index);
+        historyList.appendChild(historyItem);
+      });
+    }
+
+    // Create history item element
+    function createHistoryItem(item, index) {
+      const div = document.createElement('div');
+      div.className = 'history-item';
+      if (item.pinned) {
+        div.classList.add('pinned');
+      }
+
+      const timeAgo = getTimeAgo(new Date(item.timestamp));
+
+      div.innerHTML = `
+        <div class="history-header">
+          <div class="history-meta">
+            <div class="history-time">${timeAgo}</div>
+          </div>
+          <div class="history-actions">
+            <button class="action-btn" onclick="copyToClipboard(this)" title="نسخ">
+              <span class="material-symbols-outlined">content_copy</span>
+            </button>
+            <button class="action-btn ${item.pinned ? 'pinned' : ''}" onclick="togglePin(${index})" title="دوّن">
+              <span class="material-symbols-outlined">push_pin</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="content-section">
+          <div class="content-label">
+            <span class="material-symbols-outlined">translate</span>
+            <span>الترجمة العربية</span>
+          </div>
+          <div class="history-text">
+            ${item.arabic || '(لم يتم حفظ النص الإنجليزي)'}
+          </div>
+        </div>
+
+        <div class="content-section">
+          <div class="content-label">
+            <span class="material-symbols-outlined">english</span>
+            <span>النص الإنجليزي</span>
+          </div>
+          <div class="history-english">
+            ${item.english || ''}
+          </div>
+        </div>
+
+        <div class="content-section">
+          <div class="content-label">
+            <span class="material-symbols-outlined">tag</span>
+            <span>الوسوم</span>
+          </div>
+          <div class="history-tags">
+            ${item.tags.map(tag => `
+              <span class="tag">
+                <span class="material-symbols-outlined icon">star</span>
+                ${tag}
+              </span>
+            `).join('')}
+          </div>
+        </div>
+      `;
+
+      return div;
+    }
+
+    // Get time ago string
+    function getTimeAgo(date) {
+      const now = new Date();
+      const diff = now - date;
+
+      const minutes = Math.floor(diff / 60000);
+      const hours = Math.floor(diff / 3600000);
+      const days = Math.floor(diff / 86400000);
+
+      if (minutes < 60) {
+        return `قبل ${minutes} دقيقة`;
+      } else if (hours < 24) {
+        return `قبل ${hours} ساعة`;
+      } else {
+        return `قبل ${days} يوم`;
+      }
+    }
+
+    // Toggle pin
+    function togglePin(index) {
+      if (history[index]) {
+        history[index].pinned = !history[index].pinned;
+        localStorage.setItem('translationHistory', JSON.stringify(history));
+        checkHistory();
+      }
+    }
+
+    // Copy to clipboard
+    function copyToClipboard(button) {
+      const historyItem = button.closest('.history-item');
+      const arabicText = historyItem.querySelector('.history-text').textContent;
+
+      navigator.clipboard?.writeText(arabicText).then(() => {
+        showToast('تم نسخ النص بنجاح');
+      }).catch(err => {
+        showToast('فشل نسخ النص');
+      });
+    }
+
+    // Show toast
+    function showToast(message) {
+      const toast = document.createElement('div');
+      toast.style.cssText = `
+        position: fixed;
+        bottom: 7rem;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: var(--primary);
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.5rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        z-index: 1000;
+        animation: slideUp 0.3s ease-out;
+      `;
+      toast.textContent = message;
+      document.body.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.animation = 'slideDown 0.3s ease-out';
+        setTimeout(() => {
+          document.body.removeChild(toast);
+        }, 300);
+      }, 3000);
+    }
+
+    // Clear history
+    function clearHistory() {
+      document.getElementById('clearModal').classList.add('show');
+    }
+
+    function hideClearModal() {
+      document.getElementById('clearModal').classList.remove('show');
+    }
+
+    function confirmClearHistory() {
+      localStorage.removeItem('translationHistory');
+      history = [];
+      checkHistory();
+      hideClearModal();
+      showToast('تم مسح السجل بنجاح');
+    }
+
+    // Share all
+    function shareAll() {
+      const arabicTexts = history.map(item => item.arabic).filter(text => text).join('\n\n');
+
+      if (arabicTexts) {
+        navigator.share?.({
+          title: 'سجل الترجمة',
+          text: arabicTexts
+        }).catch(err => {
+          console.log('Sharing failed:', err);
+        });
+      } else {
+        showToast('لا يوجد نص للمشاركة');
+      }
+    }
+
+    // Export history
+    function exportHistory() {
+      const dataStr = JSON.stringify(history, null, 2);
+      const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+
+      const exportFileDefaultName = `yamli-history-${Date.now()}.json`;
+
+      const linkElement = document.createElement('a');
+      linkElement.setAttribute('href', dataUri);
+      linkElement.setAttribute('download', exportFileDefaultName);
+      linkElement.click();
+
+      showToast('تم تصدير السجل بنجاح');
+    }
+
+    // Go to editor
+    function goToEditor() {
+      window.location.href = './index.html';
+    }
+
+    // Search functionality
+    const searchInput = document.getElementById('searchInput');
+    searchInput.addEventListener('input', (e) => {
+      const searchTerm = e.target.value.toLowerCase();
+
+      if (searchTerm === '') {
+        renderHistory();
+        return;
+      }
+
+      const filtered = history.filter(item =>
+        (item.arabic && item.arabic.toLowerCase().includes(searchTerm)) ||
+        (item.english && item.english.toLowerCase().includes(searchTerm)) ||
+        (item.tags && item.tags.some(tag => tag.toLowerCase().includes(searchTerm)))
+      );
+
+      renderHistory(filtered);
+    });
+
+    // Filter functionality
+    document.querySelectorAll('.filter-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        // Update active state
+        document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+
+        const filter = pill.dataset.filter;
+
+        switch(filter) {
+          case 'all':
+            renderHistory();
+            break;
+          case 'today':
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const filteredToday = history.filter(item => new Date(item.timestamp) >= today);
+            renderHistory(filteredToday);
+            break;
+          case 'week':
+            const weekAgo = new Date();
+            weekAgo.setDate(weekAgo.getDate() - 7);
+            const filteredWeek = history.filter(item => new Date(item.timestamp) >= weekAgo);
+            renderHistory(filteredWeek);
+            break;
+          case 'month':
+            const monthAgo = new Date();
+            monthAgo.setMonth(monthAgo.getMonth() - 1);
+            const filteredMonth = history.filter(item => new Date(item.timestamp) >= monthAgo);
+            renderHistory(filteredMonth);
+            break;
+          case 'favorites':
+            const filteredFavorites = history.filter(item => item.pinned);
+            renderHistory(filteredFavorites);
+            break;
+        }
+      });
+    });
+
+    // Navigation handling
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        // Remove active class from all items
+        document.querySelectorAll('.nav-item').forEach(nav => {
+          nav.classList.remove('active');
+        });
+
+        // Add active class to clicked item
+        item.classList.add('active');
+
+        // Handle navigation based on data-path
+        const path = item.getAttribute('data-path');
+        console.log('Navigating to:', path);
+        // Add your navigation logic here
+      });
+    });
+
+    // Add CSS animations
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes slideUp {
+        from { transform: translate(-50%, 100%); opacity: 0; }
+        to { transform: translate(-50%, 0); opacity: 1; }
+      }
+      @keyframes slideDown {
+        from { transform: translate(-50%, 0); opacity: 1; }
+        to { transform: translate(-50%, 100%); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', checkHistory);
+  </script>
+
+</body>
+</html>

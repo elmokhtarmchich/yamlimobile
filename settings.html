@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yamli Mobile - الإعدادات</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #c2652a;
+            --primary-dark: #8c4a1c;
+            --primary-light: #d28858;
+            --secondary-color: #212121;
+            --background-color: #ffffff;
+            --surface-color: #ffffff;
+            --text-primary: #212121;
+            --text-secondary: #757575;
+            --text-disabled: #9e9e9e;
+            --border-color: #e0e0e0;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.1);
+            --shadow-md: 0 2px 4px rgba(0,0,0,0.1);
+            --shadow-lg: 0 4px 8px rgba(0,0,0,0.1);
+            --border-radius: 16px;
+            --border-radius-lg: 24px;
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            direction: rtl;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: var(--spacing-lg) var(--spacing-xl);
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .logo .material-icons {
+            font-size: 32px;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: var(--spacing-xl);
+            min-height: calc(100vh - 140px);
+        }
+
+        /* Settings Sections */
+        .settings-section {
+            background: var(--surface-color);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .section-icon {
+            color: var(--primary-color);
+            font-size: 24px;
+        }
+
+        /* Setting Items */
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-md) 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+
+        .setting-info {
+            flex: 1;
+        }
+
+        .setting-label {
+            font-size: 16px;
+            font-weight: 400;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .setting-description {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            width: 48px;
+            height: 24px;
+            background-color: #ccc;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background-color: var(--primary-color);
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-switch.active::after {
+            transform: translateX(24px);
+        }
+
+        /* Select */
+        .setting-select {
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            font-size: 14px;
+            background-color: white;
+            color: var(--text-primary);
+            cursor: pointer;
+            min-width: 120px;
+        }
+
+        .setting-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        /* Buttons */
+        .setting-btn {
+            background: white;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .setting-btn:hover {
+            background: var(--primary-light);
+            color: white;
+            border-color: var(--primary-light);
+        }
+
+        .setting-btn.danger {
+            color: #f44336;
+        }
+
+        .setting-btn.danger:hover {
+            background: #f44336;
+            color: white;
+            border-color: #f44336;
+        }
+
+        /* Divider */
+        .divider {
+            height: 1px;
+            background-color: var(--border-color);
+            margin: var(--spacing-lg) 0;
+        }
+
+        /* About Section */
+        .about-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md) 0;
+        }
+
+        .about-icon {
+            color: var(--primary-color);
+            font-size: 24px;
+        }
+
+        .about-text {
+            flex: 1;
+        }
+
+        .about-label {
+            font-size: 16px;
+            font-weight: 400;
+            color: var(--text-primary);
+        }
+
+        .about-value {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Theme Toggle */
+        .theme-option {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md);
+            background: #f5f5f5;
+            border-radius: var(--border-radius);
+            margin-bottom: var(--spacing-sm);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .theme-option:hover {
+            background: #e0e0e0;
+        }
+
+        .theme-option.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .theme-option .material-icons {
+            font-size: 20px;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: var(--primary-color);
+            color: white;
+            padding: var(--spacing-md) var(--spacing-lg);
+            border-radius: var(--border-radius);
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Dark Mode */
+        body.dark-theme {
+            --background-color: #121212;
+            --surface-color: #1e1e1e;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --text-disabled: #757575;
+            --border-color: #333333;
+        }
+
+        body.dark-theme .header {
+            background: linear-gradient(135deg, #e69556 0%, #c2652a 100%);
+        }
+
+        body.dark-theme .settings-section,
+        body.dark-theme .setting-item,
+        body.dark-theme .theme-option {
+            background: #2d2d2d;
+            border-color: #444444;
+        }
+
+        body.dark-theme .theme-option.active {
+            background: var(--primary-color);
+        }
+
+        body.dark-theme .setting-select,
+        body.dark-theme .setting-btn {
+            background: #2d2d2d;
+            border-color: #444444;
+            color: #ffffff;
+        }
+
+        body.dark-theme .setting-select:focus {
+            border-color: var(--primary-color);
+        }
+
+        body.dark-theme .about-item {
+            background: transparent;
+            border-color: transparent;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: var(--spacing-lg);
+            }
+
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .setting-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: var(--spacing-md);
+            }
+
+            .setting-toggle {
+                align-self: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <span class="material-icons">settings</span>
+                الإعدادات
+            </div>
+            <button class="back-btn" onclick="goBack()">
+                <span class="material-icons">arrow_back</span>
+                رجوع
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Appearance Section -->
+        <section class="settings-section">
+            <div class="section-header">
+                <span class="material-icons section-icon">appearance</span>
+                <h2 class="section-title">المظهر</h2>
+            </div>
+
+            <div class="setting-item">
+                <div class="setting-info">
+                    <div class="setting-label">الوضع اللوني</div>
+                    <div class="setting-description">اختر بين الوضع الفاتح والداكن</div>
+                </div>
+                <div class="setting-toggle">
+                    <div class="theme-option" onclick="setTheme('light')" id="light-theme">
+                        <span class="material-icons">light_mode</span>
+                        <span>فاتح</span>
+                    </div>
+                    <div class="theme-option" onclick="setTheme('dark')" id="dark-theme">
+                        <span class="material-icons">dark_mode</span>
+                        <span>داكن</span>
+                    </div>
+                    <div class="theme-option" onclick="setTheme('system')" id="system-theme">
+                        <span class="material-icons">auto_mode</span>
+                        <span>تلقائي</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Keyboard Settings -->
+        <section class="settings-section">
+            <div class="section-header">
+                <span class="material-icons section-icon">keyboard</span>
+                <h2 class="section-title">إعدادات لوحة المفاتيح</h2>
+            </div>
+
+            <div class="setting-item">
+                <div class="setting-info">
+                    <div class="setting-label">نوع لوحة المفاتيح</div>
+                    <div class="setting-description">اختر نظام الكتابة المفضل</div>
+                </div>
+                <select class="setting-select" id="keyboard-type" onchange="saveKeyboardType(this.value)">
+                    <option value="franco">فرانكو</option>
+                    <option value="kbd">كيوبت</option>
+                    <option value="buckwalter">باكويلتر</option>
+                    <option value="transliteration">نقل الحركات</option>
+                </select>
+            </div>
+
+            <div class="setting-item">
+                <div class="setting-info">
+                    <div class="setting-label">إظهار الحركات</div>
+                    <div class="setting-description">عرض الحركات العربية مع الحروف</div>
+                </div>
+                <div class="toggle-switch" id="show-vowels" onclick="toggleVowels()"></div>
+            </div>
+
+            <div class="setting-item">
+                <div class="setting-info">
+                    <div class="setting-label">التلقائي الترجمة</div>
+                    <div class="setting-description">ترجمة النص تلقائياً عند الكتابة</div>
+                </div>
+                <div class="toggle-switch active" id="auto-translate" onclick="toggleAutoTranslate()"></div>
+            </div>
+
+            <div class="setting-item">
+                <div class="setting-info">
+                    <div class="setting-label">اختصارات لوحة المفاتيح</div>
+                    <div class="setting-description">تفعيل الاختصارات للوصول السريع</div>
+                </div>
+                <div class="toggle-switch active" id="keyboard-shortcuts" onclick="toggleKeyboardShortcuts()"></div>
+            </div>
+        </section>
+
+        <!-- Dictionary Settings -->
+        <section class="settings-section">
+            <div class="section-header">
+                <span class="material-icons section-icon">menu_book</span>
+                <h2 class="section-title">إعدادات القاموس</h2>
+            </div>
+
+            <div class="setting-item">
+                <div class="setting-info">
+                    <div class="setting-label">حفظ البحث السابق</div>
+                    <div class="setting-description">حفظ عمليات البحث السابقة في التاريخ</div>
+                </div>
+                <div class="toggle-switch active" id="save-search-history" onclick="toggleSearchHistory()"></div>
+            </div>
+
+            <div class="setting-item">
+                <div class="setting-info">
+                    <div class="setting-label">الترجمة الصوتية</div>
+                    <div class="setting-description">تشغيل الصوت عند النقر على الكلمة</div>
+                </div>
+                <div class="toggle-switch active" id="text-to-speech" onclick="toggleTextToSpeech()"></div>
+            </div>
+
+            <div class="setting-item">
+                <div class="setting-info">
+                    <div class="setting-label">إظهام التعريفات</div>
+                    <div class="setting-description">عرض التعريفات الكاملة للكلمات</div>
+                </div>
+                <div class="toggle-switch" id="show-full-definitions" onclick="toggleFullDefinitions()"></div>
+            </div>
+        </section>
+
+        <!-- Data & Storage -->
+        <section class="settings-section">
+            <div class="section-header">
+                <span class="material-icons section-icon">storage</span>
+                <h2 class="section-title">البيانات والتخزين</h2>
+            </div>
+
+            <div class="setting-item">
+                <div class="setting-info">
+                    <div class="setting-label">حجم التخزين المحلي</div>
+                    <div class="setting-description">البيانات المخزنة حالياً: <span id="storage-size">2.4 MB</span></div>
+                </div>
+            </div>
+
+            <div class="setting-item">
+                <div class="setting-info">
+                    <div class="setting-label">مسح التاريخ</div>
+                    <div class="setting-description">حذف كل السجلات والبيانات المحفوظة</div>
+                </div>
+                <button class="setting-btn danger" onclick="clearHistory()">مسح التاريخ</button>
+            </div>
+
+            <div class="setting-item">
+                <div class="setting-info">
+                    <div class="setting-label">استعادة الإعدادات الافتراضية</div>
+                    <div class="setting-description">إعادة جميع الإعدادات إلى الحالة الأولية</div>
+                </div>
+                <button class="setting-btn" onclick="resetSettings()">استعادة الإعدادات</button>
+            </div>
+        </section>
+
+        <!-- About -->
+        <section class="settings-section">
+            <div class="section-header">
+                <span class="material-icons section-icon">info</span>
+                <h2 class="section-title">ح التطبيق</h2>
+            </div>
+
+            <div class="about-item">
+                <span class="material-icons about-icon">version</span>
+                <div class="about-text">
+                    <div class="about-label">الإصدار</div>
+                    <div class="about-value" id="app-version">v2.0.0</div>
+                </div>
+            </div>
+
+            <div class="about-item">
+                <span class="material-icons about-icon">article</span>
+                <div class="about-text">
+                    <div class="about-label">الشروط والأحكام</div>
+                    <div class="about-value">سياسة الخصوصية والاستخدام</div>
+                </div>
+            </div>
+
+            <div class="about-item">
+                <span class="material-icons about-icon">support_agent</span>
+                <div class="about-text">
+                    <div class="about-label">الدعم والمساعدة</div>
+                    <div class="about-value">yamli@example.com</div>
+                </div>
+            </div>
+
+            <div class="setting-item">
+                <div class="setting-info">
+                    <div class="setting-label">مشاركة التطبيق</div>
+                    <div class="setting-description">شارك التطبيق مع أصدقائك</div>
+                </div>
+                <button class="setting-btn" onclick="shareApp()">مشاركة</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // Load settings from localStorage
+        function loadSettings() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            const savedKeyboardType = localStorage.getItem('keyboardType') || 'franco';
+            const savedVowels = localStorage.getItem('showVowels') === 'true';
+            const savedAutoTranslate = localStorage.getItem('autoTranslate') !== 'false';
+            const savedShortcuts = localStorage.getItem('keyboardShortcuts') !== 'false';
+            const savedSearchHistory = localStorage.getItem('saveSearchHistory') !== 'false';
+            const savedTextToSpeech = localStorage.getItem('textToSpeech') !== 'false';
+            const savedFullDefinitions = localStorage.getItem('showFullDefinitions') === 'true';
+
+            // Apply theme
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-theme');
+                document.getElementById('dark-theme').classList.add('active');
+            } else if (savedTheme === 'system') {
+                const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (isDark) {
+                    document.body.classList.add('dark-theme');
+                    document.getElementById('dark-theme').classList.add('active');
+                }
+                document.getElementById('system-theme').classList.add('active');
+            } else {
+                document.getElementById('light-theme').classList.add('active');
+            }
+
+            // Apply keyboard settings
+            document.getElementById('keyboard-type').value = savedKeyboardType;
+            document.getElementById('show-vowels').classList.toggle('active', savedVowels);
+            document.getElementById('auto-translate').classList.toggle('active', savedAutoTranslate);
+            document.getElementById('keyboard-shortcuts').classList.toggle('active', savedShortcuts);
+            document.getElementById('save-search-history').classList.toggle('active', savedSearchHistory);
+            document.getElementById('text-to-speech').classList.toggle('active', savedTextToSpeech);
+            document.getElementById('show-full-definitions').classList.toggle('active', savedFullDefinitions);
+
+            // Update storage size
+            updateStorageSize();
+        }
+
+        // Theme functions
+        function setTheme(theme) {
+            // Remove active class from all theme options
+            document.querySelectorAll('.theme-option').forEach(option => {
+                option.classList.remove('active');
+            });
+
+            // Apply theme
+            localStorage.setItem('theme', theme);
+
+            if (theme === 'dark') {
+                document.body.classList.add('dark-theme');
+                document.getElementById('dark-theme').classList.add('active');
+            } else if (theme === 'system') {
+                document.body.classList.remove('dark-theme');
+                document.getElementById('system-theme').classList.add('active');
+
+                // Check system preference
+                const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (isDark) {
+                    document.body.classList.add('dark-theme');
+                }
+            } else {
+                document.body.classList.remove('dark-theme');
+                document.getElementById('light-theme').classList.add('active');
+            }
+
+            showToast(`تم تغيير الوضع إلى ${theme === 'light' ? 'فاتح' : theme === 'dark' ? 'داكن' : 'تلقائي'}`);
+        }
+
+        // Keyboard settings
+        function saveKeyboardType(type) {
+            localStorage.setItem('keyboardType', type);
+            showToast(`تم تغيير نوع لوحة المفاتيح إلى ${getKeyboardTypeName(type)}`);
+        }
+
+        function getKeyboardTypeName(type) {
+            const names = {
+                franco: 'فرانكو',
+                kbd: 'كيوبت',
+                buckwalter: 'باكويلتر',
+                transliteration: 'نقل الحركات'
+            };
+            return names[type] || type;
+        }
+
+        function toggleVowels() {
+            const toggle = document.getElementById('show-vowels');
+            toggle.classList.toggle('active');
+            localStorage.setItem('showVowels', toggle.classList.contains('active'));
+            showToast(toggle.classList.contains('active') ? 'تم تفعيل عرض الحركات' : 'تم تعطيل عرض الحركات');
+        }
+
+        function toggleAutoTranslate() {
+            const toggle = document.getElementById('auto-translate');
+            toggle.classList.toggle('active');
+            localStorage.setItem('autoTranslate', toggle.classList.contains('active'));
+            showToast(toggle.classList.contains('active') ? 'تم تفعيل الترجمة التلقائية' : 'تم تعطيل الترجمة التلقائية');
+        }
+
+        function toggleKeyboardShortcuts() {
+            const toggle = document.getElementById('keyboard-shortcuts');
+            toggle.classList.toggle('active');
+            localStorage.setItem('keyboardShortcuts', toggle.classList.contains('active'));
+            showToast(toggle.classList.contains('active') ? 'تم تفعيل الاختصارات' : 'تم تعطيل الاختصارات');
+        }
+
+        // Dictionary settings
+        function toggleSearchHistory() {
+            const toggle = document.getElementById('save-search-history');
+            toggle.classList.toggle('active');
+            localStorage.setItem('saveSearchHistory', toggle.classList.contains('active'));
+            showToast(toggle.classList.contains('active') ? 'تم تفعيل حفظ البحث' : 'تم تعطيل حفظ البحث');
+        }
+
+        function toggleTextToSpeech() {
+            const toggle = document.getElementById('text-to-speech');
+            toggle.classList.toggle('active');
+            localStorage.setItem('textToSpeech', toggle.classList.contains('active'));
+            showToast(toggle.classList.contains('active') ? 'تم تفعيل الترجمة الصوتية' : 'تم تعطيل الترجمة الصوتية');
+        }
+
+        function toggleFullDefinitions() {
+            const toggle = document.getElementById('show-full-definitions');
+            toggle.classList.toggle('active');
+            localStorage.setItem('showFullDefinitions', toggle.classList.contains('active'));
+            showToast(toggle.classList.contains('active') ? 'تم تفعيل التعريفات الكاملة' : 'تم تعطيل التعريفات الكاملة');
+        }
+
+        // Data & storage functions
+        function updateStorageSize() {
+            // Calculate storage size
+            let totalSize = 0;
+            for (let key in localStorage) {
+                if (localStorage.hasOwnProperty(key)) {
+                    totalSize += localStorage[key].length * 2; // 2 bytes per character
+                }
+            }
+
+            const sizeInMB = (totalSize / (1024 * 1024)).toFixed(1);
+            document.getElementById('storage-size').textContent = `${sizeInMB} MB`;
+        }
+
+        function clearHistory() {
+            if (confirm('هل أنت متأكد من حذف كل التاريخ؟ هذه العملية لا يمكن التراجع عنها.')) {
+                // Clear all localStorage data except settings
+                const settingsToKeep = ['theme', 'keyboardType', 'showVowels', 'autoTranslate',
+                                       'keyboardShortcuts', 'saveSearchHistory', 'textToSpeech', 'showFullDefinitions'];
+
+                settingsToKeep.forEach(key => {
+                    const value = localStorage.getItem(key);
+                    localStorage.clear();
+                    if (value) localStorage.setItem(key, value);
+                });
+
+                updateStorageSize();
+                showToast('تم مسح التاريخ بنجاح');
+            }
+        }
+
+        function resetSettings() {
+            if (confirm('هل أنت متأكد من استعادة الإعدادات الافتراضية؟ سيتم فقدان جميع التغييرات.')) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
+
+        // About functions
+        function shareApp() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Yamli Mobile',
+                    text: 'تطبيق Yamli Mobile للكتابة العربية بالحروف اللاتينية',
+                    url: window.location.href
+                });
+            } else {
+                // Fallback to copying link
+                navigator.clipboard.writeText(window.location.href);
+                showToast('تم نسخ الرابط إلى الحافظة');
+            }
+        }
+
+        // Utility functions
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+
+        // Initialize settings on page load
+        document.addEventListener('DOMContentLoaded', loadSettings);
+
+        // Listen for system theme changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+            const currentTheme = localStorage.getItem('theme');
+            if (currentTheme === 'system') {
+                if (e.matches) {
+                    document.body.classList.add('dark-theme');
+                } else {
+                    document.body.classList.remove('dark-theme');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="utf-8">
-  <title>Yamli Mobile - Editor Enhanced</title>
+  <title>Yamli Mobile - Google Fonts Inspired Redesign</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -16,93 +16,103 @@
   <link rel="manifest" href="/site.webmanifest">
 
   <!-- Material Design Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <!-- Material Symbols (Google Fonts) -->
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Manrope:wght@300;400;500;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Manrope:wght@300;400;500;600;700;800&family=Amiri:wght@400;700&display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap">
 
-  <!-- Legacy fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=El+Messiri:wght@400;700&family=Lateef&family=Noto+Naskh:Arabic:wght@400;700&family=Noto+Sans:Arabic:wght@400;700&family=Reem+Kufi:wght@400;700&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
-
+  <!-- Styles -->
+  <link rel="stylesheet" href="./style.css?v=5">
   <!-- Styles -->
   <link rel="stylesheet" href="./style.css?v=5">
   <script src="./theme.js"></script>
 
   <style>
-    @layer base {
-      html, body {
-        width: 100vw;
-        margin: 0;
-        padding: 0;
-        font-family: 'Manrope', sans-serif;
-        background-color: #faf5ee;
-        color: #3a302a;
-        overscroll-behavior: none;
-      }
-
-      ::-webkit-scrollbar {
-        display: none;
-      }
-
-      .pb-safe {
-        padding-bottom: env(safe-area-inset-bottom, 0px);
-      }
-
-      .pt-safe {
-        padding-top: env(safe-area-inset-top, 0px);
-      }
-    }
-
-    /* Colors from the design system */
     :root {
-      --primary: #c2652a;
-      --primary-light: #e08850;
-      --primary-dark: #8a4518;
-      --surface: #faf5ee;
-      --surface-container: #f2ece4;
-      --surface-container-high: #ece6dc;
-      --surface-container-low: #f6f0e8;
-      --surface-container-lowest: #ffffff;
-      --on-surface: #3a302a;
-      --on-surface-variant: #605850;
-      --secondary: #78706a;
-      --secondary-light: #eae2da;
-      --secondary-dark: #504840;
-      --tertiary: #8c3c3c;
-      --tertiary-light: #d47070;
-      --tertiary-dark: #6e3030;
-      --error: #c0392b;
-      --outline: #9a9088;
-      --outline-variant: #d8d0c8;
+      --primary-color: #c2652a;
+      --primary-dark: #8c4a1c;
+      --primary-light: #d28858;
+      --secondary-color: #212121;
+      --background-color: #ffffff;
+      --surface-color: #ffffff;
+      --text-primary: #212121;
+      --text-secondary: #757575;
+      --text-disabled: #9e9e9e;
+      --border-color: #e0e0e0;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.1);
+      --shadow-md: 0 2px 4px rgba(0,0,0,0.1);
+      --shadow-lg: 0 4px 8px rgba(0,0,0,0.1);
+      --border-radius: 16px;
+      --border-radius-lg: 24px;
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 16px;
+      --spacing-lg: 24px;
+      --spacing-xl: 32px;
     }
 
-    /* Header Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background-color: var(--background-color);
+      color: var(--text-primary);
+      line-height: 1.6;
+      direction: rtl;
+    }
+
+    /* Header */
     .header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4rem;
-      background-color: rgba(250, 245, 238, 0.9);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--outline-variant);
-      z-index: 100;
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+      color: white;
+      padding: var(--spacing-lg) var(--spacing-xl);
+      box-shadow: var(--shadow-md);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      animation: float 20s infinite linear;
+    }
+
+    @keyframes float {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(50px, 50px); }
     }
 
     .header-content {
+      position: relative;
+      z-index: 1;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      padding: 0 1rem;
-      height: 100%;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--spacing-md);
     }
 
     .logo {
+      font-size: 28px;
+      font-weight: 700;
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: var(--spacing-sm);
     }
 
     .logo img {
@@ -110,445 +120,410 @@
       width: auto;
     }
 
-    .logo-text {
+    .header-actions {
       display: flex;
-      flex-direction: column;
+      gap: var(--spacing-sm);
     }
 
-    .logo-title {
-      font-size: 0.875rem;
-      font-weight: 700;
-      color: var(--primary);
-    }
-
-    .logo-subtitle {
-      font-size: 0.75rem;
-      color: var(--on-surface-variant);
-    }
-
-    /* Main Content */
-    .main-content {
-      padding: 5rem 1rem 7rem;
-      min-height: 100vh;
-    }
-
-    /* Editor Container */
-    .editor-container {
-      background-color: var(--surface-container);
-      border: 1px solid var(--outline-variant);
-      border-radius: 1rem;
-      padding: 1.5rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .editor-toolbar {
-      display: flex;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .toolbar-btn {
-      background-color: var(--surface-container-lowest);
-      border: 1px solid var(--outline-variant);
-      border-radius: 0.5rem;
-      padding: 0.5rem 1rem;
-      font-size: 0.875rem;
+    .header-btn {
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: white;
+      padding: var(--spacing-sm) var(--spacing-md);
+      border-radius: var(--border-radius);
       cursor: pointer;
-      transition: all 0.2s ease;
       display: flex;
       align-items: center;
-      gap: 0.25rem;
-      color: var(--on-surface);
+      gap: var(--spacing-xs);
+      transition: all 0.3s ease;
     }
 
-    .toolbar-btn:hover {
-      background-color: var(--primary);
-      color: white;
-      border-color: var(--primary);
-    }
-
-    .toolbar-btn.active {
-      background-color: var(--primary);
-      color: white;
-      border-color: var(--primary);
-    }
-
-    .editor-textarea {
-      width: 100%;
-      min-height: 200px;
-      padding: 1rem;
-      border: 1px solid var(--outline-variant);
-      border-radius: 0.5rem;
-      background-color: var(--surface-container-lowest);
-      color: var(--on-surface);
-      direction: rtl;
-      font-family: 'Amiri', serif;
-      font-size: 1rem;
-      line-height: 1.6;
-      resize: vertical;
-    }
-
-    .editor-textarea:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 2px rgba(194, 101, 42, 0.1);
+    .header-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
     }
 
     /* Quick Insert */
     .quick-insert {
-      background-color: var(--primary);
-      color: white;
-      border-radius: 1rem;
-      padding: 1.5rem;
-      margin-bottom: 1.5rem;
+      background: var(--surface-color);
+      padding: var(--spacing-xl);
+      box-shadow: var(--shadow-sm);
+      border-bottom: 1px solid var(--border-color);
     }
 
-    .quick-insert h2 {
-      font-family: 'EB Garamond', serif;
-      margin: 0 0 1rem 0;
-      font-size: 1.25rem;
+    .quick-insert-title {
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: var(--spacing-md);
+      color: var(--text-primary);
     }
 
-    .quick-grid {
+    .character-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-      gap: 0.5rem;
+      grid-template-columns: repeat(auto-fill, minmax(48px, 1fr));
+      gap: var(--spacing-sm);
+      margin-bottom: var(--spacing-lg);
     }
 
-    .quick-btn {
-      background-color: rgba(255, 255, 255, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      border-radius: 0.5rem;
-      padding: 0.75rem;
-      text-align: center;
+    .character-btn {
+      aspect-ratio: 1;
+      border: 2px solid var(--border-color);
+      background: white;
+      border-radius: var(--border-radius);
+      font-size: 20px;
+      font-weight: 500;
       cursor: pointer;
       transition: all 0.2s ease;
-      font-family: 'Amiri', serif;
-      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .quick-btn:hover {
-      background-color: rgba(255, 255, 255, 0.3);
+    .character-btn:hover {
+      background: var(--primary-color);
+      color: white;
+      border-color: var(--primary-color);
+      transform: scale(1.1);
     }
 
-    /* Translation Panel */
-    .translation-panel {
-      background-color: var(--surface-container);
-      border: 1px solid var(--outline-variant);
-      border-radius: 1rem;
-      padding: 1.5rem;
-      margin-bottom: 1.5rem;
+    .character-btn.recent {
+      background: var(--primary-light);
+      color: white;
+      border-color: var(--primary-light);
     }
 
-    .translation-header {
+    /* Editor Container */
+    .main-content {
+      padding: 0;
+      margin-top: 0;
+    }
+
+    .editor-container {
+      background: var(--surface-color);
+      margin: 0;
+      padding: var(--spacing-xl);
+      min-height: 400px;
+    }
+
+    .editor-toolbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 1rem;
+      margin-bottom: var(--spacing-lg);
+      padding-bottom: var(--spacing-md);
+      border-bottom: 2px solid var(--border-color);
     }
 
-    .translation-content {
+    .mode-selector {
       display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 1rem;
+      gap: var(--spacing-sm);
     }
 
-    .translation-item {
-      flex: 1;
-    }
-
-    .translation-label {
-      font-size: 0.875rem;
-      font-weight: 600;
-      color: var(--on-surface-variant);
-      margin-bottom: 0.5rem;
-    }
-
-    .translation-text {
-      padding: 1rem;
-      background-color: var(--surface-container-lowest);
-      border: 1px solid var(--outline-variant);
-      border-radius: 0.5rem;
-      min-height: 80px;
-      color: var(--on-surface);
-      direction: rtl;
-      font-family: 'Amiri', serif;
-      font-size: 1rem;
-    }
-
-    /* Recent Items */
-    .recent-section {
-      background-color: var(--surface-container);
-      border: 1px solid var(--outline-variant);
-      border-radius: 1rem;
-      padding: 1.5rem;
-    }
-
-    .recent-items {
-      display: flex;
-      gap: 1rem;
-      overflow-x: auto;
-      padding: 0.5rem 0;
-    }
-
-    .recent-item {
-      flex-shrink: 0;
-      background-color: var(--surface-container-lowest);
-      border: 1px solid var(--outline-variant);
-      border-radius: 0.75rem;
-      padding: 1rem;
-      min-width: 150px;
+    .mode-btn {
+      background: white;
+      border: 2px solid var(--border-color);
+      color: var(--text-secondary);
+      padding: var(--spacing-sm) var(--spacing-md);
+      border-radius: var(--border-radius);
       cursor: pointer;
-      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      transition: all 0.3s ease;
+      font-size: 14px;
+      font-weight: 500;
     }
 
-    .recent-item:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      border-color: var(--primary);
+    .mode-btn.active {
+      background: var(--primary-color);
+      color: white;
+      border-color: var(--primary-color);
     }
 
-    .recent-preview {
-      font-family: 'Amiri', serif;
-      font-size: 1rem;
-      margin-bottom: 0.5rem;
-      color: var(--on-surface);
+    .mode-btn:hover:not(.active) {
+      background: var(--primary-light);
+      color: var(--text-primary);
+      border-color: var(--primary-light);
     }
 
-    .recent-time {
-      font-size: 0.75rem;
-      color: var(--on-surface-variant);
+    .editor-textarea {
+      width: 100%;
+      min-height: 300px;
+      padding: var(--spacing-lg);
+      border: 2px solid var(--border-color);
+      border-radius: var(--border-radius-lg);
+      font-size: 16px;
+      line-height: 1.8;
+      resize: vertical;
+      font-family: 'Tajawal', sans-serif;
+      background: var(--surface-color);
+      transition: border-color 0.3s ease;
+    }
+
+    .editor-textarea:focus {
+      outline: none;
+      border-color: var(--primary-color);
     }
 
     /* Action Buttons */
     .action-buttons {
       display: flex;
-      gap: 1rem;
-      margin-top: 1.5rem;
+      gap: var(--spacing-sm);
     }
 
-    .action-button {
-      flex: 1;
-      background-color: var(--primary);
-      color: white;
-      border: none;
-      border-radius: 0.5rem;
-      padding: 0.75rem 1.5rem;
-      font-weight: 600;
-      font-size: 1rem;
+    .action-btn {
+      background: white;
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: var(--spacing-sm) var(--spacing-md);
+      border-radius: var(--border-radius);
       cursor: pointer;
-      transition: all 0.2s ease;
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
+      gap: var(--spacing-xs);
+      transition: all 0.3s ease;
     }
 
-    .action-button:hover {
-      background-color: var(--primary-dark);
-    }
-
-    .action-button.secondary {
-      background-color: transparent;
-      color: var(--primary);
-      border: 1px solid var(--primary);
-    }
-
-    .action-button.secondary:hover {
-      background-color: var(--primary);
+    .action-btn:hover {
+      background: var(--primary-light);
       color: white;
+      border-color: var(--primary-light);
     }
 
-    /* Word Counter */
-    .word-counter {
-      background-color: var(--surface-container-lowest);
-      border: 1px solid var(--outline-variant);
-      border-radius: 0.5rem;
-      padding: 0.75rem 1rem;
-      font-size: 0.875rem;
-      color: var(--on-surface-variant);
-      text-align: center;
-      margin-top: 1rem;
+    .action-btn.primary {
+      background: var(--primary-color);
+      color: white;
+      border-color: var(--primary-color);
     }
 
-    /* Navigation */
-    .bottom-nav {
+    .action-btn.primary:hover {
+      background: var(--primary-dark);
+    }
+
+    /* Translation Panel */
+    .translation-panel {
+      background: var(--surface-color);
+      border-top: 1px solid var(--border-color);
+      padding: var(--spacing-xl);
+    }
+
+    .translation-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-lg);
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .translation-section {
+      padding: var(--spacing-lg);
+      background: #f5f5f5;
+      border-radius: var(--border-radius);
+      border: 1px solid var(--border-color);
+    }
+
+    .translation-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: var(--spacing-md);
+    }
+
+    .translation-text {
+      font-size: 16px;
+      line-height: 1.6;
+      min-height: 100px;
+      padding: var(--spacing-sm);
+      background: white;
+      border-radius: var(--border-radius);
+      border: 1px solid var(--border-color);
+    }
+
+    /* History Panel */
+    .history-panel {
+      background: var(--surface-color);
+      border-top: 1px solid var(--border-color);
+      padding: var(--spacing-xl);
+    }
+
+    .history-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .history-title {
+      font-size: 20px;
+      font-weight: 500;
+    }
+
+    .clear-history {
+      background: none;
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      padding: var(--spacing-sm) var(--spacing-md);
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .clear-history:hover {
+      background: #f44336;
+      color: white;
+      border-color: #f44336;
+    }
+
+    .history-items {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .history-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+      padding: var(--spacing-md);
+      background: #f5f5f5;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .history-item:hover {
+      background: #e0e0e0;
+      transform: translateX(-4px);
+    }
+
+    .history-item-time {
+      color: var(--text-secondary);
+      font-size: 12px;
+      min-width: 80px;
+    }
+
+    .history-item-text {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* Footer Actions */
+    .footer-actions {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      height: 4rem;
-      background-color: rgba(250, 245, 238, 0.9);
-      backdrop-filter: blur(10px);
-      border-top: 1px solid var(--outline-variant);
-      padding-bottom: env(safe-area-inset-bottom);
-      z-index: 50;
+      background: var(--surface-color);
+      padding: var(--spacing-lg) var(--spacing-xl);
+      box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
       display: flex;
-      justify-content: space-around;
-      align-items: center;
-    }
-
-    .nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
       justify-content: center;
-      width: 3.5rem;
-      height: 3.5rem;
-      gap: 0.25rem;
-      color: var(--on-surface-variant);
-      text-decoration: none;
-      transition: color 0.2s ease;
+      gap: var(--spacing-md);
+      border-top: 1px solid var(--border-color);
     }
 
-    .nav-item:hover {
-      color: var(--primary);
+    /* Utility Classes */
+    .material-icons {
+      font-size: 20px;
     }
 
-    .nav-item.active {
-      color: var(--primary);
+    .hidden {
+      display: none;
     }
 
-    .nav-item span.material-symbols-outlined {
-      font-size: 1.375rem;
-    }
-
-    .nav-item span {
-      font-size: 0.625rem;
-      font-weight: 600;
-      letter-spacing: 0.025em;
-    }
-
-    /* Theme Toggle */
-    .theme-toggle-btn {
-      position: fixed;
-      bottom: 6rem;
-      right: 1rem;
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background-color: var(--primary);
-      color: white;
-      border: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 2px 8px rgba(194, 101, 42, 0.2);
-      transition: all 0.2s ease;
-      z-index: 40;
-    }
-
-    .theme-toggle-btn:hover {
-      background-color: var(--primary-dark);
-      transform: scale(1.05);
-    }
-
-    #themeIcon {
-      font-size: 1.25rem;
-    }
-
-    /* Mode feedback */
-    .mode-feedback {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: var(--primary);
-      color: white;
-      padding: 1rem 2rem;
-      border-radius: 1rem;
-      font-weight: 600;
-      z-index: 1000;
-      opacity: 1;
-      transition: opacity 0.3s ease;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    }
-
-    /* Enhanced animations */
-    @keyframes slideIn {
-      from { transform: translateY(20px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
-    }
-
-    .animate-in {
-      animation: slideIn 0.3s ease-out;
-    }
-
-    .animate-pulse {
-      animation: pulse 0.2s ease-in-out;
-    }
-
-    /* Enhanced quick buttons */
-    .quick-btn:active {
-      transform: scale(0.95);
-    }
-
-    /* Loading spinner */
-    .spinner {
+    /* Loading Animation */
+    .loading {
       display: inline-block;
-      width: 16px;
-      height: 16px;
-      border: 2px solid rgba(255, 255, 255, 0.3);
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,.3);
       border-radius: 50%;
       border-top-color: white;
-      animation: spin 0.8s linear infinite;
+      animation: spin 1s ease-in-out infinite;
     }
 
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
 
-    /* Notification system */
-    .notification {
-      position: fixed;
-      bottom: 6rem;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: var(--primary-dark);
-      color: white;
-      padding: 0.75rem 1.5rem;
-      border-radius: 0.5rem;
-      font-size: 0.875rem;
-      font-weight: 500;
-      z-index: 1000;
-      opacity: 1;
-      transition: opacity 0.3s ease;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    /* Scrollbar Styling */
+    ::-webkit-scrollbar {
+      width: 8px;
     }
 
-    .notification.error {
-      background-color: var(--error);
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 4px;
     }
 
-    .notification.success {
-      background-color: var(--primary);
+    ::-webkit-scrollbar-thumb {
+      background: var(--primary-color);
+      border-radius: 4px;
     }
 
-    /* Responsive */
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--primary-dark);
+    }
+
+    /* Responsive Design */
     @media (max-width: 768px) {
-      .main-content {
-        padding: 5rem 0.75rem 7rem;
+      .header-content {
+        flex-direction: column;
+        text-align: center;
       }
 
-      .quick-grid {
-        grid-template-columns: repeat(6, 1fr);
+      .character-grid {
+        grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
       }
 
       .translation-content {
-        flex-direction: column;
+        grid-template-columns: 1fr;
       }
 
-      .action-buttons {
+      .editor-toolbar {
         flex-direction: column;
+        gap: var(--spacing-md);
+      }
+
+      .footer-actions {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* Dark Mode Styles */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --primary-color: #e69556;
+        --primary-dark: #c2652a;
+        --primary-light: #f2b888;
+        --secondary-color: #ffffff;
+        --background-color: #121212;
+        --surface-color: #1e1e1e;
+        --text-primary: #ffffff;
+        --text-secondary: #b0b0b0;
+        --text-disabled: #757575;
+        --border-color: #333333;
+      }
+
+      .history-item {
+        background: #2d2d2d;
+      }
+
+      .history-item:hover {
+        background: #3d3d3d;
+      }
+
+      .translation-section {
+        background: #2d2d2d;
+      }
+
+      .translation-text {
+        background: #1e1e1e;
+        color: #ffffff;
       }
     }
   </style>
@@ -560,192 +535,190 @@
     <div class="header-content">
       <div class="logo">
         <img src="https://yamlimobile.com/images/favicon/favicon-128x128.png" alt="Yamli Mobile">
-        <div class="logo-text">
-          <div class="logo-title">Yamli Mobile</div>
-          <div class="logo-subtitle">Editor Enhanced</div>
-        </div>
+        Yamli Mobile
       </div>
-      <div class="flex items-center gap-2">
-        <button class="btn btn-ghost" aria-label="Share">
-          <span class="material-symbols-outlined">share</span>
+      <div class="header-actions">
+        <button class="header-btn" onclick="toggleTheme()">
+          <span class="material-icons" id="theme-icon">dark_mode</span>
+          <span id="theme-text">الغوص</span>
         </button>
-        <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-          <span class="material-symbols-outlined text-white text-sm">person</span>
-        </div>
+        <button class="header-btn" onclick="toggleHistory()">
+          <span class="material-icons">history</span>
+          <span>التاريخ</span>
+        </button>
+        <button class="header-btn" onclick="showSettings()">
+          <span class="material-icons">settings</span>
+          <span>إعدادات</span>
+        </button>
       </div>
     </div>
   </header>
 
-  <!-- Main Content -->
-  <main class="main-content">
-    <!-- Quick Insert -->
-    <section class="quick-insert">
-      <h2>Quick Insert</h2>
-      <div class="quick-grid">
-        <button class="quick-btn" onclick="insertCharacter('،')">،</button>
-        <button class="quick-btn" onclick="insertCharacter('؛')">؛</button>
-        <button class="quick-btn" onclick="insertCharacter('؟')">؟</button>
-        <button class="quick-btn" onclick="insertCharacter('!')">!</button>
-        <button class="quick-btn" onclick="insertCharacter('😊')">😊</button>
-        <button class="quick-btn" onclick="insertCharacter('❤️')">❤️</button>
-        <button class="quick-btn" onclick="insertCharacter('👍')">👍</button>
-        <button class="quick-btn" onclick="insertCharacter('🎉')">🎉</button>
-        <button class="quick-btn" onclick="insertCharacter('3')">ع</button>
-        <button class="quick-btn" onclick="insertCharacter('7')">ح</button>
-        <button class="quick-btn" onclick="insertCharacter('2')">ء</button>
-        <button class="quick-btn" onclick="insertCharacter('5')">خ</button>
-      </div>
-    </section>
+  <!-- Quick Insert -->
+  <section class="quick-insert">
+    <h2 class="quick-insert-title">إدراج سريع للحروف</h2>
+    <div class="character-grid" id="character-grid">
+      <!-- Characters will be dynamically added -->
+    </div>
+    <div class="action-buttons">
+      <button class="action-btn" onclick="copyPattern()">
+        <span class="material-icons">content_copy</span>
+        نسخ النمط
+      </button>
+      <button class="action-btn" onclick="clearQuickInsert()">
+        <span class="material-icons">clear</span>
+        مسح
+      </button>
+    </div>
+  </section>
 
-    <!-- Editor -->
-    <section class="editor-container">
+    <!-- Editor Container -->
+    <main class="editor-container">
       <div class="editor-toolbar">
-        <button class="toolbar-btn active" onclick="setMode('franco')">
-          <span class="material-symbols-outlined">keyboard</span>
-          Franco
-        </button>
-        <button class="toolbar-btn" onclick="setMode('arabic')">
-          <span class="material-symbols-outlined">language</span>
-          Arabic
-        </button>
-        <button class="toolbar-btn" onclick="setMode('latin')">
-          <span class="material-symbols-outlined">translate</span>
-          Latin
-        </button>
-        <button class="toolbar-btn" onclick="clearEditor()">
-          <span class="material-symbols-outlined">clear</span>
-          Clear
-        </button>
-        <button class="toolbar-btn" onclick="undoEditor()">
-          <span class="material-symbols-outlined">undo</span>
-          Undo
-        </button>
-        <button class="toolbar-btn" onclick="redoEditor()">
-          <span class="material-symbols-outlined">redo</span>
-          Redo
-        </button>
+        <div class="mode-selector">
+          <button class="mode-btn active" onclick="setMode('franco')">
+            <span class="material-icons">keyboard</span>
+            فرانكو
+          </button>
+          <button class="mode-btn" onclick="setMode('kbd')">
+            <span class="material-icons">keyboard_alt</span>
+            كيوبت
+          </button>
+          <button class="mode-btn" onclick="setMode('buckwalter')">
+            <span class="material-icons">keyboard_double</span>
+            باكويلتر
+          </button>
+          <button class="mode-btn" onclick="setMode('transliteration')">
+            <span class="material-icons">text_fields</span>
+            نقل الحركات
+          </button>
+        </div>
+        <div class="word-counter">كلمة واحدة: <span id="wordCount">0</span> | الأحرف: <span id="charCount">0</span></div>
+        <div class="action-buttons">
+          <button class="action-btn" onclick="undo()">
+            <span class="material-icons">undo</span>
+            تراجع
+          </button>
+          <button class="action-btn" onclick="redo()">
+            <span class="material-icons">redo</span>
+            تقدم
+          </button>
+          <button class="action-btn primary" onclick="translateText()">
+            <span class="material-icons" id="translate-icon">sync</span>
+            ترجمة
+          </button>
+        </div>
       </div>
       <textarea
         id="yamli-unified-text"
         class="editor-textarea"
         placeholder="ابدأ الكتابة هنا..."
         dir="rtl"
+        oninput="updateCharCount()"
+        onkeydown="handleKeyboardShortcuts(event)"
       ></textarea>
-      <div class="word-counter">
-        كلمة واحدة: <span id="wordCount">0</span> | الأحرف: <span id="charCount">0</span>
-      </div>
-    </section>
+    </main>
 
     <!-- Translation Panel -->
-    <section class="translation-panel">
-      <div class="translation-header">
-        <h2>Translation</h2>
-        <button class="toolbar-btn" onclick="refreshTranslation()">
-          <span class="material-symbols-outlined">refresh</span>
-          Refresh
+    <section class="translation-panel hidden" id="translation-panel">
+      <div class="translation-content">
+        <div class="translation-section">
+          <h3 class="translation-title">النص المدخل</h3>
+          <div class="translation-text" id="input-text-display"></div>
+        </div>
+        <div class="translation-section">
+          <h3 class="translation-title">الترجمة إلى الإنجليزية</h3>
+          <div class="translation-text" id="translation-display">
+            <span class="loading" id="loading-spinner"></span>
+            الجاري الترجمة...
+          </div>
+        </div>
+      </div>
+      <div class="action-bar">
+        <button class="action-btn" onclick="copyToClipboard('translation-display')">
+          <span class="material-icons">content_copy</span>
+          نسخ الترجمة
+        </button>
+        <button class="action-btn" onclick="shareTranslation()">
+          <span class="material-icons">share</span>
+          مشاركة
+        </button>
+        <button class="action-btn" onclick="toggleTranslation()">
+          <span class="material-icons" id="toggle-translation-icon">close</span>
+          إغلاق
         </button>
       </div>
-      <div class="translation-content">
-        <div class="translation-item">
-          <div class="translation-label">English</div>
-          <div class="translation-text" id="englishText"></div>
-        </div>
-        <div class="translation-item">
-          <div class="translation-label">French</div>
-          <div class="translation-text" id="frenchText"></div>
-        </div>
-        <div class="translation-item">
-          <div class="translation-label">Spanish</div>
-          <div class="translation-text" id="spanishText"></div>
-        </div>
+    </section>
+
+    <!-- History Panel -->
+    <section class="history-panel hidden" id="history-panel">
+      <div class="history-header">
+        <h2 class="history-title">العناصر الأخيرة</h2>
+        <button class="clear-history" onclick="clearAllHistory()">
+          مسح الكل
+        </button>
+      </div>
+      <div class="history-items" id="history-items">
+        <!-- History items will be dynamically added -->
       </div>
     </section>
 
-    <!-- Recent Items -->
-    <section class="recent-section">
-      <h2>Recent Items</h2>
-      <div class="recent-items" id="recentItems">
-        <!-- Recent items will be populated by JavaScript -->
-      </div>
-    </section>
-
-    <!-- Action Buttons -->
-    <div class="action-buttons">
-      <button class="action-button secondary" onclick="copyText()">
-        <span class="material-symbols-outlined">content_copy</span>
-        Copy Text
+    <!-- Footer Actions -->
+    <div class="footer-actions">
+      <button class="action-btn primary" onclick="saveToHistory()">
+        <span class="material-icons">save</span>
+        حفظ
       </button>
-      <button class="action-button secondary" onclick="saveToCloud()">
-        <span class="material-symbols-outlined">cloud_upload</span>
-        Save to Cloud
+      <button class="action-btn" onclick="shareText()">
+        <span class="material-icons">share</span>
+        مشاركة
       </button>
-      <button class="action-button" onclick="shareText()">
-        <span class="material-symbols-outlined">share</span>
-        Share
+      <button class="action-btn" onclick="showDictionary()">
+        <span class="material-icons">menu_book</span>
+        قاموس
+      </button>
+      <button class="action-btn" onclick="showCheatSheet()">
+        <span class="material-icons">help_outline</span>
+        المساعدة
       </button>
     </div>
-  </main>
-
-  <!-- Bottom Navigation -->
-  <nav class="bottom-nav">
-    <a href="./index.html" class="nav-item active">
-      <span class="material-symbols-outlined">edit_note</span>
-      <span>Editor</span>
-    </a>
-    <a href="./dictionary.html" class="nav-item">
-      <span class="material-symbols-outlined">menu_book</span>
-      <span>Dictionary</span>
-    </a>
-    <a href="./index.html" class="nav-item" data-path="arabic-search">
-      <span class="material-symbols-outlined">search</span>
-      <span>Search</span>
-    </a>
-    <a href="./cheat-sheet.html" class="nav-item">
-      <span class="material-symbols-outlined">tag</span>
-      <span>Cheat Sheet</span>
-    </a>
-    <a href="./index.html" class="nav-item" data-path="pwa-app">
-      <span class="material-symbols-outlined">download</span>
-      <span>PWA / App</span>
-    </a>
-  </nav>
-
-  <!-- Theme Toggle -->
-  <button id="themeToggle" class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Light/Dark Mode">
-    <span id="themeIcon">🌙</span>
-  </button>
 
   <script>
-    // Editor state
-    let editorMode = 'franco';
-    let editorHistory = [];
-    let historyStep = -1;
-    let recentItems = JSON.parse(localStorage.getItem('recentItems') || '[]');
+    // Initialize variables
+    let currentMode = 'franco';
+    let history = [];
+    let historyIndex = -1;
+    let currentText = '';
+    let recentCharacters = JSON.parse(localStorage.getItem('recentCharacters') || '[]');
 
-    // Load saved theme
-    document.addEventListener('DOMContentLoaded', () => {
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme === 'dark') {
-        document.documentElement.classList.add('dark');
-        document.getElementById('themeIcon').textContent = '☀️';
-      }
+    // Character sets for each mode
+    const characterSets = {
+      franco: ['ء', 'أ', 'إ', 'آ', 'ؤ', 'ئ', 'ا', 'ب', 'ت', 'ث', 'ج', 'ح', 'خ', 'د', 'ذ', 'ر', 'ز', 'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف', 'ق', 'ك', 'ل', 'م', 'ن', 'ه', 'و', 'ى', 'ي'],
+      kbd: ['\'', '|', '>', '&', '<', '~', '}', '{', 'P', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'A', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', '[', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '?', '؛', '/', ']', 'ג'],
+      buckwalter: ['\'', '|', '>', '&', '<', '~', '}', '{', 'A', 'B', 'P', 'T', 'TH', 'G', 'H', 'X', 'D', 'DH', 'R', 'Z', 'S', 'SH', 'S', 'D', 'T', 'Z', 'E', '3', '7', 'JH', 'CH', '8', 'GH', 'F', 'Q', 'K', 'L', 'M', 'N', 'H', 'W', 'Y', 'Y', 'A', 'E', 'I', 'U', 'O', 'a', 'e', 'i', 'u', 'o'],
+      transliteration: ['a', 'b', 't', 'th', 'j', 'h', 'kh', 'd', 'dh', 'r', 'z', 's', 'sh', 's', 'd', 't', 'z', '3', '7', 'gh', 'f', 'q', 'k', 'l', 'm', 'n', 'h', 'w', 'y', 'a', 'aa', 'i', 'ee', 'u', 'oo', 'an', 'on', 'in', 'en', 'un']
+    };
 
-      // Load recent items
+    // Initialize the app
+    document.addEventListener('DOMContentLoaded', function() {
       loadRecentItems();
+      loadCharacterGrid();
+      loadHistoryFromStorage();
+      loadTheme();
 
-      // Setup editor
+      // Setup existing editor
       const editor = document.getElementById('yamli-unified-text');
       if (editor) {
         editor.addEventListener('input', updateEditor);
-        editor.addEventListener('keydown', handleKeydown);
+        editor.addEventListener('keydown', handleKeyboardShortcuts);
         editor.addEventListener('paste', handlePaste);
+
+        // Initialize Franco keyboard mapping
+        setupFrancoKeyboard();
+
+        // Load saved content
+        loadFromStorage();
       }
-
-      // Initialize Franco keyboard mapping
-      setupFrancoKeyboard();
-
-      // Load saved content
-      loadFromStorage();
     });
 
     // Franco keyboard setup
@@ -760,28 +733,138 @@
         'x': 'ش', 'c': 'ç', 'v': 'و', 'b': 'ب', 'n': 'ن', 'm': 'م',
         ',': '<', '.': '>', '/': '?'
       };
-
       window.francoMap = francoMap;
     }
 
-    // Editor modes
+    // Load character grid
+    function loadCharacterGrid() {
+      const grid = document.getElementById('character-grid');
+      grid.innerHTML = '';
+
+      const characters = characterSets[currentMode];
+      characters.forEach(char => {
+        const btn = document.createElement('button');
+        btn.className = 'character-btn';
+        btn.textContent = char;
+        btn.onclick = () => insertCharacter(char);
+        grid.appendChild(btn);
+      });
+
+      // Show recent characters
+      if (recentCharacters.length > 0) {
+        recentCharacters.forEach(char => {
+          const btn = document.createElement('button');
+          btn.className = 'character-btn recent';
+          btn.textContent = char;
+          btn.onclick = () => insertCharacter(char);
+          grid.appendChild(btn);
+        });
+      }
+    }
+
+    // Insert character
+    function insertCharacter(char) {
+      const textarea = document.getElementById('yamli-unified-text');
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const text = textarea.value;
+
+      // Insert character at cursor position
+      const newText = text.substring(0, start) + char + text.substring(end);
+      textarea.value = newText;
+
+      // Move cursor after inserted character
+      textarea.selectionStart = textarea.selectionEnd = start + char.length;
+      textarea.focus();
+
+      // Update character count and history
+      currentText = newText;
+      updateCharCount();
+      addToRecent(char);
+
+      // Auto-translate
+      if (text.length > 0) {
+        setTimeout(translateText, 500);
+      }
+    }
+
+    // Add to recent characters
+    function addToRecent(char) {
+      if (!recentCharacters.includes(char)) {
+        recentCharacters.unshift(char);
+        if (recentCharacters.length > 10) {
+          recentCharacters.pop();
+        }
+        localStorage.setItem('recentCharacters', JSON.stringify(recentCharacters));
+      }
+    }
+
+    // Set mode
     function setMode(mode) {
+      currentMode = mode;
+
+      // Update active button
+      document.querySelectorAll('.mode-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.target.closest('.mode-btn').classList.add('active');
+
+      // Reload character grid
+      loadCharacterGrid();
+
+      // Show notification
+      showNotification(`تم التبديل إلى وضع ${getModeName(mode)}`);
+    }
+
+    // Get mode name in Arabic
+    function getModeName(mode) {
+      const names = {
+        franco: 'فرانكو',
+        kbd: 'كيوبت',
+        buckwalter: 'باكويلتر',
+        transliteration: 'نقل الحركات'
+      };
+      return names[mode] || mode;
+    }
+
+    // Editor modes (legacy) - kept for backward compatibility
+    let editorMode = 'franco';
+
+    function setMode(mode) {
+      // Update current mode
+      currentMode = mode;
       editorMode = mode;
 
       // Update active button
-      document.querySelectorAll('.toolbar-btn').forEach(btn => {
+      document.querySelectorAll('.mode-btn').forEach(btn => {
         btn.classList.remove('active');
       });
-      event.target.classList.add('active');
+      event.target.closest('.mode-btn').classList.add('active');
 
-      // Show feedback
-      showModeFeedback(mode);
+      // Reload character grid
+      loadCharacterGrid();
+
+      // Show notification
+      showNotification(`تم التبديل إلى وضع ${getModeName(mode)}`);
     }
 
-    // Show mode feedback
+    // Show mode feedback (legacy)
     function showModeFeedback(mode) {
       const feedback = document.createElement('div');
       feedback.className = 'mode-feedback';
+      feedback.style.cssText = `
+        position: fixed;
+        top: 80px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--primary-color);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 4px;
+        font-size: 14px;
+        z-index: 1000;
+        animation: slideDown 0.3s ease;
+      `;
       feedback.textContent = `Mode: ${mode.charAt(0).toUpperCase() + mode.slice(1)}`;
       document.body.appendChild(feedback);
 
@@ -789,6 +872,84 @@
         feedback.style.opacity = '0';
         setTimeout(() => feedback.remove(), 300);
       }, 1000);
+    }
+
+    // Update character count
+    function updateCharCount() {
+      const textarea = document.getElementById('yamli-unified-text');
+      const count = textarea.value.length;
+      const wordCounter = document.querySelector('.word-counter');
+      if (wordCounter) {
+        wordCounter.innerHTML = `كلمة واحدة: <span id="wordCount">${count}</span> | الأحرف: <span id="charCount">${count}</span>`;
+      }
+    }
+
+    // Undo/Redo functionality
+    function undo() {
+      if (historyIndex > 0) {
+        historyIndex--;
+        const textarea = document.getElementById('yamli-unified-text');
+        textarea.value = history[historyIndex];
+        currentText = textarea.value;
+        updateCharCount();
+      }
+    }
+
+    function redo() {
+      if (historyIndex < history.length - 1) {
+        historyIndex++;
+        const textarea = document.getElementById('yamli-unified-text');
+        textarea.value = history[historyIndex];
+        currentText = textarea.value;
+        updateCharCount();
+      }
+    }
+
+    // Save state to history
+    function saveState() {
+      const textarea = document.getElementById('yamli-unified-text');
+      currentText = textarea.value;
+
+      // Add to history
+      if (historyIndex < history.length - 1) {
+        history = history.slice(0, historyIndex + 1);
+      }
+
+      history.push(currentText);
+      historyIndex = history.length - 1;
+
+      // Limit history size
+      if (history.length > 50) {
+        history.shift();
+        historyIndex--;
+      }
+    }
+
+    // Keyboard shortcuts
+    function handleKeyboardShortcuts(event) {
+      if (event.ctrlKey || event.metaKey) {
+        switch(event.key) {
+          case 'z':
+            event.preventDefault();
+            if (event.shiftKey) {
+              redo();
+            } else {
+              undo();
+            }
+            break;
+          case 'y':
+            event.preventDefault();
+            redo();
+            break;
+          case 'Enter':
+            event.preventDefault();
+            translateText();
+            break;
+        }
+      }
+
+      // Save state on input
+      saveState();
     }
 
     // Franco keyboard input handler
@@ -810,6 +971,18 @@
       if (text) {
         e.preventDefault();
         insertFrancoText(text);
+      }
+    }
+
+    // Handle keydown events
+    function handleKeydown(e) {
+      // Handle Franco keyboard input
+      if (currentMode === 'franco') {
+        const char = e.key.toLowerCase();
+        if (window.francoMap && window.francoMap[char]) {
+          e.preventDefault();
+          insertCharacter(window.francoMap[char]);
+        }
       }
     }
 
@@ -840,37 +1013,17 @@
       updateEditor();
     }
 
-    // Insert character
-    function insertCharacter(char) {
-      const editor = document.getElementById('yamli-unified-text');
-      const selection = window.getSelection();
-      const range = selection.getRangeAt(0);
-      const textNode = document.createTextNode(char);
-
-      range.deleteContents();
-      range.insertNode(textNode);
-
-      // Move cursor after inserted character
-      range.setStartAfter(textNode);
-      range.setEndAfter(textNode);
-      selection.removeAllRanges();
-      selection.addRange(range);
-
-      saveToHistory();
-      updateEditor();
-    }
-
     // Update editor
     function updateEditor() {
       const editor = document.getElementById('yamli-unified-text');
       const text = editor.innerText;
 
       // Update character count
-      document.querySelector('.word-counter').innerHTML = `كلمة واحدة: <span id="wordCount">${text.length}</span> | الأحرف: <span id="charCount">${text.length}</span>`;
+      updateCharCount();
 
       // Auto-save to history
       if (text.length > 0) {
-        saveToHistory();
+        saveState();
       }
 
       // Save to localStorage
@@ -882,73 +1035,311 @@
       }
     }
 
-    // Clear editor
-    function clearEditor() {
-      if (confirm('Clear all text?')) {
-        const editor = document.getElementById('yamli-unified-text');
-        editor.innerText = '';
-        editor.classList.add('animate-pulse');
-        setTimeout(() => editor.classList.remove('animate-pulse'), 200);
-        saveToHistory();
-        updateEditor();
-        showToast('تم مسح النص (Text cleared)');
+    // Translate text
+    function translateText() {
+      const textarea = document.getElementById('yamli-unified-text');
+      const inputText = textarea.value.trim();
+
+      if (!inputText) return;
+
+      // Show translation panel
+      const translationPanel = document.getElementById('translation-panel');
+      translationPanel.classList.remove('hidden');
+
+      // Show input text
+      document.getElementById('input-text-display').textContent = inputText;
+
+      // Show loading spinner
+      const loadingSpinner = document.getElementById('loading-spinner');
+      const translationDisplay = document.getElementById('translation-display');
+      loadingSpinner.style.display = 'inline-block';
+      translationDisplay.innerHTML = '<span class="loading"></span> الجاري الترجمة...';
+
+      // Simulate translation API call
+      setTimeout(() => {
+        loadingSpinner.style.display = 'none';
+        // This would be replaced with actual translation API call
+        const mockTranslation = `Mock translation for: ${inputText}`;
+        translationDisplay.textContent = mockTranslation;
+      }, 1000);
+    }
+
+    // Toggle translation panel
+    function toggleTranslation() {
+      const panel = document.getElementById('translation-panel');
+      panel.classList.toggle('hidden');
+    }
+
+    // Copy to clipboard
+    function copyToClipboard(elementId) {
+      const element = document.getElementById(elementId);
+      const text = element.textContent;
+
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+          showNotification('تم النسخ إلى الحافظة');
+        });
+      } else {
+        // Fallback for older browsers
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        showNotification('تم النسخ إلى الحافظة');
       }
     }
 
-    // Undo functionality
-    function undoEditor() {
-      if (historyStep > 0) {
-        historyStep--;
-        const editor = document.getElementById('yamli-unified-text');
-        editor.innerText = editorHistory[historyStep];
-        editor.focus();
-        updateEditor();
+    // Share text
+    function shareText() {
+      const textarea = document.getElementById('yamli-unified-text');
+      const text = textarea.value.trim();
+
+      if (text && navigator.share) {
+        navigator.share({
+          title: 'نص من Yamli Mobile',
+          text: text
+        }).catch(() => {
+          // Handle share cancellation
+        });
+      } else {
+        copyToClipboard('yamli-unified-text');
       }
     }
 
-    // Redo functionality
-    function redoEditor() {
-      if (historyStep < editorHistory.length - 1) {
-        historyStep++;
-        const editor = document.getElementById('yamli-unified-text');
-        editor.innerText = editorHistory[historyStep];
-        editor.focus();
-        updateEditor();
+    // Share translation
+    function shareTranslation() {
+      const translationDisplay = document.getElementById('translation-display');
+      const text = translationDisplay.textContent;
+
+      if (text && text !== 'Loading...') {
+        if (navigator.share) {
+          navigator.share({
+            title: 'ترجمة من Yamli Mobile',
+            text: text
+          }).catch(() => {
+            // Handle share cancellation
+          });
+        } else {
+          copyToClipboard('translation-display');
+        }
       }
     }
 
     // Save to history
     function saveToHistory() {
-      const editor = document.getElementById('yamli-unified-text');
-      const text = editor.innerText;
+      const textarea = document.getElementById('yamli-unified-text');
+      const text = textarea.value.trim();
 
-      // Remove items after current step
-      editorHistory = editorHistory.slice(0, historyStep + 1);
+      if (text) {
+        const timestamp = new Date().toLocaleString('ar-EG');
+        const historyItem = { text, timestamp };
 
-      // Add new state
-      editorHistory.push(text);
-      historyStep++;
+        // Add to history
+        history.unshift(historyItem);
+        if (history.length > 20) {
+          history.pop();
+        }
 
-      // Limit history size
-      if (editorHistory.length > 50) {
-        editorHistory.shift();
-        historyStep--;
+        // Save to localStorage
+        localStorage.setItem('yamliHistory', JSON.stringify(history));
+
+        // Update UI
+        loadHistoryFromStorage();
+        showNotification('تم حفظ النص في التاريخ');
       }
     }
 
-    // Copy text
-    function copyText() {
-      const editor = document.getElementById('yamli-unified-text');
-      const text = editor.innerText;
+    // Load history from storage
+    function loadHistoryFromStorage() {
+      const savedHistory = localStorage.getItem('yamliHistory');
+      if (savedHistory) {
+        history = JSON.parse(savedHistory);
 
-      navigator.clipboard.writeText(text).then(() => {
-        showToast('تم نسخ النص بنجاح (Text copied successfully)');
-        // Add to history
+        // Update UI
+        const historyItems = document.getElementById('history-items');
+        historyItems.innerHTML = '';
+
+        history.forEach(item => {
+          const div = document.createElement('div');
+          div.className = 'history-item';
+          div.innerHTML = `
+            <span class="history-item-time">${item.timestamp}</span>
+            <span class="history-item-text">${item.text}</span>
+          `;
+          div.onclick = () => loadHistoryItem(item.text);
+          historyItems.appendChild(div);
+        });
+      }
+    }
+
+    // Load history item
+    function loadHistoryItem(text) {
+      const textarea = document.getElementById('yamli-unified-text');
+      textarea.value = text;
+      currentText = text;
+      updateCharCount();
+      textarea.focus();
+      showNotification('تم تحميل النص من التاريخ');
+    }
+
+    // Toggle history panel
+    function toggleHistory() {
+      const panel = document.getElementById('history-panel');
+      panel.classList.toggle('hidden');
+    }
+
+    // Clear all history
+    function clearAllHistory() {
+      if (confirm('هل أنت متأكد من مسح كل التاريخ؟')) {
+        history = [];
+        localStorage.removeItem('yamliHistory');
+        loadHistoryFromStorage();
+        showNotification('تم مسح التاريخ');
+      }
+    }
+
+    // Theme toggle
+    function toggleTheme() {
+      const body = document.body;
+      const themeIcon = document.getElementById('theme-icon');
+      const themeText = document.getElementById('theme-text');
+
+      if (body.classList.contains('dark-theme')) {
+        body.classList.remove('dark-theme');
+        themeIcon.textContent = 'dark_mode';
+        themeText.textContent = 'الغوص';
+        localStorage.setItem('theme', 'light');
+      } else {
+        body.classList.add('dark-theme');
+        themeIcon.textContent = 'light_mode';
+        themeText.textContent = 'فاتح';
+        localStorage.setItem('theme', 'dynamic');
+      }
+    }
+
+    // Load theme
+    function loadTheme() {
+      const savedTheme = localStorage.getItem('theme');
+      const themeIcon = document.getElementById('theme-icon');
+      const themeText = document.getElementById('theme-text');
+
+      if (savedTheme === 'dark') {
+        document.body.classList.add('dark-theme');
+        themeIcon.textContent = 'light_mode';
+        themeText.textContent = 'فاتح';
+      }
+    }
+
+    // Copy pattern
+    function copyPattern() {
+      const textarea = document.getElementById('yamli-unified-text');
+      const text = textarea.value.trim();
+
+      if (text) {
+        copyToClipboard('yamli-unified-text');
+        showNotification('تم نسخ النمط');
+      }
+    }
+
+    // Clear quick insert
+    function clearQuickInsert() {
+      const textarea = document.getElementById('yamli-unified-text');
+      textarea.value = '';
+      currentText = '';
+      updateCharCount();
+      showNotification('تم مسح الحقل');
+    }
+
+    // Show settings
+    function showSettings() {
+      showNotification('ميزة الإعدادات قيد التطوير');
+    }
+
+    // Show dictionary
+    function showDictionary() {
+      window.location.href = 'dictionary.html';
+    }
+
+    // Show cheat sheet
+    function showCheatSheet() {
+      window.location.href = 'cheat-sheet.html';
+    }
+
+    // Show notification
+    function showNotification(message) {
+      // Create notification element
+      const notification = document.createElement('div');
+      notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--primary-color);
+        color: white;
+        padding: 12px 24px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        z-index: 1000;
+        animation: slideDown 0.3s ease;
+      `;
+      notification.textContent = message;
+
+      // Add animation
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes slideDown {
+          from {
+            transform: translateX(-50%) translateY(-100%);
+            opacity: 0;
+          }
+          to {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+          }
+        }
+      `;
+      document.head.appendChild(style);
+
+      document.body.appendChild(notification);
+
+      // Remove after 3 seconds
+      setTimeout(() => {
+        notification.style.animation = 'slideDown 0.3s ease reverse';
+        setTimeout(() => {
+          document.body.removeChild(notification);
+        }, 300);
+      }, 3000);
+    }
+
+    // Load recent items
+    function loadRecentItems() {
+      // This would load recent items from localStorage or API
+      // For now, it's handled by the history panel
+    }
+
+    // Load from storage
+    function loadFromStorage() {
+      const savedContent = localStorage.getItem('editorContent');
+      if (savedContent) {
+        const editor = document.getElementById('yamli-unified-text');
+        editor.innerText = savedContent;
+        updateEditor();
+      }
+    }
+
+    // Legacy functions for backward compatibility
+    function clearEditor() {
+      if (confirm('Clear all text?')) {
+        const editor = document.getElementById('yamli-unified-text');
+        editor.value = '';
+        editor.classList.add('animate-pulse');
+        setTimeout(() => editor.classList.remove('animate-pulse'), 200);
         saveToHistory();
         updateEditor();
-      }).catch(() => {
-        showToast('فشل نسخ النص (Failed to copy text)');
-      });
+        showNotification('تم مسح النص (Text cleared)');
+      }
     }
 
     // Save to cloud
@@ -959,7 +1350,7 @@
       // Show saving animation
       const button = event.target.closest('button');
       const originalContent = button.innerHTML;
-      button.innerHTML = '<span class="spinner"></span> Saving...';
+      button.innerHTML = '<span class="loading"></span> Saving...';
       button.disabled = true;
 
       // Simulate cloud save
@@ -972,57 +1363,12 @@
       }, 1500);
     }
 
-    // Share text
-    function shareText() {
-      const editor = document.getElementById('yamli-unified-text');
-      const text = editor.innerText;
-
-      if (navigator.share && text) {
-        navigator.share({
-          title: 'Yamli Mobile Text',
-          text: text
-        }).then(() => {
-          showToast('Text shared successfully!');
-        }).catch(() => {
-          showToast('Share cancelled');
-        });
-      } else {
-        copyText();
-      }
-    }
-
-    // Show notification
+    // Show toast (legacy)
     function showToast(message) {
-      const toast = document.createElement('div');
-      toast.className = 'notification success';
-      toast.textContent = message;
-      document.body.appendChild(toast);
-
-      setTimeout(() => {
-        toast.style.opacity = '0';
-        setTimeout(() => toast.remove(), 300);
-      }, 3000);
+      showNotification(message);
     }
 
-    // Load recent items
-    function loadRecentItems() {
-      const container = document.createElement('div');
-      container.className = 'recent-section';
-      container.innerHTML = `
-        <h2>Recent Items</h2>
-        <div class="recent-items" id="recentItems">
-          <!-- Recent items will be populated by JavaScript -->
-        </div>
-      `;
-
-      // Insert at the end of main content
-      const mainContent = document.querySelector('.main-content') || document.body;
-      mainContent.appendChild(container);
-
-      displayRecentItems();
-    }
-
-    // Add to recent items
+    // Add to recent items (legacy)
     function addToRecentItems(text) {
       if (!text.trim()) return;
 
@@ -1047,7 +1393,7 @@
       displayRecentItems();
     }
 
-    // Display recent items
+    // Display recent items (legacy)
     function displayRecentItems() {
       const container = document.getElementById('recentItems');
       if (!container) return;
@@ -1070,21 +1416,6 @@
       }
     }
 
-    // Load recent item
-    function loadRecentItem(item) {
-      const editor = document.getElementById('yamli-unified-text');
-      editor.innerText = item.text;
-      editor.focus();
-
-      // Add to current edit history
-      saveToHistory();
-      updateEditor();
-
-      // Add animation feedback
-      editor.classList.add('animate-pulse');
-      setTimeout(() => editor.classList.remove('animate-pulse'), 200);
-    }
-
     // Format time
     function formatTime(timestamp) {
       const date = new Date(timestamp);
@@ -1095,67 +1426,6 @@
       if (diff < 3600000) return `${Math.floor(diff / 60000)}m ago`;
       if (diff < 86400000) return `${Math.floor(diff / 3600000)}h ago`;
       return date.toLocaleDateString();
-    }
-
-    // Load from storage
-    function loadFromStorage() {
-      const savedContent = localStorage.getItem('editorContent');
-      if (savedContent) {
-        const editor = document.getElementById('yamli-unified-text');
-        editor.innerText = savedContent;
-        updateEditor();
-      }
-    }
-
-    // Handle keyboard shortcuts
-    function handleKeydown(e) {
-      // Ctrl/Cmd + Z for undo
-      if ((e.ctrlKey || e.metaKey) && e.key === 'z') {
-        e.preventDefault();
-        undoEditor();
-      }
-
-      // Ctrl/Cmd + Shift + Z or Ctrl/Cmd + Y for redo
-      if ((e.ctrlKey || e.metaKey) && (e.shiftKey && e.key === 'z' || e.key === 'y')) {
-        e.preventDefault();
-        redoEditor();
-      }
-
-      // Handle Franco keyboard input
-      handleFrancoInput(e);
-
-      // Ctrl/Cmd + S for save to cloud
-      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-        e.preventDefault();
-        saveToCloud();
-      }
-    }
-
-    // Enhanced action buttons
-    const shareButton = document.querySelector('.action-button:last-child');
-    if (shareButton) {
-      shareButton.onclick = shareText;
-    }
-
-    const saveButton = document.querySelector('.action-button:nth-child(2)');
-    if (saveButton) {
-      saveButton.onclick = saveToCloud;
-    }
-
-    // Theme toggle
-    function toggleTheme() {
-      const html = document.documentElement;
-      const themeIcon = document.getElementById('themeIcon');
-
-      if (html.classList.contains('dark')) {
-        html.classList.remove('dark');
-        themeIcon.textContent = '🌙';
-        localStorage.setItem('theme', 'light');
-      } else {
-        html.classList.add('dark');
-        themeIcon.textContent = '☀️';
-        localStorage.setItem('theme', 'dark');
-      }
     }
   </script>
 
