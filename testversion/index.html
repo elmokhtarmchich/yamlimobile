@@ -1,152 +1,445 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<!doctype html><html lang="ar">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yamli Mobile Pro - Test Version</title>
-    <meta property="og:title" content="Yamli Mobile Pro - Test Version">
-    <meta property="og:description" content="Test version of Yamli Mobile Pro - Franco-Arabic transliteration application">
-    <meta property="og:image" content="https://yamlimobile.com/images/yamli-mobile-logo.png">
-    <meta property="og:url" content="https://yamlimobile.com/testversion/">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="description" content="Test version of Yamli Mobile Pro - The smart Franco-Arabic transliteration editor">
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            margin: 0;
-            padding: 20px;
-            background: #f5f5f5;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #2c3e50;
-            margin-bottom: 20px;
-        }
-        .version-badge {
-            background: #3498db;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: bold;
-            display: inline-block;
-            margin-bottom: 20px;
-        }
-        .feature-list {
-            list-style: none;
-            padding: 0;
-        }
-        .feature-list li {
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-        }
-        .feature-list li:before {
-            content: "✓";
-            color: #2ecc71;
-            font-weight: bold;
-            margin-right: 10px;
-        }
-        .cta-button {
-            display: inline-block;
-            background: #3498db;
-            color: white;
-            padding: 12px 30px;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-top: 20px;
-            transition: background 0.3s;
-        }
-        .cta-button:hover {
-            background: #2980b9;
-        }
-        .test-links {
-            margin-top: 30px;
-        }
-        .test-links a {
-            display: inline-block;
-            margin: 10px;
-            padding: 10px 20px;
-            background: #ecf0f1;
-            color: #2c3e50;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background 0.3s;
-        }
-        .test-links a:hover {
-            background: #bdc3c7;
-        }
-        .notice {
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            padding: 15px;
-            border-radius: 5px;
-            margin: 20px 0;
-            color: #856404;
-        }
-    </style>
+  <meta charset = "utf-8" />
+  <title>Yamli Mobile v1.0</title>
+<meta name="msapplication-TileColor" content="#3b5165">
+<meta name="msapplication-TileImage" content="/images/favicon/favicon-32x32.png">
+<meta name="theme-color" content="#3b5165">
+<meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=0' />
+<meta name="mobile-web-app-capable" content"yes"> 
+<meta name="apple-mobile-web-app-capable" content"yes"> 
+<meta name="apple-mobile-web-app-capable" content"yes"> 
+<meta name="mobile-web-app-capable" content"yes"> 
+<meta name="apple-mobile-web-app-status-bar-style" content"black"> 
+<meta name="apple-mobile-web-app-title" content"Roles Chicken"> 
+<link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="stylesheet" href="./style.css">
+<script src="./index.js" defer></script>
+<script src="./listen.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Gulzar&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Gulzar&family=Noto+Naskh+Arabic&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
+<script type="text/javascript" src="script.js"></script>
 </head>
+
+
+
 <body>
-    <div class="container">
-        <h1>🎉 Yamli Mobile Pro - Test Version</h1>
-        <div class="version-badge">v2.0 Pro Test Build</div>
+<div id="versionBadge">v1.0</div>
+<div id="copyNotification">Text copied</div>
 
-        <div class="notice">
-            <strong>⚠️ Notice:</strong> This is a test version of Yamli Mobile Pro running at https://yamlimobile.com/testversion/
-        </div>
+<div id="languagePrompt">
+  <div id="languageGrid">
+      <button onclick="translateText('en')">English</button>
+      <button onclick="translateText('de')">Deutsch</button>
+      <button onclick="translateText('fr')">Français</button>
+      <button onclick="translateText('es')">Español</button>
+      <button onclick="translateText('zh-CN')">中文</button>
+      <button onclick="translateText('it')">Italiano</button>
+  </div>
+  <br>
+  <button id="cancelbutton" onclick="hideLanguagePrompt()">🗙</button>
+</div>
 
-        <h2>What's in this test version:</h2>
-        <ul class="feature-list">
-            <li>🚀 Complete Franco-Arabic transliteration editor</li>
-            <li>📖 Interactive dictionary with root exploration</li>
-            <li>🎨 Material Design 3 UI (exact Google Stitch copy)</li>
-            <li>📱 Mobile-optimized responsive design</li>
-            <li>🔄 RTL support for Arabic text</li>
-            <li>💬 Real-time transliteration suggestions</li>
-            <li>🔍 Dictionary search with Franco-Arabic input</li>
-            <li>🔤 Root decoder helper</li>
-            <li>⚡ Fast offline performance</li>
-        </ul>
+<div class="container">
+<div class="button-container">
+<div class="button" id="btn_01" onclick="window.open(window.location.href, '_blank')"><img src="./images/newtab.svg"></div>
+<div class="button" id="btn_06" ><img src="./images/share.svg"></div>
+<div class="button" id="btn_02" onclick = "searchtext()" ><img src="./images/search.svg"></div>
+<div class="button" id="btn_03" onclick = "fct_cut()"><img src="./images/cut.svg"></div>
+<div class="button" id="btn_04" onclick = "pasteFromClipboard()"><img src="./images/paste.svg"></div>
+<div class="button" id="btn_05" onclick = "selectAndCopy()"><img src="./images/copy.svg"></div>
+<div class="button" id="btn_07" onclick = "showLanguagePrompt()"><img src="./images/translate.svg"></div>
+</div>   
 
-        <h2>Test Links:</h2>
-        <div class="test-links">
-            <a href="index.html">📝 Editor Page</a>
-            <a href="dictionary.html">📚 Dictionary Page</a>
-            <a href="../index.html">🏠 Back to Main Site</a>
-        </div>
+<div name="myForm" class="center">
+<textarea class="field-input" name="myTextArea" type="text" id="textbox_id_1" onChange="updateConf()" onkeyup="updateConf()" placeholder="Oktob hona..اكتب هنا" autocomplete="on" autofocus></textarea>
+<form style="display: none" name="testform">
+<p  name="TextArea_vide" id="textbox_id_2" ></p>
+</form>
+</div>
 
-        <h2>How to use:</h2>
-        <ol>
-            <li>Open the <strong>Editor Page</strong> to type in Franco-Arabic and see real-time transliteration</li>
-            <li>Try the <strong>Dictionary Page</strong> to search for words and explore their roots</li>
-            <li>Test the Franco-Arabic numeral system (2=ء/ق, 3=ع, 7=ح, etc.)</li>
-            <li>Switch between dark/light mode in the editor</li>
-        </ol>
 
-        <a href="index.html" class="cta-button">Start Testing →</a>
-    </div>
+<div class="button-container">
+  <div class="button" id="btn_12" onclick="changeBackgroundColor()">
+    <img src="./images/background_color.svg" alt="background color">
+  </div>
+  <div class="button" id="btn_08" onclick="toggleAlignment()">
+    <img src="./images/text_center.svg"  alt="Text center" >                                                
+  </div>
+  <div class="button" id="btn_09" onclick="toggleFonts()" alt="Change font">
+    <img src="./images/font_change.svg"   >                                                
+  </div>  
+  <div class="button" id="btn_10" onclick="updateTextColor()" alt="Font color">
+    <img src="./images/font_color.svg"   >                                                
+  </div>
+  <div class="button" id="btn_11" onclick="toggleTextSize()" alt="Font size">
+    <img src="./images/font_size.svg"   >                                                
+  </div>
+  <div class="button" id="btn_13" onclick="toggleFontWeight()" alt="Bold">
+    <img src="./images/font_bold.svg"   >                                                
+  </div>
+  <div class="button" id="btn_14" alt="Listen">
+    <img src="./images/listen.svg"   >                                                
+  </div>
+</div>
+</div>
+</div>   
+
+<div style="display:none"  class="overlay" id="dialog-container">
+<div id="id_confrmdiv">  تأكيد !  
+    <button id="id_truebtn"> نعم </button>
+    <button id="id_falsebtn"> لا </button>
+</div>
+</div>
+
+<div class="box" id="info">
+  <h1>من هو يملي موبايل 🟐</h1>
+
+  <p class="info">يتيح يملي موبايل للمستخدمين الكتابة باللغة العربية بدون لوحة مفاتيح عربية ، من داخل متصفح الويب الخاص بهم و خاصةً على الهواتف الذكية . تعتمد هذه التقنية على محرك التحويل الحرفي في الوقت الفعلي والذي يحول الكلمات المكتوبة بأحرف لاتينية إلى أقرب ما يعادلها باللغة العربية. تعتمد هذه الخدمة على محرك  يملي عربي ، و هو محرك بحث يركز على تقديم نتائج بحث أكثر صلة لاستعلام عربي من خلال توسيعه ليشمل التمثيلات اللاتينية الأكثر استخدامًا.
+  يمكن للمستخدم أيضاً من خلال هذه الخدمة أن يقوم بنسخ ، لصق، حدف، البحث على جوجل و مشاركة النص عبر التطبيقات.</p>	
+</div>
+
+<div class="box" id="webapp">
+  <h1>
+    إضافة على شكل تطبيق ⓘ
+  </h1>
+    <p class="info">هذا الموقع يدعم خاصية التنزيل على شكل تطبيق للويب. يمكنك إضافة تطبيق الويب من خلال النقر على زر في الأسفل</p>
+    <input class="add-button" type="button" value="Add Web App">
+  </div>
+
+<div class="box" id="info1">
+<h1>
+  هام ⚠
+</h1>
+  <p class="info">إذا لم تشتغل هذه الأداة بظهور أيقونة يملي البنفسجية على اليسار وتحول  الكتابة من اليمين إلى اليسار، المرجوا إيقاف تفعيل</p>
+  <p class="info">"Ad Blocker"</p>
+  <p class="info"> . فهذا الموقع لا يحتوي على أية برامج خبيثة أو ضارة.</p>
+</div>
+
+</body>
+
+<footer>
+<div class="footer">
+<a class="active" ><img href="watsapgo.net" class="logo" src="./images/favicon/ms-icon-144x144.png" >Yamli Mobile </a>
+<a href="./contact.html"><img class="img" src="./icon/contact.svg"></a>
+<a onclick="notifyMe()"><img class="img" src="./icon/bell.svg"></a>
+<a href="#home" onclick="window.location.reload(true);"><img class="img" src="./icon/home.svg"></a>
+</footer>
+
+<script>
+// Create a new KeyboardEvent
+const spaceKeyPress = new KeyboardEvent('keydown', {
+  key: ' ',
+  code: 'Space',
+  keyCode: 32,
+  which: 32,
+  charCode: 32,
+});
+
+// Dispatch the event to the target element
+document.dispatchEvent(spaceKeyPress);
+	
+</script>
+
+<script>
+
+// Create a new KeyboardEvent for keyup event
+const spaceKeyRelease = new KeyboardEvent('keyup', {
+  key: ' ',
+  code: 'Space',
+  keyCode: 32,
+  which: 32,
+  charCode: 32,
+});
+
+// Dispatch the event to the target element
+document.dispatchEvent(spaceKeyRelease);
+</script>
+
+
+<script>
+  const fonts = [
+      'Courier New, monospace',
+      'Tajawal, sans-serif',
+        'Lateef, cursive',
+        'Reem Kufi, sans-serif',
+        'Amiri, serif',
+        'Kufam, sans-serif',
+        'Amiri, serif'
+  ];
+
+  let currentFontIndex = 0;
+
+  function toggleFonts() {
+      const textarea = document.getElementById('textbox_id_1');
+      currentFontIndex = (currentFontIndex + 1) % fonts.length;
+      textarea.style.fontFamily = fonts[currentFontIndex];
+  }
+</script> 
 
     <script>
-        // Add some interactivity
-        document.addEventListener('DOMContentLoaded', function() {
-            const links = document.querySelectorAll('.test-links a');
-            links.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    if (this.getAttribute('href').startsWith('http')) {
-                        window.open(this.href, '_blank');
-                        return false;
-                    }
-                });
-            });
-        });
-    </script>
-</body>
+      var currentSizeIndex = 0;
+      var sizes = [16, 34, 20];
+
+      function toggleTextSize() {
+          var textarea = document.getElementById("textbox_id_1");
+          currentSizeIndex = (currentSizeIndex + 1) % sizes.length;
+          textarea.style.fontSize = sizes[currentSizeIndex] + "px";
+      }
+  </script>
+
+<script> 
+function updateConf() {
+var myTextArea1 = document.getElementById('textbox_id_1').value;
+var inputBox = document.getElementById('printchatbox');
+//alert(myTextArea1);
+inputBox.focus();
+inputBox.value = myTextArea1 ;
+document.getElementById('textbox_id_1').focus();
+}
+</script> 
+
+<script>
+  function toggleAlignment() {
+      var textarea = document.getElementById("textbox_id_1");
+
+      if (textarea.style.textAlign === "center") {
+          textarea.style.textAlign = "right";
+      } else {
+          textarea.style.textAlign = "center";
+      }
+  }
+</script>
+<script>
+  function toggleFontWeight() {
+      const textarea = document.getElementById('textbox_id_1');
+      const currentWeight = getComputedStyle(textarea).fontWeight;
+
+      // Toggle between normal and bold
+      textarea.style.fontWeight = currentWeight === 'normal' ? 'bold' : 'normal';
+  }
+</script>
+
+<script>
+  function updateTextColor()  {
+      var textarea = document.getElementById("textbox_id_1");
+
+      if (textarea.style.color === "black") {
+          textarea.style.color = "white";
+      } else {
+          textarea.style.color = "black";
+      }
+  }
+</script>
+
+
+<script>
+
+  function changeBackgroundColor() {
+      var colors = ["burlywood", "cadetblue", "chocolate", "coral", "cornflowerblue", "darkcyan", "darkgrey", "darkslategrey","darksalmon"];
+      var textarea = document.getElementById("textbox_id_1");
+      var currentColor = textarea.style.backgroundColor;
+
+      // Get the index of the current color in the array
+      var currentIndex = colors.indexOf(currentColor);
+
+      // Determine the index of the next color
+      var newIndex = (currentIndex + 1) % colors.length;
+
+      textarea.style.backgroundColor = colors[newIndex];
+  }
+
+</script>
+
+		<script> 
+			// Function to get the Selected Text 
+			function getSelectedText() { 
+				var myTextArea = ''; 
+				var myTextArea1 = document.getElementById('textbox_id_1');
+                var myTextArea2 = document.getElementById('textbox_id_2');
+				// window.getSelection 
+				if (window.getSelection) { 
+					myTextArea = window.getSelection(); 
+				} 
+				// document.getSelection 
+				else if (document.getSelection) { 
+					myTextArea = document.getSelection(); 
+				} 
+				// document.selection 
+				else if (document.selection) { 
+					myTextArea = 
+					document.selection.createRange().text; 
+				} else return; 
+				// To write the selected text into the textarea 
+				document.execCommand("copy");
+                myTextArea2.innerHTML = myTextArea; 
+			}
+		</script> 
+ <script>
+ function selectall(){
+  /* Get the text field */
+  var fct_copy = document.getElementById("textbox_id_1");
+  /* Select the text field */
+  fct_copy.select();
+  fct_copy.setSelectionRange(0, 99999); /*For mobile devices*/
+}
+</script>
+ <script>
+    'use strict';
+    function sleep(delay) {
+      return new Promise(resolve => {
+        setTimeout(resolve, delay);
+      });
+    }
+    function logText(message, isError) {
+      if (isError)
+        console.error(message);
+      else
+        console.log(message);
+      const p = document.createElement('p');
+      if (isError)
+        p.setAttribute('class', 'error');
+      document.querySelector('#output').appendChild(p);
+      p.appendChild(document.createTextNode(message));
+    }
+    function logError(message) {
+      logText(message, true);
+    }
+  //  function setShareButtonsEnabled(enabled) {
+ //     document.querySelector('#btn_06').disabled = !enabled;
+ //   }
+    async function testWebShare() {
+      const text_input = document.querySelector('#textbox_id_1');
+	  
+      const title = 'yamli mobile';
+      const text = text_input.disabled ? undefined : text_input.value;
+      // setShareButtonsEnabled(false);
+      try {
+        await navigator.share({title, text});
+        logText('Successfully sent share');
+      } catch (error) {
+        logError('Error sharing: ' + error);
+      }
+      //setShareButtonsEnabled(true);
+    }
+    function onLoad() {
+      // Checkboxes disable and delete textfields.
+      document.querySelector('#btn_06').addEventListener('click', testWebShare);
+	  
+      if (navigator.share === undefined) {
+       // setShareButtonsEnabled(true);
+        if (window.location.protocol === 'http:') {
+          // navigator.share() is only available in secure contexts.
+          window.location.replace(window.location.href.replace(/^http:/, 'https:'));
+        } else {
+          logError('Error: You need to use a browser that supports this draft ' +
+                   'proposal.');
+        }
+      }
+    }
+    window.addEventListener('load', onLoad);
+</script>
+<script>
+function insertAtCaret() {
+        var text = document.getElementById('textbox_id_2').innerHTML;
+		var txtarea = document.getElementById('textbox_id_1');
+		var scrollPos = txtarea.scrollTop;
+		var strPos = 0;
+		var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ? 
+			"ff" : (document.selection ? "ie" : false ) );
+		if (br == "ie") { 
+			txtarea.focus();
+			var range = document.selection.createRange();
+			range.moveStart ('character', -txtarea.value.length);
+			strPos = range.text.length;
+		}
+		else if (br == "ff") strPos = txtarea.selectionStart;
+	
+		var front = (txtarea.value).substring(0,strPos);  
+		var back = (txtarea.value).substring(strPos,txtarea.value.length); 
+		txtarea.value=front+text+back;
+		strPos = strPos + text.length;
+		if (br == "ie") { 
+			txtarea.focus();
+			var range = document.selection.createRange();
+			range.moveStart ('character', -txtarea.value.length);
+			range.moveStart ('character', strPos);
+			range.moveEnd ('character', 0);
+			range.select();
+		}
+		else if (br == "ff") {
+			txtarea.selectionStart = strPos;
+			txtarea.selectionEnd = strPos;
+			txtarea.focus();
+		}
+		txtarea.scrollTop = scrollPos;
+	}
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+</script>
+<!-- YAMLI CODE START -->
+<script type="text/javascript" src="https://api.yamli.com/js/yamli_api.js"></script>
+<script type="text/javascript">
+  if (typeof(Yamli) == "object" && Yamli.init( { uiLanguage: "ar" ,  startMode: "onOrUserDefault" , uiFontFamily: 'Amiri' , settingsColor: '#dbb44f' , settingsLinkColor: '#dbb44f'} ))
+  {
+    Yamli.yamlify( "textbox_id_1", { settingsPlacement: 'inside' , showTutorialLink: true, showDirectionLink: true} );
+  }
+</script>
+<script src="yamli_spacebar_handler_v4.js"></script>
+<script>
+function searchtext() {
+  /* Get the text field */
+  var SerText = document.getElementById("textbox_id_1");
+  /* Select the text field */
+  SerText.select();
+  SerText.setSelectionRange(0, 99999); /*For mobile devices*/
+  /* Copy the text inside the text field */
+  window.open('http://google.com/search?q='+SerText.value,"_blank");
+  /* Alert the copied text 
+  alert("Copied the text: " + fct_copy.value);*/
+}
+</script>
+<script>
+function doConfirm(msg, yesFn, noFn)
+{
+    var confirmBox = $("#confirmBox");
+    confirmBox.find(".message").text(msg);
+    confirmBox.find(".yes,.no").unbind().click(function()
+    {
+        confirmBox.hide();
+    });
+    confirmBox.find(".yes").click(yesFn);
+    confirmBox.find(".no").click(noFn);
+    confirmBox.show();
+}
+</script>
+<script>
+doConfirm("Are you sure?", function yes()
+{
+    form.submit();
+}, function no()
+{
+    // do nothing
+});
+</script>
+
+<script> //if the website Is not opened an app mode show (i.e. in a browser) the add to homescreen prompt 
+	if ((("standalone" in window.navigator) && !window.navigator.standalone) || (!window.matchMedia('(display-mode: standalone)').matches )) // android 
+	 {
+			addToHomescreen();
+		}
+	</script> 
+
+
+
 </html>
