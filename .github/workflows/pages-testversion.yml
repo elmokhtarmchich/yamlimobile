@@ -24,29 +24,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Create redirect page
+      - name: Create v1.0 page
         run: |
-          mkdir -p temp
-          cat > temp/index.html << 'EOF'
-          <!DOCTYPE html>
-          <html>
-          <head>
-              <title>Redirecting to Yamli Mobile v2.0...</title>
-              <meta http-equiv="refresh" content="0; url=/testversion/">
-              <script>
-                  window.location.href = "/testversion/";
-              </script>
-          </head>
-          <body>
-              <p>Redirecting to <a href="/testversion/">Yamli Mobile v2.0</a>...</p>
-          </body>
-          </html>
-          EOF
+          cp index.html temp/v1.html
+          sed -i 's/Yamli Mobile v1\.0/Yamli Mobile v1.0 (Root)/g' temp/v1.html
 
-      - name: Create v2.0 version page
+      - name: Create v2.0 page
         run: |
           mkdir -p temp
-          cat > temp/index.html << 'EOF'
+          cat > temp/v2.html << 'EOF'
           <!doctype html><html lang="ar">
           <head>
             <meta charset = "utf-8" />
@@ -63,9 +49,9 @@ jobs:
             <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
             <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
             <link rel="manifest" href="/site.webmanifest">
-            <link rel="stylesheet" href="testversion/style.css">
-            <script src="testversion/index.js" defer></script>
-            <script src="testversion/listen.js"></script>
+            <link rel="stylesheet" href="./style.css">
+            <script src="./index.js" defer></script>
+            <script src="./listen.js"></script>
             <link rel="preconnect" href="https://fonts.googleapis.com">
             <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
             <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300&display=swap" rel="stylesheet">
@@ -78,6 +64,7 @@ jobs:
           <body>
           <div id="versionBadge">v2.0</div>
           <div id="copyNotification">Text copied</div>
+
           <div id="languagePrompt">
             <div id="languageGrid">
               <button onclick="translateText('en')">English</button>
@@ -90,6 +77,7 @@ jobs:
             <br>
             <button id="cancelbutton" onclick="hideLanguagePrompt()">🗙</button>
           </div>
+
           <div class="container">
             <div class="button-container">
               <div class="button" id="btn_01" onclick="window.open(window.location.href, '_blank')"><img src="./images/newtab.svg"></div>
@@ -108,6 +96,7 @@ jobs:
             </div>
           </div>
           </div>
+
           <div class="box" id="info">
             <h1>من هو يملي موبايل v2.0 🟐</h1>
             <p class="info">يتيح يملي موبايل للمستخدمين الكتابة باللغة العربية بدون لوحة مفاتيح عربية ، من داخل متصفح الويب الخاص بهم و خاصةً على الهواتف الذكية . تعتمد هذه التقنية على محرك التحويل الحرفي في الوقت الفعلي والذي يحول الكلمات المكتوبة بأحرف لاتينية إلى أقرب ما يعادلها باللغة العربية. تعتمد هذه الخدمة على محرك  يملي عربي ، وهو محرك بحث يركز على تقديم نتائج بحث أكثر صلة لاستعلام عربي من خلال توسيعه ليشمل التمثيلات اللاتينية الأكثر استخدامًا.</p>
@@ -123,16 +112,111 @@ jobs:
               Yamli.yamlify( "textbox_id_1", { settingsPlacement: 'inside' , showTutorialLink: true, showDirectionLink: true} );
             }
           </script>
-          <script src="testversion/yamli_spacebar_handler_v4.js"></script>
+          <script src="yamli_spacebar_handler_v4.js"></script>
           </body>
           </html>
           EOF
 
-      - name: Copy remaining files
+      - name: Create landing page with version selector
         run: |
-          cp -r testversion/css temp/ 2>/dev/null || true
-          cp -r testversion/js temp/ 2>/dev/null || true
-          cp -r testversion/images temp/ 2>/dev/null || true
+          cat > temp/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="ar">
+          <head>
+            <meta charset="utf-8">
+            <title>Yamli Mobile</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <style>
+              body {
+                font-family: 'Tajawal', sans-serif;
+                padding: 20px;
+                text-align: center;
+                background: #f0f2f5;
+              }
+              .version-selector {
+                background: white;
+                padding: 40px;
+                border-radius: 12px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                max-width: 600px;
+                margin: 0 auto;
+              }
+              .version-button {
+                display: block;
+                width: 100%;
+                padding: 20px;
+                margin: 10px 0;
+                font-size: 18px;
+                font-weight: bold;
+                color: white;
+                text-decoration: none;
+                border-radius: 8px;
+                transition: transform 0.2s;
+              }
+              .v1-button {
+                background: #3b5165;
+              }
+              .v2-button {
+                background: #4CAF50;
+              }
+              .version-button:hover {
+                transform: translateY(-2px);
+              }
+              .version-info {
+                margin: 20px 0;
+                padding: 15px;
+                background: #f8f9fa;
+                border-radius: 8px;
+                text-align: left;
+              }
+            </style>
+          </head>
+          <body>
+            <div class="version-selector">
+              <h1>Yamli Mobile</h1>
+              <p>اختر الإصدار الذي تريد استخدامه:</p>
+
+              <a href="v1.html" class="version-button v1-button">
+                📱 Yamli Mobile v1.0
+              </a>
+              <div class="version-info">
+                <h3>v1.0 - الإصدار الأصلي</h3>
+                <ul>
+                  <li>محرك يملي الأساسي</li>
+                  <li>واجهة مستخدم بسيطة</li>
+                  <td>يعمل مع جميع المتصفحات</td>
+                </ul>
+              </div>
+
+              <a href="v2.html" class="version-button v2-button">
+                🚀 Yamli Mobile v2.0
+              </a>
+              <div class="version-info">
+                <h3>v2.0 - الإصدار المحسن</h3>
+                <ul>
+                  <li>واجهة مستخدم محسنة</li>
+                  <li>ميزات إضافية</li>
+                  <td>أداء أفضل</td>
+                </ul>
+              </div>
+            </div>
+          </body>
+          </html>
+          EOF
+
+      - name: Copy all required assets
+        run: |
+          mkdir -p temp/images
+          mkdir -p temp/js
+          cp -r images/* temp/images/ 2>/dev/null || true
+          cp -r js/* temp/js/ 2>/dev/null || true
+          cp -r css/* temp/ 2>/dev/null || true
+          cp script.js temp/ 2>/dev/null || true
+          cp yamli_spacebar_handler_v4.js temp/ 2>/dev/null || true
+          cp listen.js temp/ 2>/dev/null || true
+          cp style.css temp/ 2>/dev/null || true
+          cp index.js temp/ 2>/dev/null || true
+          cp site.webmanifest temp/ 2>/dev/null || true
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
