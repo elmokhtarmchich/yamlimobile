@@ -4,8 +4,7 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'testversion/**'
-
+      - '.'
   workflow_dispatch:
 
 permissions:
@@ -30,10 +29,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './testversion'
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
+          path: './'
 
   deploy:
     if: github.ref == 'refs/heads/main'
