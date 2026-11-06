@@ -228,6 +228,7 @@ jobs:
           name: testversion-artifact
 
   deploy:
+    if: github.ref == 'refs/heads/testversion'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
