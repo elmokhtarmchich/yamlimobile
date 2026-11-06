@@ -5,6 +5,7 @@ on:
     branches: [ main ]
     paths:
       - '.'
+      - '.github/workflows/deploy.yml'
   workflow_dispatch:
 
 permissions:
@@ -26,7 +27,7 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
-      - name: Upload artifact
+      - name: Upload artifact (v1.0)
         uses: actions/upload-pages-artifact@v3
         with:
           path: './'

@@ -2,12 +2,10 @@ name: Deploy Test Version to Pages
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
     paths:
       - 'testversion/**'
-      - '.github/workflows/pages-testversion.yml'
-
+      - '.github/workflows/deploy-testversion.yml'
   workflow_dispatch:
 
 permissions:
@@ -16,7 +14,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: "pages-testversion"
   cancel-in-progress: false
 
 jobs:
@@ -25,8 +23,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
