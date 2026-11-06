@@ -1,0 +1,102 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main, testversion ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout main branch (v1.0)
+      - name: Checkout main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: ./v1-src
+
+      # Checkout testversion branch (v2.0)
+      - name: Checkout testversion branch
+        uses: actions/checkout@v4
+        with:
+          ref: testversion
+          path: ./v2-src
+
+      # Create output directory
+      - name: Create output directory
+        run: mkdir -p _site/v2
+
+      # Copy v1.0 files from main branch
+      - name: Copy v1.0 files
+        run: |
+          cp -r v1-src/* _site/
+          cp -r v1-src/.* _site/ 2>/dev/null || true
+
+      # Copy v2.0 files from testversion branch
+      - name: Copy v2.0 files
+        run: |
+          cp -r v2-src/* _site/v2/
+          cp -r v2-src/.* _site/v2/ 2>/dev/null || true
+
+          # Fix absolute paths in v2.0 files for subdirectory deployment
+          cd _site/v2
+
+          # Fix manifest paths
+          sed -i 's|href="/images|href="./images|g' site.webmanifest
+          sed -i 's|src="/images|src="./images|g' site.webmanifest
+          sed -i 's|"action": "/"|"action": "/v2/"|g' site.webmanifest
+          sed -i 's|"start_url": "/index.html"|"start_url": "/v2/index.html"|g' site.webmanifest
+
+          # Fix HTML href/src paths
+          sed -i 's|href="/images|href="./images|g' *.html
+          sed -i 's|src="/images|src="./images|g' *.html
+
+          cd -
+
+      # Copy CNAME file
+      - name: Copy CNAME
+        run: |
+          if [ -f v1-src/CNAME ]; then
+            cp v1-src/CNAME _site/
+          elif [ -f v2-src/CNAME ]; then
+            cp v2-src/CNAME _site/
+          fi
+
+      # Copy site.webmanifest to root
+      - name: Copy site.webmanifest
+        run: |
+          if [ -f v2-src/site.webmanifest ]; then
+            cp v2-src/site.webmanifest _site/
+          fi
+
+      # Create .nojekyll file
+      - name: Create .nojekyll
+        run: touch _site/.nojekyll
+
+      # Upload artifact
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+          name: pages-artifact
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
