@@ -45,8 +45,13 @@ jobs:
       # Copy v2.0 files from testversion branch
       - name: Copy v2.0 files
         run: |
+          echo "Checking v2-src contents..."
+          ls -la v2-src/
+          echo "Copying files to _site/v2/..."
           cp -r v2-src/* _site/v2/ || true
           cp -r v2-src/.[^.]* _site/v2/ 2>/dev/null || true
+          echo "Files in _site/v2/:"
+          ls -la _site/v2/
 
           # Fix absolute paths in v2.0 files for subdirectory deployment
           cd _site/v2
