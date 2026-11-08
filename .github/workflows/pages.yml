@@ -39,45 +39,40 @@ jobs:
       # Copy v1.0 files from main branch
       - name: Copy v1.0 files
         run: |
-          cp -r v1-src/* _site/
-          cp v1-src/.nojekyll _site/ 2>/dev/null || true
+          cp -r v1-src/* _site/ || true
+          cp -r v1-src/.[^.]* _site/ 2>/dev/null || true
 
       # Copy v2.0 files from testversion branch
       - name: Copy v2.0 files
         run: |
-          cp -r v2-src/* _site/v2/
-          cp v2-src/.nojekyll _site/v2/ 2>/dev/null || true
+          cp -r v2-src/* _site/v2/ || true
+          cp -r v2-src/.[^.]* _site/v2/ 2>/dev/null || true
 
           # Fix absolute paths in v2.0 files for subdirectory deployment
           cd _site/v2
 
           # Fix manifest paths
-          sed -i 's|href="/images|href="./images|g' site.webmanifest
-          sed -i 's|src="/images|src="./images|g' site.webmanifest
-          sed -i 's|"action": "/"|"action": "/v2/"|g' site.webmanifest
-          sed -i 's|"start_url": "/index.html"|"start_url": "/v2/index.html"|g' site.webmanifest
+          sed -i 's|href="/images|href="./images|g' site.webmanifest 2>/dev/null || true
+          sed -i 's|src="/images|src="./images|g' site.webmanifest 2>/dev/null || true
+          sed -i 's|"action": "/"|"action": "/v2/"|g' site.webmanifest 2>/dev/null || true
+          sed -i 's|"start_url": "/index.html"|"start_url": "/v2/index.html"|g' site.webmanifest 2>/dev/null || true
 
           # Fix HTML href/src paths
-          sed -i 's|href="/images|href="./images|g' *.html
-          sed -i 's|src="/images|src="./images|g' *.html
+          sed -i 's|href="/images|href="./images|g' *.html 2>/dev/null || true
+          sed -i 's|src="/images|src="./images|g' *.html 2>/dev/null || true
 
           cd -
 
       # Copy CNAME file
       - name: Copy CNAME
         run: |
-          if [ -f v1-src/CNAME ]; then
-            cp v1-src/CNAME _site/
-          elif [ -f v2-src/CNAME ]; then
-            cp v2-src/CNAME _site/
-          fi
+          cp -f v2-src/CNAME _site/CNAME 2>/dev/null || true
+          cp -f v1-src/CNAME _site/CNAME 2>/dev/null || true
 
       # Copy site.webmanifest to root
       - name: Copy site.webmanifest
         run: |
-          if [ -f v2-src/site.webmanifest ]; then
-            cp v2-src/site.webmanifest _site/
-          fi
+          cp -f v2-src/site.webmanifest _site/site.webmanifest 2>/dev/null || true
 
       # Create .nojekyll file
       - name: Create .nojekyll
