@@ -30,6 +30,18 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: testversion
+          sparse-checkout: |
+            index.html
+            v1.html
+            v2.html
+            *.css
+            *.js
+            images/
+            icon/
+            font/
+            images/
+            site.webmanifest
+            CNAME
           path: ./v2-src
 
       # Create output directory
