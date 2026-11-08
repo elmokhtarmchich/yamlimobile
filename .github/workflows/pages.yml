@@ -40,13 +40,13 @@ jobs:
       - name: Copy v1.0 files
         run: |
           cp -r v1-src/* _site/
-          cp -r v1-src/.* _site/ 2>/dev/null || true
+          cp v1-src/.nojekyll _site/ 2>/dev/null || true
 
       # Copy v2.0 files from testversion branch
       - name: Copy v2.0 files
         run: |
           cp -r v2-src/* _site/v2/
-          cp -r v2-src/.* _site/v2/ 2>/dev/null || true
+          cp v2-src/.nojekyll _site/v2/ 2>/dev/null || true
 
           # Fix absolute paths in v2.0 files for subdirectory deployment
           cd _site/v2
