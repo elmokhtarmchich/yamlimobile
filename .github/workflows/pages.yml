@@ -99,9 +99,26 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: pages-artifact
+          path: _site
+
+      - name: Configure Git
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+
+      - name: Setup gh CLI
+        uses: google-github-actions/setup-gcloud@v0
+        with:
+          project_id: elmokhtarmchich
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./_site
+        run: |
+          echo "Deploying to GitHub Pages..."
+          gh auth login --with-token ${{ secrets.GITHUB_TOKEN }}
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          cd _site
+          git init
+          git add -A
+          git commit -m "Deploy to GitHub Pages"
+          git push --force https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/elmokhtarmchich/elmokhtarmchich.github.io.git main:gh-pages
