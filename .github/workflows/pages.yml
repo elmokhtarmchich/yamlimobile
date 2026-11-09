@@ -86,7 +86,7 @@ jobs:
 
       # Upload artifact
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v3
         with:
           path: _site
           name: pages-artifact
@@ -100,7 +100,7 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v3
 
       - name: Verify deployment
         run: |
