@@ -40,17 +40,39 @@ jobs:
       # Copy v1.0 files from main branch
       - name: Copy v1.0 files
         run: |
-          cp -r v1-src/* _site/ || true
-          cp -r v1-src/.[^.]* _site/ 2>/dev/null || true
+          echo "Checking current directory contents..."
+          ls -la
+          echo "Copying files to _site..."
+          cp -r *.html _site/ || true
+          cp -r *.css _site/ || true
+          cp -r *.js _site/ || true
+          cp -r *.xml _site/ || true
+          cp -r *.txt _site/ || true
+          cp -r *.toml _site/ || true
+          cp -r *.webmanifest _site/ || true
+          cp -r *.json _site/ || true
+          cp -r images/ _site/ || true
+          cp -r font/ _site/ || true
+          cp -r icon/ _site/ || true
+          cp -r android-keyboard/ _site/ || true
+          cp -r workers/ _site/ || true
+          cp -r .nojekyll _site/ 2>/dev/null || true
+          cp -r sw.js _site/ || true
+          cp -r wrangler.toml _site/ || true
+          cp -r CNAME _site/ 2>/dev/null || true
+          cp -r site.webmanifest _site/ 2>/dev/null || true
+          echo "Files in _site:"
+          ls -la _site/
 
       # Copy v2.0 files from testversion branch
       - name: Copy v2.0 files
         run: |
-          echo "Checking v2-src contents..."
-          ls -la v2-src/
-          echo "Copying files to _site/v2/..."
-          cp -r v2-src/* _site/v2/ || true
-          cp -r v2-src/.[^.]* _site/v2/ 2>/dev/null || true
+          echo "Checking testversion branch..."
+          git ls-tree --name-only testversion
+          echo "Creating _site/v2 directory..."
+          mkdir -p _site/v2
+          echo "Copying v2.0 files to _site/v2/..."
+          git checkout-index -a -f --prefix=_site/v2/ -- testversion
           echo "Files in _site/v2/:"
           ls -la _site/v2/
 
@@ -68,17 +90,6 @@ jobs:
           sed -i 's|src="/images|src="./images|g' *.html 2>/dev/null || true
 
           cd -
-
-      # Copy CNAME file
-      - name: Copy CNAME
-        run: |
-          cp -f v2-src/CNAME _site/CNAME 2>/dev/null || true
-          cp -f v1-src/CNAME _site/CNAME 2>/dev/null || true
-
-      # Copy site.webmanifest to root
-      - name: Copy site.webmanifest
-        run: |
-          cp -f v2-src/site.webmanifest _site/site.webmanifest 2>/dev/null || true
 
       # Create .nojekyll file
       - name: Create .nojekyll
